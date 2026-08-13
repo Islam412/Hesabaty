@@ -1,0 +1,12 @@
+{
+  "@@locale": "en",
+  "appName": "Capital & Debt Ledger",
+  "more": "More",
+  "cashBook": "Cash Book",
+  "debtBook": "Debt Book",
+  "income": "Income",
+  "expense": "Expense",
+  "balance": "Balance",
+  "customers": "Customers",
+  "suppliers": "Suppliers"
+}

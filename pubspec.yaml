@@ -1,0 +1,41 @@
+name: debt_cash_app
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
+  flutter_riverpod: any
+  shared_preferences: any
+  path_provider: any
+  uuid: any
+  realm: any
+  image_picker: any
+  share_plus: any
+  permission_handler: any
+  flutter_contacts: any
+  pdf: any
+  printing: any
+  flutter_local_notifications: any
+  timezone: any
+  local_auth: any
+  flutter_secure_storage: any
+  go_router: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: any
+
+flutter:
+  generate: true
+  uses-material-design: true
