@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:realm/realm.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
@@ -44,6 +45,20 @@ class _CashBookScreenState extends State<CashBookScreen> {
 
   String _fmt(double v) => _hide ? '••••' : v.toStringAsFixed(2);
 
+  Future<void> _recompute() async {
+    final realm = await RealmService.realm;
+    final active = realm.all<CashTransaction>().toList().where((t) => t.status != 'deleted').toList();
+    active.sort((a, b) => a.date.compareTo(b.date));
+    double bal = 0;
+    realm.write(() {
+      for (final t in active) {
+        bal += t.type == 'income' ? t.amount : -t.amount;
+        t.balanceAfter = bal;
+      }
+    });
+    _load();
+  }
+
   Future<void> _add(String type) async {
     final amountC = TextEditingController();
     final noteC = TextEditingController();
@@ -64,7 +79,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
             TextField(controller: noteC, decoration: InputDecoration(labelText: l10n.note, border: const OutlineInputBorder())),
             const SizedBox(height: 16),
             FilledButton(
-              style: FilledButton.styleFrom(backgroundColor: isIncome ? AppTheme.incomeGreen : AppTheme.expenseRed, minimumSize: const Size(double.infinity, 52), padding: const EdgeInsets.symmetric(vertical: 16)),
+              style: FilledButton.styleFrom(backgroundColor: isIncome ? AppTheme.incomeGreen : AppTheme.expenseRed, minimumSize: const Size(double.infinity, 52)),
               onPressed: () async {
                 final amount = double.tryParse(amountC.text) ?? 0;
                 if (amount <= 0) return;
@@ -90,6 +105,70 @@ class _CashBookScreenState extends State<CashBookScreen> {
             const SizedBox(height: 16),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _manage(CashTransaction t) async {
+    final l10n = AppLocalizations.of(context)!;
+    final action = await showModalBottomSheet<String>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(leading: Icon(Icons.edit, color: AppTheme.primaryBlue), title: Text(l10n.edit), onTap: () => Navigator.pop(ctx, 'edit')),
+            ListTile(leading: Icon(Icons.share, color: AppTheme.primaryBlue), title: Text(l10n.share), onTap: () => Navigator.pop(ctx, 'share')),
+            ListTile(leading: Icon(Icons.delete_outline, color: AppTheme.expenseRed), title: Text(l10n.voidTx), onTap: () => Navigator.pop(ctx, 'delete')),
+          ],
+        ),
+      ),
+    );
+    if (action == 'edit') {
+      await _edit(t);
+    } else if (action == 'delete') {
+      final realm = await RealmService.realm;
+      realm.write(() { t.status = 'deleted'; });
+      await _recompute();
+    } else if (action == 'share') {
+      final sign = t.type == 'income' ? '+' : '-';
+      await Share.share('$sign ${t.amount.toStringAsFixed(2)}\n${t.note ?? ''}\n${t.date.day}/${t.date.month}/${t.date.year}');
+    }
+  }
+
+  Future<void> _edit(CashTransaction t) async {
+    final l10n = AppLocalizations.of(context)!;
+    final amountC = TextEditingController(text: t.amount.toString());
+    final noteC = TextEditingController(text: t.note ?? '');
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.edit),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(controller: amountC, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: l10n.amount)),
+            const SizedBox(height: 8),
+            TextField(controller: noteC, decoration: InputDecoration(labelText: l10n.note)),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel)),
+          FilledButton(
+            onPressed: () async {
+              final amount = double.tryParse(amountC.text) ?? t.amount;
+              final realm = await RealmService.realm;
+              realm.write(() {
+                t.amount = amount;
+                t.note = noteC.text.trim().isEmpty ? null : noteC.text.trim();
+                t.status = 'edited';
+              });
+              Navigator.pop(ctx);
+              await _recompute();
+            },
+            child: Text(l10n.save),
+          ),
+        ],
       ),
     );
   }
@@ -175,6 +254,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
               return Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
+                  onLongPress: () => _manage(t),
                   leading: Icon(isIncome ? Icons.add_circle_outline : Icons.remove_circle_outline, color: color),
                   title: Text(t.note ?? (isIncome ? l10n.income : l10n.expense)),
                   subtitle: Text('${t.date.day}/${t.date.month}/${t.date.year}'),

@@ -43,5 +43,13 @@
   "amount": "Amount",
   "note": "Note",
   "search": "Search",
-  "version": "Version"
+  "version": "Version",
+  "language": "Language",
+  "appearance": "Appearance",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System default",
+  "edit": "Edit",
+  "voidTx": "Void transaction",
+  "share": "Share"
 }

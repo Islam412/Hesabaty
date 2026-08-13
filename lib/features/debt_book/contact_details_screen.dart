@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:realm/realm.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
@@ -43,6 +44,80 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
     });
   }
 
+  Future<void> _recompute() async {
+    final realm = await RealmService.realm;
+    final cid = widget.contact.id.toString();
+    final txs = realm.all<DebtTransaction>().toList().where((t) => t.contactId == cid && t.status != 'deleted').toList();
+    txs.sort((a, b) => a.date.compareTo(b.date));
+    double bal = 0;
+    realm.write(() {
+      for (final t in txs) {
+        bal += t.amount * _signOfType(t.type);
+        t.balanceAfter = bal;
+      }
+    });
+    _load();
+  }
+
+  Future<void> _manage(DebtTransaction t) async {
+    final l10n = AppLocalizations.of(context)!;
+    final action = await showModalBottomSheet<String>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(leading: Icon(Icons.edit, color: AppTheme.primaryBlue), title: Text(l10n.edit), onTap: () => Navigator.pop(ctx, 'edit')),
+            ListTile(leading: Icon(Icons.share, color: AppTheme.primaryBlue), title: Text(l10n.share), onTap: () => Navigator.pop(ctx, 'share')),
+            ListTile(leading: Icon(Icons.delete_outline, color: AppTheme.expenseRed), title: Text(l10n.voidTx), onTap: () => Navigator.pop(ctx, 'delete')),
+          ],
+        ),
+      ),
+    );
+    if (action == 'edit') {
+      final amountC = TextEditingController(text: t.amount.toString());
+      final noteC = TextEditingController(text: t.note ?? '');
+      await showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text(l10n.edit),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(controller: amountC, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: l10n.amount)),
+              const SizedBox(height: 8),
+              TextField(controller: noteC, decoration: InputDecoration(labelText: l10n.note)),
+            ],
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel)),
+            FilledButton(
+              onPressed: () async {
+                final amount = double.tryParse(amountC.text) ?? t.amount;
+                final realm = await RealmService.realm;
+                realm.write(() {
+                  t.amount = amount;
+                  t.note = noteC.text.trim().isEmpty ? null : noteC.text.trim();
+                  t.status = 'edited';
+                });
+                Navigator.pop(ctx);
+                await _recompute();
+              },
+              child: Text(l10n.save),
+            ),
+          ],
+        ),
+      );
+    } else if (action == 'delete') {
+      final realm = await RealmService.realm;
+      realm.write(() { t.status = 'deleted'; });
+      await _recompute();
+    } else if (action == 'share') {
+      final label = t.type == 'given' ? l10n.given : l10n.taken;
+      await Share.share('$label ${t.amount.toStringAsFixed(2)}\n${widget.contact.name}\n${t.note ?? ''}\n${t.date.day}/${t.date.month}/${t.date.year}');
+    }
+  }
+
   Future<void> _addTx(String type) async {
     final amountC = TextEditingController();
     final noteC = TextEditingController();
@@ -62,7 +137,7 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
             TextField(controller: noteC, decoration: InputDecoration(labelText: l10n.note, border: const OutlineInputBorder())),
             const SizedBox(height: 16),
             FilledButton(
-              style: FilledButton.styleFrom(backgroundColor: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen, minimumSize: const Size(double.infinity, 52), padding: const EdgeInsets.symmetric(vertical: 16)),
+              style: FilledButton.styleFrom(backgroundColor: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen, minimumSize: const Size(double.infinity, 52)),
               onPressed: () async {
                 final amount = double.tryParse(amountC.text) ?? 0;
                 if (amount <= 0) return;
@@ -141,6 +216,7 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                       return Card(
                         margin: const EdgeInsets.only(bottom: 8),
                         child: ListTile(
+                          onLongPress: () => _manage(t),
                           leading: Icon(t.type == 'given' ? Icons.arrow_upward : Icons.arrow_downward, color: c),
                           title: Text(t.type == 'given' ? l10n.given : l10n.taken),
                           subtitle: Text('${t.date.day}/${t.date.month}/${t.date.year}  ${t.note ?? ''}'),

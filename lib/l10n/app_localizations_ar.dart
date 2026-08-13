@@ -144,4 +144,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get version => 'الإصدار';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get appearance => 'المظهر';
+
+  @override
+  String get light => 'فاتح';
+
+  @override
+  String get dark => 'داكن';
+
+  @override
+  String get system => 'حسب النظام';
+
+  @override
+  String get edit => 'تعديل';
+
+  @override
+  String get voidTx => 'إلغاء العملية';
+
+  @override
+  String get share => 'مشاركة';
 }
