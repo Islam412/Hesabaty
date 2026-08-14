@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
-import 'package:share_plus/share_plus.dart';
+import '../../core/services/share_service.dart';
+import '../../core/services/receipt_image_service.dart';
+import '../../core/services/receipt_image_service.dart';
 import '../../app/theme.dart';
 
 class SuccessScreen extends StatelessWidget {
@@ -60,7 +62,10 @@ class SuccessScreen extends StatelessWidget {
                   Expanded(
                     child: FilledButton(
                       style: FilledButton.styleFrom(backgroundColor: AppTheme.primaryBlue, minimumSize: const Size(double.infinity, 54)),
-                      onPressed: () => Share.share('$label: ${amount.toStringAsFixed(2)} ج.م'),
+                      onPressed: () async {
+                        final path = await ReceiptImageService.generateReceiptImage(businessName: 'حساباتي', title: label, amount: amount, amountColor: color);
+                        if (context.mounted) await ShareService.shareReceiptImage(context, path, '$label: ${amount.toStringAsFixed(2)} ج.م.');
+                      },
                       child: Text(l10n.share, style: const TextStyle(fontSize: 17)),
                     ),
                   ),

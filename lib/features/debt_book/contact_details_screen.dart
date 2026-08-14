@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:realm/realm.dart';
-import 'package:share_plus/share_plus.dart';
+import '../../core/services/share_service.dart';
+import '../../core/services/receipt_image_service.dart';
+import '../../core/services/receipt_image_service.dart';
 import 'schedule_reminder_screen.dart';
 import '../shared/amount_calculator_screen.dart';
 import '../shared/success_screen.dart';
@@ -10,6 +12,7 @@ import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
 import '../../core/services/pdf_service.dart';
+import '../../core/services/image_picker_service.dart';
 import 'dart:io';
 
 class ContactDetailsScreen extends StatefulWidget {
@@ -120,13 +123,37 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
       await _recompute();
     } else if (action == 'share') {
       final label = t.type == 'given' ? l10n.given : l10n.taken;
-      await Share.share('$label ${t.amount.toStringAsFixed(2)}\n${widget.contact.name}\n${t.note ?? ''}\n${t.date.day}/${t.date.month}/${t.date.year}');
+      final sRows = <StatementRow>[];
+      double givenTot = 0;
+      double takenTot = 0;
+      final sortedTxs = List<DebtTransaction>.from(_txs)..sort((a, b) => a.date.compareTo(b.date));
+      for (final t in sortedTxs) {
+        final isGiven = widget.contact.type == 'customer' ? t.type == 'given' : t.type == 'taken';
+        if (isGiven) { givenTot += t.amount; } else { takenTot += t.amount; }
+        sRows.add(StatementRow(
+          date: '${t.date.year}-${t.date.month.toString().padLeft(2, '0')}-${t.date.day.toString().padLeft(2, '0')}',
+          label: isGiven ? l10n.given : l10n.taken,
+          amount: t.amount,
+          isGiven: isGiven,
+        ));
+      }
+      final path = await ReceiptImageService.generateStatementImage(
+        businessName: 'حساباتي',
+        contactName: widget.contact.name,
+        contactPhone: widget.contact.phone ?? '',
+        rows: sRows,
+        totalGiven: givenTot,
+        totalTaken: takenTot,
+        balance: _balance,
+      );
+      await ShareService.shareReceiptImage(context, path, '$label ${t.amount.toStringAsFixed(2)} ج.م. — ${widget.contact.name}');
     }
   }
 
   Future<void> _addTx(String type) async {
     final amountC = TextEditingController();
     final noteC = TextEditingController();
+    String? _imgPath;
     DateTime selectedDate = DateTime.now();
     TimeOfDay selectedTime = TimeOfDay.now();
     final l10n = AppLocalizations.of(context)!;
@@ -191,6 +218,23 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                 ),
               ],
             ),
+            StatefulBuilder(
+              builder: (ctx2, setS) => Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: FilledButton.tonalIcon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: true); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.camera_alt, size: 18), label: const Text('كاميرا'))),
+                      const SizedBox(width: 8),
+                      Expanded(child: FilledButton.tonalIcon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: false); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.photo_library, size: 18), label: const Text('معرض'))),
+                    ],
+                  ),
+                  if (_imgPath != null) ...[
+                    const SizedBox(height: 8),
+                    ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.file(File(_imgPath!), height: 100, width: double.infinity, fit: BoxFit.cover)),
+                  ],
+                ],
+              ),
+            ),
             const SizedBox(height: 16),
             FilledButton(
               style: FilledButton.styleFrom(backgroundColor: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen, minimumSize: const Size(double.infinity, 52)),
@@ -209,6 +253,7 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                     newBalance,
                     'active',
                     note: noteC.text.trim().isEmpty ? null : noteC.text.trim(),
+                    imagePath: _imgPath,
                   ));
                 });
                 if (ctx.mounted) {
@@ -239,7 +284,7 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
         actions: [
           IconButton(icon: const Icon(Icons.picture_as_pdf_outlined), onPressed: () async {
             final file = await PdfService.generateContactStatement(contact: widget.contact, businessName: 'حساباتي', transactions: _txs);
-            if (context.mounted) await Share.shareXFiles([XFile(file.path)], subject: 'Statement - ${widget.contact.name}');
+            if (context.mounted) await ShareService.shareReceiptImage(context, file.path, 'Statement - ${widget.contact.name}');
           }),
           IconButton(icon: const Icon(Icons.notifications_active_outlined), onPressed: () async {
             final l10n = AppLocalizations.of(context)!;

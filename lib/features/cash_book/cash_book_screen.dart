@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:realm/realm.dart';
-import 'package:share_plus/share_plus.dart';
+import '../../core/services/share_service.dart';
+import '../../core/services/receipt_image_service.dart';
+import '../../core/services/receipt_image_service.dart';
 import '../shared/amount_calculator_screen.dart';
 import '../shared/success_screen.dart';
 import '../shared/transaction_details_screen.dart';
@@ -221,7 +223,13 @@ class _CashBookScreenState extends State<CashBookScreen> {
       await _recompute();
     } else if (action == 'share') {
       final sign = t.type == 'income' ? '+' : '-';
-      await Share.share('$sign ${t.amount.toStringAsFixed(2)}\n${t.note ?? ''}\n${t.date.day}/${t.date.month}/${t.date.year}');
+      final path = await ReceiptImageService.generateReceiptImage(
+        businessName: 'حساباتي',
+        title: t.type == 'income' ? l10n.income : l10n.expense,
+        amount: t.amount,
+        amountColor: t.type == 'income' ? AppTheme.incomeGreen : AppTheme.expenseRed,
+      );
+      await ShareService.shareReceiptImage(context, path, '$sign ${t.amount.toStringAsFixed(2)} ج.م.');
     }
   }
 

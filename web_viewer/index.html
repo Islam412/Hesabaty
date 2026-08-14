@@ -1,0 +1,31 @@
+<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>كشف حساب</title>
+<style>body{font-family:system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;background:#f4f7fb;margin:0;padding:16px;color:#1f3b5c}
+.card{background:#fff;border-radius:16px;padding:20px;max-width:640px;margin:auto;box-shadow:0 2px 12px rgba(30,60,100,.08)}
+h1{font-size:20px;margin:8px 0}.bal{font-size:34px;font-weight:800}.g{color:#16a34a}.r{color:#dc2626}
+.row{display:flex;justify-content:space-between;gap:8px;padding:10px 4px;border-bottom:1px solid #eef2f7;font-size:14px}
+.mut{color:#8aa0b8;font-size:12px}.amt{font-weight:700;white-space:nowrap}</style></head><body>
+<div class="card" id="c"><p class="mut">جاري فتح الكشف…</p></div>
+<script>
+async function main(){
+  const h=location.hash.slice(1);
+  if(!h){document.getElementById('c').innerHTML='<p>لا توجد بيانات في الرابط</p>';return;}
+  try{
+    const b64=h.replace(/-/g,'+').replace(/_/g,'/');
+    const pad=b64+'='.repeat((4-b64.length%4)%4);
+    const bytes=Uint8Array.from(atob(pad),c=>c.charCodeAt(0));
+    const ds=new DecompressionStream('gzip');
+    const text=await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();
+    const d=JSON.parse(text);
+    let rows='';
+    (d.t||[]).forEach(r=>{
+      const cls=r[1]==='given'?'r':'g';
+      const lbl=r[1]==='given'?'مدفوع':'مقبوض';
+      rows+='<div class="row"><span>'+r[0]+' — '+lbl+'<br><span class="mut">'+(r[3]||'')+'</span></span><span class="amt '+cls+'">'+Number(r[2]).toFixed(2)+' ج.م</span></div>';
+    });
+    document.getElementById('c').innerHTML='<h1>كشف حساب: '+(d.n||'')+'</h1><p class="mut">'+(d.p||'')+'</p>'+
+      '<p>الرصيد الحالي</p><div class="bal '+(d.b>=0?'g':'r')+'">'+Number(d.b).toFixed(2)+' ج.م</div>'+
+      '<p class="mut">إجمالي المدفوع: <span class="g">'+Number(d.g||0).toFixed(2)+'</span> — إجمالي المقبوض: <span class="r">'+Number(d.k||0).toFixed(2)+'</span></p>'+rows;
+  }catch(e){document.getElementById('c').innerHTML='<p>تعذر فتح الكشف</p>';}
+}
+main();
+</script></body></html>

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:share_plus/share_plus.dart';
+import '../../core/services/share_service.dart';
 import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 
@@ -133,9 +133,9 @@ class TransactionDetailsScreen extends StatelessWidget {
             onPressed: () async {
               final text = '$title\n${amount.toStringAsFixed(2)} ج.م\n${dateFmt.format(date)}\n${note ?? ''}';
               if (hasImage) {
-                await Share.shareXFiles([XFile(imagePath!)], text: text);
+                await ShareService.shareReceiptImage(context, imagePath!, text);
               } else {
-                await Share.share(text);
+                await ShareService.shareText(context, text);
               }
             },
             style: OutlinedButton.styleFrom(
