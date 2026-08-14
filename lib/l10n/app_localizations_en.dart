@@ -225,4 +225,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restoreDone => 'Backup restored successfully';
+
+  @override
+  String get enterPhone => 'Please enter your phone number';
+
+  @override
+  String get phoneDesc =>
+      'Your phone number lets you securely access your account from any phone, anywhere.';
+
+  @override
+  String get continueBtn => 'Continue';
+
+  @override
+  String get enterOtp => 'Please enter the secret code you received';
+
+  @override
+  String get otpSentTo => 'A 6-digit code was sent to';
+
+  @override
+  String get changeNumber => 'Change number';
+
+  @override
+  String get resendWait => 'You can resend the code in';
+
+  @override
+  String get resendSeconds => 'seconds';
+
+  @override
+  String get resendNow => 'Resend code';
+
+  @override
+  String get termsText =>
+      'By tapping continue, you agree that you have read and accepted the';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get termsOfUse => 'Terms of Use';
+
+  @override
+  String get otpMessage => 'Your verification code is:';
+
+  @override
+  String get wrongCode => 'Incorrect code, please try again';
 }

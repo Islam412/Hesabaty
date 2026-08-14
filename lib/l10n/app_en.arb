@@ -68,5 +68,19 @@
   "restore": "Restore from backup",
   "lastBackupAt": "Last backup",
   "noBackup": "No backup yet",
-  "restoreDone": "Backup restored successfully"
+  "restoreDone": "Backup restored successfully",
+  "enterPhone": "Please enter your phone number",
+  "phoneDesc": "Your phone number lets you securely access your account from any phone, anywhere.",
+  "continueBtn": "Continue",
+  "enterOtp": "Please enter the secret code you received",
+  "otpSentTo": "A 6-digit code was sent to",
+  "changeNumber": "Change number",
+  "resendWait": "You can resend the code in",
+  "resendSeconds": "seconds",
+  "resendNow": "Resend code",
+  "termsText": "By tapping continue, you agree that you have read and accepted the",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfUse": "Terms of Use",
+  "otpMessage": "Your verification code is:",
+  "wrongCode": "Incorrect code, please try again"
 }

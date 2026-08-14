@@ -30,6 +30,7 @@ dependencies:
   flutter_secure_storage: any
   go_router: any
   file_picker: ^3.0.4
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

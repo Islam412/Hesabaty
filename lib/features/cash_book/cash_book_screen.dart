@@ -298,9 +298,9 @@ class _CashBookScreenState extends State<CashBookScreen> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FloatingActionButton.extended(backgroundColor: AppTheme.incomeGreen, onPressed: () => _add('income'), label: Text('+ ${l10n.income}')),
+          FloatingActionButton.extended(heroTag: 'cash_inc', backgroundColor: AppTheme.incomeGreen, onPressed: () => _add('income'), label: Text('+ ${l10n.income}')),
           const SizedBox(width: 12),
-          FloatingActionButton.extended(backgroundColor: AppTheme.expenseRed, onPressed: () => _add('expense'), label: Text('- ${l10n.expense}')),
+          FloatingActionButton.extended(heroTag: 'cash_exp', backgroundColor: AppTheme.expenseRed, onPressed: () => _add('expense'), label: Text('- ${l10n.expense}')),
         ],
       ),
     );

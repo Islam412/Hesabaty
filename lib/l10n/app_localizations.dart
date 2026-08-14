@@ -511,6 +511,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Backup restored successfully'**
   String get restoreDone;
+
+  /// No description provided for @enterPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your phone number'**
+  String get enterPhone;
+
+  /// No description provided for @phoneDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone number lets you securely access your account from any phone, anywhere.'**
+  String get phoneDesc;
+
+  /// No description provided for @continueBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueBtn;
+
+  /// No description provided for @enterOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the secret code you received'**
+  String get enterOtp;
+
+  /// No description provided for @otpSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'A 6-digit code was sent to'**
+  String get otpSentTo;
+
+  /// No description provided for @changeNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Change number'**
+  String get changeNumber;
+
+  /// No description provided for @resendWait.
+  ///
+  /// In en, this message translates to:
+  /// **'You can resend the code in'**
+  String get resendWait;
+
+  /// No description provided for @resendSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'seconds'**
+  String get resendSeconds;
+
+  /// No description provided for @resendNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get resendNow;
+
+  /// No description provided for @termsText.
+  ///
+  /// In en, this message translates to:
+  /// **'By tapping continue, you agree that you have read and accepted the'**
+  String get termsText;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @termsOfUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Use'**
+  String get termsOfUse;
+
+  /// No description provided for @otpMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your verification code is:'**
+  String get otpMessage;
+
+  /// No description provided for @wrongCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect code, please try again'**
+  String get wrongCode;
 }
 
 class _AppLocalizationsDelegate

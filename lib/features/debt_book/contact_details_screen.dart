@@ -251,9 +251,9 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FloatingActionButton.extended(backgroundColor: AppTheme.expenseRed, onPressed: () => _addTx('given'), label: Text(l10n.given)),
+          FloatingActionButton.extended(heroTag: 'det_given', backgroundColor: AppTheme.expenseRed, onPressed: () => _addTx('given'), label: Text(l10n.given)),
           const SizedBox(width: 12),
-          FloatingActionButton.extended(backgroundColor: AppTheme.incomeGreen, onPressed: () => _addTx('taken'), label: Text(l10n.taken)),
+          FloatingActionButton.extended(heroTag: 'det_taken', backgroundColor: AppTheme.incomeGreen, onPressed: () => _addTx('taken'), label: Text(l10n.taken)),
         ],
       ),
     );

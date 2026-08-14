@@ -222,4 +222,47 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get restoreDone => 'تمت الاستعادة بنجاح';
+
+  @override
+  String get enterPhone => 'المرجو إدخال رقم الهاتف';
+
+  @override
+  String get phoneDesc =>
+      'يسمح لك رقم الهاتف بالولوج بأمان إلى حسابك الخاص من أي هاتف ومن أي مكان.';
+
+  @override
+  String get continueBtn => 'مواصلة';
+
+  @override
+  String get enterOtp => 'المرجو إدخال الرمز السري الذي تلقيته';
+
+  @override
+  String get otpSentTo => 'تم إرسال رمز مكون من 6 أرقام إلى';
+
+  @override
+  String get changeNumber => 'تغيير الرقم';
+
+  @override
+  String get resendWait => 'يمكنك إعادة إرسال الرمز بعد';
+
+  @override
+  String get resendSeconds => 'ثانية';
+
+  @override
+  String get resendNow => 'إعادة إرسال الرمز';
+
+  @override
+  String get termsText => 'بالنقر على متابعة، فإنك تقر بأنك قد قرأت وقبلت';
+
+  @override
+  String get privacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get termsOfUse => 'شروط الاستعمال';
+
+  @override
+  String get otpMessage => 'رمز التأكيد الخاص بك هو:';
+
+  @override
+  String get wrongCode => 'الرمز غير صحيح، حاول مرة أخرى';
 }

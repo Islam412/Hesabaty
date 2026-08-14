@@ -5,6 +5,7 @@ import '../core/services/settings_service.dart';
 import 'main_shell.dart';
 import 'onboarding/language_select_screen.dart';
 import 'onboarding/onboarding_screen.dart';
+import 'onboarding/phone_screen.dart';
 
 class RootScreen extends ConsumerStatefulWidget {
   const RootScreen({super.key});
@@ -23,11 +24,14 @@ class _RootScreenState extends ConsumerState<RootScreen> {
 
   Future<void> _init() async {
     final locale = await SettingsService.getLocale();
+    final registered = await SettingsService.isRegistered();
     final onboarded = await SettingsService.isOnboarded();
     if (!mounted) return;
     setState(() {
       if (locale == null) {
         _stage = 'language';
+      } else if (!registered) {
+        _stage = 'phone';
       } else if (!onboarded) {
         _stage = 'onboarding';
       } else {
@@ -46,9 +50,12 @@ class _RootScreenState extends ConsumerState<RootScreen> {
         onSelected: (code) {
           ref.read(localeProvider.notifier).state = Locale(code);
           SettingsService.saveLocale(code);
-          setState(() => _stage = 'onboarding');
+          setState(() => _stage = 'phone');
         },
       );
+    }
+    if (_stage == 'phone') {
+      return PhoneScreen(onRegistered: () => setState(() => _stage = 'onboarding'));
     }
     if (_stage == 'onboarding') {
       return OnboardingScreen(

@@ -4,6 +4,8 @@ class SettingsService {
   static const _localeKey = 'locale';
   static const _themeKey = 'themeMode';
   static const _onboardKey = 'onboarded';
+  static const _registeredKey = 'registered';
+  static const _phoneKey = 'user_phone';
 
   static Future<String?> getLocale() async {
     final prefs = await SharedPreferences.getInstance();
@@ -33,5 +35,16 @@ class SettingsService {
   static Future<void> setOnboarded() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_onboardKey, true);
+  }
+
+  static Future<bool> isRegistered() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_registeredKey) ?? false;
+  }
+
+  static Future<void> setRegistered(String phone) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_registeredKey, true);
+    await prefs.setString(_phoneKey, phone);
   }
 }

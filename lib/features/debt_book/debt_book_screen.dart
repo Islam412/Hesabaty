@@ -209,6 +209,7 @@ class _DebtBookScreenState extends State<DebtBookScreen> with SingleTickerProvid
               ],
             ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'debt_add',
         onPressed: () => _openAdd(!isCustomers),
         label: Text(isCustomers ? l10n.addCustomer : l10n.addSupplier),
         icon: const Icon(Icons.person_add_alt),
