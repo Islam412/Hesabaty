@@ -215,7 +215,7 @@ abstract class AppLocalizations {
   /// No description provided for @autoBackup.
   ///
   /// In en, this message translates to:
-  /// **'Auto Backup'**
+  /// **'Auto backup'**
   String get autoBackup;
 
   /// No description provided for @contactUs.
@@ -1171,6 +1171,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Call'**
   String get call;
+
+  /// No description provided for @backupSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup settings'**
+  String get backupSettings;
+
+  /// No description provided for @autoBackupDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup data automatically on schedule'**
+  String get autoBackupDesc;
+
+  /// No description provided for @backupFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup frequency'**
+  String get backupFrequency;
+
+  /// No description provided for @backupTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup time'**
+  String get backupTime;
+
+  /// No description provided for @deleteOldBackups.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete old backups'**
+  String get deleteOldBackups;
+
+  /// No description provided for @deleteOldBackupsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep only the latest 5 backups'**
+  String get deleteOldBackupsDesc;
+
+  /// No description provided for @hourly.
+  ///
+  /// In en, this message translates to:
+  /// **'Every hour'**
+  String get hourly;
+
+  /// No description provided for @daily.
+  ///
+  /// In en, this message translates to:
+  /// **'Every day'**
+  String get daily;
+
+  /// No description provided for @weekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Every week'**
+  String get weekly;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Every month'**
+  String get monthly;
+
+  /// No description provided for @customDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom day'**
+  String get customDay;
+
+  /// No description provided for @selectDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Select day'**
+  String get selectDay;
+
+  /// No description provided for @backupNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup now'**
+  String get backupNow;
+
+  /// No description provided for @restoreBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore backup'**
+  String get restoreBackup;
+
+  /// No description provided for @backupCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup created successfully'**
+  String get backupCreated;
+
+  /// No description provided for @backupRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored successfully'**
+  String get backupRestored;
+
+  /// No description provided for @confirmRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm restore? Current data will be replaced.'**
+  String get confirmRestore;
+
+  /// No description provided for @noBackups.
+  ///
+  /// In en, this message translates to:
+  /// **'No backups found'**
+  String get noBackups;
+
+  /// No description provided for @lastBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backup'**
+  String get lastBackup;
+
+  /// No description provided for @never.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get never;
+
+  /// No description provided for @backupLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup location'**
+  String get backupLocation;
+
+  /// No description provided for @openFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Open folder'**
+  String get openFolder;
+
+  /// No description provided for @saturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get saturday;
+
+  /// No description provided for @sunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get sunday;
+
+  /// No description provided for @monday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get monday;
+
+  /// No description provided for @tuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get tuesday;
+
+  /// No description provided for @wednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get wednesday;
+
+  /// No description provided for @thursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get thursday;
+
+  /// No description provided for @friday.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get friday;
+
+  /// No description provided for @backupScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Next backup scheduled'**
+  String get backupScheduled;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode'**
+  String get darkMode;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get currency;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @appLock.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock'**
+  String get appLock;
+
+  /// No description provided for @storage.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get storage;
 }
 
 class _AppLocalizationsDelegate

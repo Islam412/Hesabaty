@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'core/services/auto_backup_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
 import 'app/app.dart';
@@ -22,7 +23,7 @@ void main() async {
   final localeCode = await SettingsService.getLocale();
   final themeCode = await SettingsService.getThemeMode();
   NotificationService.init();
-  BackupService.autoBackup();
+  
   runApp(
     ProviderScope(
       overrides: [

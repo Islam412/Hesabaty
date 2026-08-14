@@ -5,6 +5,7 @@ import '../wallet/wallet_screen.dart';
 import 'reminders_screen.dart';
 import 'payment_services_screen.dart';
 import 'business_card_screen.dart';
+import 'backup_settings_screen.dart';
 import 'contact_us_screen.dart';
 import 'contact_us_screen.dart';
 import 'settings_screen.dart';
@@ -90,7 +91,7 @@ class MoreScreen extends StatelessWidget {
             _row(Icons.grid_view_outlined, l10n.inventoryStaff),
             _row(Icons.settings_outlined, l10n.settings, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()))),
             _row(Icons.notifications_active_outlined, l10n.reminders, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RemindersScreen()))),
-            _row(Icons.backup_outlined, l10n.autoBackup, extra: Icon(Icons.cloud_done, color: AppTheme.incomeGreen, size: 20)),
+            _row(Icons.backup_outlined, l10n.autoBackup, extra: Icon(Icons.cloud_done, color: AppTheme.incomeGreen, size: 20), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BackupSettingsScreen()))),
             _row(Icons.chat_bubble_outline, l10n.contactUs, extra: CircleAvatar(radius: 12, backgroundColor: AppTheme.primaryBlue.withOpacity(0.15), child: Text('0', style: TextStyle(fontSize: 11, color: AppTheme.primaryBlue))), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ContactUsScreen()))),
             const SizedBox(height: 26),
             Center(child: Text(l10n.aboutApp, style: TextStyle(color: Colors.grey.shade400))),

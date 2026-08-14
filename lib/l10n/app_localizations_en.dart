@@ -71,7 +71,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get autoBackup => 'Auto Backup';
+  String get autoBackup => 'Auto backup';
 
   @override
   String get contactUs => 'Contact Us';
@@ -557,4 +557,110 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get call => 'Call';
+
+  @override
+  String get backupSettings => 'Backup settings';
+
+  @override
+  String get autoBackupDesc => 'Backup data automatically on schedule';
+
+  @override
+  String get backupFrequency => 'Backup frequency';
+
+  @override
+  String get backupTime => 'Backup time';
+
+  @override
+  String get deleteOldBackups => 'Delete old backups';
+
+  @override
+  String get deleteOldBackupsDesc => 'Keep only the latest 5 backups';
+
+  @override
+  String get hourly => 'Every hour';
+
+  @override
+  String get daily => 'Every day';
+
+  @override
+  String get weekly => 'Every week';
+
+  @override
+  String get monthly => 'Every month';
+
+  @override
+  String get customDay => 'Custom day';
+
+  @override
+  String get selectDay => 'Select day';
+
+  @override
+  String get backupNow => 'Backup now';
+
+  @override
+  String get restoreBackup => 'Restore backup';
+
+  @override
+  String get backupCreated => 'Backup created successfully';
+
+  @override
+  String get backupRestored => 'Backup restored successfully';
+
+  @override
+  String get confirmRestore =>
+      'Confirm restore? Current data will be replaced.';
+
+  @override
+  String get noBackups => 'No backups found';
+
+  @override
+  String get lastBackup => 'Last backup';
+
+  @override
+  String get never => 'Never';
+
+  @override
+  String get backupLocation => 'Backup location';
+
+  @override
+  String get openFolder => 'Open folder';
+
+  @override
+  String get saturday => 'Saturday';
+
+  @override
+  String get sunday => 'Sunday';
+
+  @override
+  String get monday => 'Monday';
+
+  @override
+  String get tuesday => 'Tuesday';
+
+  @override
+  String get wednesday => 'Wednesday';
+
+  @override
+  String get thursday => 'Thursday';
+
+  @override
+  String get friday => 'Friday';
+
+  @override
+  String get backupScheduled => 'Next backup scheduled';
+
+  @override
+  String get darkMode => 'Dark mode';
+
+  @override
+  String get currency => 'Currency';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get appLock => 'App lock';
+
+  @override
+  String get storage => 'Storage';
 }

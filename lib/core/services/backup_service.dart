@@ -2,132 +2,91 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:realm/realm.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
 
 class BackupService {
-  static Future<String> _backupDir() async {
-    final dir = await getApplicationDocumentsDirectory();
-    final backups = Directory('${dir.path}/backups');
-    if (!await backups.exists()) await backups.create(recursive: true);
-    return backups.path;
+  static Future<Directory> _backupDir() async {
+    final base = await getApplicationDocumentsDirectory();
+    final dir = Directory('${base.path}/HesabatyBackups');
+    if (!await dir.exists()) await dir.create(recursive: true);
+    return dir;
   }
 
-  static Future<Map<String, dynamic>> _collect() async {
+  static Future<List<File>> listBackups() async {
+    final dir = await _backupDir();
+    if (!await dir.exists()) return [];
+    final files = await dir.list().where((e) => e is File && e.path.endsWith('.json')).cast<File>().toList();
+    files.sort((a, b) => b.path.compareTo(a.path));
+    return files;
+  }
+
+  static Future<File> createBackup({bool auto = false}) async {
     final realm = await RealmService.realm;
-    return {
+    final data = {
       'version': 1,
-      'date': DateTime.now().toIso8601String(),
+      'createdAt': DateTime.now().toIso8601String(),
+      'auto': auto,
       'contacts': realm.all<Contact>().map((c) => {
-            'id': c.id.toString(),
-            'businessId': c.businessId,
-            'name': c.name,
-            'phone': c.phone,
-            'address': c.address,
-            'type': c.type,
-            'tags': c.tags.toList(),
-            'createdAt': c.createdAt.toIso8601String(),
-            'isDeleted': c.isDeleted,
-          }).toList(),
+        'id': c.id.toString(), 'businessId': c.businessId, 'name': c.name,
+        'phone': c.phone, 'address': c.address, 'type': c.type,
+        'tags': c.tags.toList(), 'createdAt': c.createdAt.toIso8601String(),
+        'isDeleted': c.isDeleted,
+      }).toList(),
       'cash': realm.all<CashTransaction>().map((t) => {
-            'id': t.id.toString(),
-            'businessId': t.businessId,
-            'amount': t.amount,
-            'type': t.type,
-            'note': t.note,
-            'date': t.date.toIso8601String(),
-            'balanceAfter': t.balanceAfter,
-            'status': t.status,
-          }).toList(),
+        'id': t.id.toString(), 'businessId': t.businessId,
+        'amount': t.amount, 'type': t.type, 'note': t.note,
+        'date': t.date.toIso8601String(), 'balanceAfter': t.balanceAfter, 'status': t.status,
+      }).toList(),
       'debt': realm.all<DebtTransaction>().map((t) => {
-            'id': t.id.toString(),
-            'contactId': t.contactId,
-            'amount': t.amount,
-            'type': t.type,
-            'note': t.note,
-            'date': t.date.toIso8601String(),
-            'balanceAfter': t.balanceAfter,
-            'status': t.status,
-          }).toList(),
+        'id': t.id.toString(), 'contactId': t.contactId,
+        'amount': t.amount, 'type': t.type, 'note': t.note,
+        'date': t.date.toIso8601String(), 'balanceAfter': t.balanceAfter, 'status': t.status,
+      }).toList(),
     };
+
+    final dir = await _backupDir();
+    final ts = DateTime.now();
+    final name = '${auto ? 'auto' : 'manual'}_${ts.year}${_p(ts.month)}${_p(ts.day)}_${_p(ts.hour)}${_p(ts.minute)}${_p(ts.second)}.json';
+    final f = File('${dir.path}/$name');
+    await f.writeAsString(jsonEncode(data));
+    return f;
   }
 
-  static Future<File> exportBackup() async {
-    final data = await _collect();
-    final path = await _backupDir();
-    final now = DateTime.now();
-    final name = 'backup_${now.year.toString().padLeft(4, '0')}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}${now.minute.toString().padLeft(2, '0')}.json';
-    final file = File('$path/$name');
-    final encoded = jsonEncode(data);
-    await file.writeAsString(encoded);
-    await File('$path/latest_backup.json').writeAsString(encoded);
-    return file;
-  }
+  static String _p(int n) => n.toString().padLeft(2, '0');
 
-  static Future<void> autoBackup() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final enabled = prefs.getBool('auto_backup_enabled') ?? true;
-      if (!enabled) return;
-      final last = prefs.getInt('last_auto_backup') ?? 0;
-      final now = DateTime.now().millisecondsSinceEpoch;
-      if (now - last < 24 * 60 * 60 * 1000) return;
-      await exportBackup();
-      await prefs.setInt('last_auto_backup', now);
-    } catch (_) {}
-  }
-
-  static Future<void> restoreFromFile(String filePath) async {
-    final content = await File(filePath).readAsString();
-    final data = jsonDecode(content) as Map<String, dynamic>;
+  static Future<void> restore(File file) async {
+    final content = await file.readAsString();
+    final data = jsonDecode(content);
     final realm = await RealmService.realm;
     realm.write(() {
-      realm.deleteAll<DebtTransaction>();
-      realm.deleteAll<CashTransaction>();
       realm.deleteAll<Contact>();
-    });
-    realm.write(() {
-      for (final c in (data['contacts'] as List? ?? [])) {
-        final m = c as Map<String, dynamic>;
-        realm.add(Contact(
-          ObjectId.fromHexString(m['id'] as String),
-          (m['businessId'] as String?) ?? 'business_1',
-          m['name'] as String,
-          m['type'] as String,
-          DateTime.parse(m['createdAt'] as String),
-          phone: m['phone'] as String?,
-          address: m['address'] as String?,
-          tags: (m['tags'] as List? ?? []).cast<String>(),
-          isDeleted: (m['isDeleted'] as bool?) ?? false,
-        ));
+      realm.deleteAll<CashTransaction>();
+      realm.deleteAll<DebtTransaction>();
+      for (final m in (data['contacts'] as List)) {
+        realm.add(Contact(ObjectId(), m['businessId'], m['name'], m['type'], DateTime.parse(m['createdAt']),
+          phone: m['phone'], address: m['address'], tags: List<String>.from(m['tags'] ?? []), isDeleted: m['isDeleted'] ?? false));
       }
-      for (final t in (data['cash'] as List? ?? [])) {
-        final m = t as Map<String, dynamic>;
-        realm.add(CashTransaction(
-          ObjectId.fromHexString(m['id'] as String),
-          (m['businessId'] as String?) ?? 'business_1',
-          (m['amount'] as num).toDouble(),
-          m['type'] as String,
-          DateTime.parse(m['date'] as String),
-          (m['balanceAfter'] as num).toDouble(),
-          (m['status'] as String?) ?? 'active',
-          note: m['note'] as String?,
-        ));
+      for (final m in (data['cash'] as List)) {
+        realm.add(CashTransaction(ObjectId(), m['businessId'], (m['amount'] as num).toDouble(), m['type'],
+          DateTime.parse(m['date']), (m['balanceAfter'] as num).toDouble(), m['status'],
+          note: m['note']));
       }
-      for (final t in (data['debt'] as List? ?? [])) {
-        final m = t as Map<String, dynamic>;
-        realm.add(DebtTransaction(
-          ObjectId.fromHexString(m['id'] as String),
-          m['contactId'] as String,
-          (m['amount'] as num).toDouble(),
-          m['type'] as String,
-          DateTime.parse(m['date'] as String),
-          (m['balanceAfter'] as num).toDouble(),
-          (m['status'] as String?) ?? 'active',
-          note: m['note'] as String?,
-        ));
+      for (final m in (data['debt'] as List)) {
+        realm.add(DebtTransaction(ObjectId(), m['contactId'], (m['amount'] as num).toDouble(), m['type'],
+          DateTime.parse(m['date']), (m['balanceAfter'] as num).toDouble(), m['status'],
+          note: m['note']));
       }
     });
   }
+
+  static Future<void> cleanupOldBackups({int keep = 5}) async {
+    final files = await listBackups();
+    if (files.length <= keep) return;
+    for (var i = keep; i < files.length; i++) {
+      try { await files[i].delete(); } catch (_) {}
+    }
+  }
+
+  static Future<String> backupPath() async => (await _backupDir()).path;
 }

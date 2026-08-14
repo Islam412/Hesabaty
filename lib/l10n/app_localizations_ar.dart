@@ -69,7 +69,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings => 'إعدادات';
 
   @override
-  String get autoBackup => 'نسخ تلقائي';
+  String get autoBackup => 'النسخ الاحتياطي التلقائي';
 
   @override
   String get contactUs => 'إتصل بنا';
@@ -553,4 +553,110 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get call => 'اتصال';
+
+  @override
+  String get backupSettings => 'إعدادات النسخ الاحتياطي';
+
+  @override
+  String get autoBackupDesc => 'نسخ بياناتك تلقائيًا في المواعيد المحددة';
+
+  @override
+  String get backupFrequency => 'تكرار النسخ';
+
+  @override
+  String get backupTime => 'وقت النسخ';
+
+  @override
+  String get deleteOldBackups => 'حذف النسخ القديمة';
+
+  @override
+  String get deleteOldBackupsDesc => 'احتفظ بآخر 5 نسخ فقط';
+
+  @override
+  String get hourly => 'كل ساعة';
+
+  @override
+  String get daily => 'كل يوم';
+
+  @override
+  String get weekly => 'كل أسبوع';
+
+  @override
+  String get monthly => 'كل شهر';
+
+  @override
+  String get customDay => 'يوم محدد';
+
+  @override
+  String get selectDay => 'اختار اليوم';
+
+  @override
+  String get backupNow => 'نسخ احتياطي الآن';
+
+  @override
+  String get restoreBackup => 'استعادة نسخة احتياطية';
+
+  @override
+  String get backupCreated => 'تم إنشاء النسخة بنجاح';
+
+  @override
+  String get backupRestored => 'تم استعادة النسخة بنجاح';
+
+  @override
+  String get confirmRestore =>
+      'تأكيد الاستعادة؟ سيتم استبدال البيانات الحالية.';
+
+  @override
+  String get noBackups => 'لا توجد نسخ احتياطية';
+
+  @override
+  String get lastBackup => 'آخر نسخة';
+
+  @override
+  String get never => 'أبدًا';
+
+  @override
+  String get backupLocation => 'موقع النسخ';
+
+  @override
+  String get openFolder => 'فتح المجلد';
+
+  @override
+  String get saturday => 'السبت';
+
+  @override
+  String get sunday => 'الأحد';
+
+  @override
+  String get monday => 'الإثنين';
+
+  @override
+  String get tuesday => 'الثلاثاء';
+
+  @override
+  String get wednesday => 'الأربعاء';
+
+  @override
+  String get thursday => 'الخميس';
+
+  @override
+  String get friday => 'الجمعة';
+
+  @override
+  String get backupScheduled => 'النسخة القادمة مجدولة';
+
+  @override
+  String get darkMode => 'الوضع الليلي';
+
+  @override
+  String get currency => 'العملة';
+
+  @override
+  String get notifications => 'الإشعارات';
+
+  @override
+  String get appLock => 'قفل التطبيق';
+
+  @override
+  String get storage => 'التخزين';
 }
