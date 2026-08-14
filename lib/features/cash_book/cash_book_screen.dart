@@ -4,6 +4,7 @@ import 'package:realm/realm.dart';
 import 'package:share_plus/share_plus.dart';
 import '../shared/amount_calculator_screen.dart';
 import '../shared/success_screen.dart';
+import '../shared/transaction_details_screen.dart';
 import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
@@ -66,6 +67,8 @@ class _CashBookScreenState extends State<CashBookScreen> {
   Future<void> _add(String type) async {
     final amountC = TextEditingController();
     final noteC = TextEditingController();
+    DateTime selectedDate = DateTime.now();
+    TimeOfDay selectedTime = TimeOfDay.now();
     String? _imgPath;
     final l10n = AppLocalizations.of(context)!;
     final isIncome = type == 'income';
@@ -93,13 +96,57 @@ class _CashBookScreenState extends State<CashBookScreen> {
             StatefulBuilder(
               builder: (ctx, setS) => Padding(
                 padding: const EdgeInsets.only(top: 12),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () async {
+                          final d = await showDatePicker(context: ctx, initialDate: selectedDate, firstDate: DateTime(2020), lastDate: DateTime.now().add(const Duration(days: 30)));
+                          if (d != null) setS(() => selectedDate = d);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400), borderRadius: BorderRadius.circular(8)),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                            const Icon(Icons.calendar_today, size: 18),
+                            const SizedBox(width: 6),
+                            Text('${selectedDate.day}/${selectedDate.month}/${selectedDate.year}', style: const TextStyle(fontSize: 14)),
+                          ]),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () async {
+                          final t = await showTimePicker(context: ctx, initialTime: selectedTime);
+                          if (t != null) setS(() => selectedTime = t);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400), borderRadius: BorderRadius.circular(8)),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                            const Icon(Icons.access_time, size: 18),
+                            const SizedBox(width: 6),
+                            Text('${selectedTime.hour.toString().padLeft(2,'0')}:${selectedTime.minute.toString().padLeft(2,'0')}', style: const TextStyle(fontSize: 14)),
+                          ]),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            StatefulBuilder(
+              builder: (ctx, setS) => Padding(
+                padding: const EdgeInsets.only(top: 12),
                 child: Column(
                   children: [
                     Row(
                       children: [
-                        Expanded(child: OutlinedButton.icon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: true); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.camera_alt), label: Text(l10n.note))),
+                        Expanded(child: FilledButton.tonalIcon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: true); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.camera_alt, size: 18), label: const Text('كاميرا'))),
                         const SizedBox(width: 8),
-                        Expanded(child: OutlinedButton.icon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: false); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.photo), label: Text(l10n.note))),
+                        Expanded(child: FilledButton.tonalIcon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: false); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.photo_library, size: 18), label: const Text('معرض'))),
                       ],
                     ),
                     if (_imgPath != null) ...[
@@ -129,7 +176,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
                     'business_1',
                     amount,
                     type,
-                    DateTime.now(),
+                    DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute),
                     newBalance,
                     'active',
                     note: noteC.text.trim().isEmpty ? null : noteC.text.trim(),
@@ -296,6 +343,16 @@ class _CashBookScreenState extends State<CashBookScreen> {
               return Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TransactionDetailsScreen(
+                        amount: t.amount,
+                        date: t.date,
+                        note: t.note,
+                        imagePath: t.imagePath,
+                        color: isIncome ? AppTheme.incomeGreen : AppTheme.expenseRed,
+                        title: isIncome ? l10n.income : l10n.expense,
+                        onEdit: () { Navigator.of(context).pop(); _edit(t); },
+                        onDelete: () async { Navigator.of(context).pop(); final realm = await RealmService.realm; realm.write(() { t.status = 'deleted'; }); await _recompute(); },
+                      ))),
                   onLongPress: () => _manage(t),
                   leading: Icon(isIncome ? Icons.add_circle_outline : Icons.remove_circle_outline, color: color),
                   title: Text(t.note ?? (isIncome ? l10n.income : l10n.expense)),

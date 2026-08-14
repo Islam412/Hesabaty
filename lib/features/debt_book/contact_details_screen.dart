@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 import 'schedule_reminder_screen.dart';
 import '../shared/amount_calculator_screen.dart';
 import '../shared/success_screen.dart';
+import '../shared/transaction_details_screen.dart';
 import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
@@ -126,6 +127,8 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
   Future<void> _addTx(String type) async {
     final amountC = TextEditingController();
     final noteC = TextEditingController();
+    DateTime selectedDate = DateTime.now();
+    TimeOfDay selectedTime = TimeOfDay.now();
     final l10n = AppLocalizations.of(context)!;
     await showModalBottomSheet(
       context: context,
@@ -148,6 +151,46 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
             ),
             const SizedBox(height: 12),
             TextField(controller: noteC, decoration: InputDecoration(labelText: l10n.note, border: const OutlineInputBorder())),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      final d = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(2020), lastDate: DateTime.now().add(const Duration(days: 30)));
+                      if (d != null) setState(() => selectedDate = d);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400), borderRadius: BorderRadius.circular(8)),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                        const Icon(Icons.calendar_today, size: 18),
+                        const SizedBox(width: 6),
+                        Text('${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'),
+                      ]),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      final t = await showTimePicker(context: context, initialTime: selectedTime);
+                      if (t != null) setState(() => selectedTime = t);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400), borderRadius: BorderRadius.circular(8)),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                        const Icon(Icons.access_time, size: 18),
+                        const SizedBox(width: 6),
+                        Text('${selectedTime.hour.toString().padLeft(2,'0')}:${selectedTime.minute.toString().padLeft(2,'0')}'),
+                      ]),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 16),
             FilledButton(
               style: FilledButton.styleFrom(backgroundColor: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen, minimumSize: const Size(double.infinity, 52)),
@@ -162,7 +205,7 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                     widget.contact.id.toString(),
                     amount,
                     type,
-                    DateTime.now(),
+                    DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute),
                     newBalance,
                     'active',
                     note: noteC.text.trim().isEmpty ? null : noteC.text.trim(),
@@ -239,6 +282,21 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                       return Card(
                         margin: const EdgeInsets.only(bottom: 8),
                         child: ListTile(
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TransactionDetailsScreen(
+                            amount: t.amount,
+                            date: t.date,
+                            note: t.note,
+                            imagePath: t.imagePath,
+                            color: c,
+                            title: t.type == 'given' ? l10n.given : l10n.taken,
+                            onEdit: () { Navigator.of(context).pop(); _manage(t); },
+                            onDelete: () async {
+                              Navigator.of(context).pop();
+                              final realm = await RealmService.realm;
+                              realm.write(() { t.status = 'deleted'; });
+                              await _recompute();
+                            },
+                          ))),
                           onLongPress: () => _manage(t),
                           leading: Icon(t.type == 'given' ? Icons.arrow_upward : Icons.arrow_downward, color: c),
                           title: Text(t.type == 'given' ? l10n.given : l10n.taken),
