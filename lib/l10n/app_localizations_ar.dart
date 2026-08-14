@@ -576,13 +576,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hourly => 'كل ساعة';
 
   @override
-  String get daily => 'كل يوم';
+  String get daily => 'يومي';
 
   @override
-  String get weekly => 'كل أسبوع';
+  String get weekly => 'أسبوعي';
 
   @override
-  String get monthly => 'كل شهر';
+  String get monthly => 'شهري';
 
   @override
   String get customDay => 'يوم محدد';
@@ -659,4 +659,130 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get storage => 'التخزين';
+
+  @override
+  String get inventory => 'المخزون';
+
+  @override
+  String get staff => 'الموظفون';
+
+  @override
+  String get products => 'المنتجات';
+
+  @override
+  String get addProduct => 'إضافة منتج';
+
+  @override
+  String get editProduct => 'تعديل منتج';
+
+  @override
+  String get productName => 'اسم المنتج';
+
+  @override
+  String get sku => 'كود/رقم المنتج';
+
+  @override
+  String get category => 'الفئة';
+
+  @override
+  String get price => 'السعر';
+
+  @override
+  String get cost => 'التكلفة';
+
+  @override
+  String get stock => 'المخزون';
+
+  @override
+  String get minStock => 'الحد الأدنى';
+
+  @override
+  String get unit => 'الوحدة';
+
+  @override
+  String get addStock => 'إضافة للمخزون';
+
+  @override
+  String get removeStock => 'سحب من المخزون';
+
+  @override
+  String get stockMovement => 'حركة المخزون';
+
+  @override
+  String get lowStock => 'مخزون منخفض';
+
+  @override
+  String get outOfStock => 'نفذ من المخزون';
+
+  @override
+  String get inStock => 'متوفر';
+
+  @override
+  String get employees => 'الموظفون';
+
+  @override
+  String get addEmployee => 'إضافة موظف';
+
+  @override
+  String get editEmployee => 'تعديل موظف';
+
+  @override
+  String get employeeName => 'اسم الموظف';
+
+  @override
+  String get role => 'الوظيفة';
+
+  @override
+  String get salary => 'الراتب';
+
+  @override
+  String get salaryType => 'نوع الراتب';
+
+  @override
+  String get joinDate => 'تاريخ التعيين';
+
+  @override
+  String get active => 'نشط';
+
+  @override
+  String get inactive => 'غير نشط';
+
+  @override
+  String get paySalary => 'صرف الراتب';
+
+  @override
+  String get attendance => 'الحضور والغياب';
+
+  @override
+  String get present => 'حاضر';
+
+  @override
+  String get absent => 'غائب';
+
+  @override
+  String get leave => 'إجازة';
+
+  @override
+  String get totalProducts => 'إجمالي المنتجات';
+
+  @override
+  String get totalStockValue => 'قيمة المخزون';
+
+  @override
+  String get totalEmployees => 'إجمالي الموظفين';
+
+  @override
+  String get monthlySalaries => 'الرواتب الشهرية';
+
+  @override
+  String get piece => 'قطعة';
+
+  @override
+  String get kg => 'كيلو';
+
+  @override
+  String get box => 'علبة';
+
+  @override
+  String get pack => 'باكيت';
 }

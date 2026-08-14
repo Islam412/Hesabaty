@@ -1090,3 +1090,759 @@ class WalletTransaction extends _WalletTransaction
   @override
   SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
 }
+
+class Product extends _Product with RealmEntity, RealmObjectBase, RealmObject {
+  Product(
+    ObjectId id,
+    String businessId,
+    String name,
+    String sku,
+    String category,
+    double price,
+    double cost,
+    double stock,
+    double minStock,
+    DateTime createdAt,
+    bool isDeleted, {
+    String? unit,
+    String? notes,
+  }) {
+    RealmObjectBase.set(this, 'id', id);
+    RealmObjectBase.set(this, 'businessId', businessId);
+    RealmObjectBase.set(this, 'name', name);
+    RealmObjectBase.set(this, 'sku', sku);
+    RealmObjectBase.set(this, 'category', category);
+    RealmObjectBase.set(this, 'price', price);
+    RealmObjectBase.set(this, 'cost', cost);
+    RealmObjectBase.set(this, 'stock', stock);
+    RealmObjectBase.set(this, 'minStock', minStock);
+    RealmObjectBase.set(this, 'unit', unit);
+    RealmObjectBase.set(this, 'notes', notes);
+    RealmObjectBase.set(this, 'createdAt', createdAt);
+    RealmObjectBase.set(this, 'isDeleted', isDeleted);
+  }
+
+  Product._();
+
+  @override
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
+  @override
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
+
+  @override
+  String get businessId =>
+      RealmObjectBase.get<String>(this, 'businessId') as String;
+  @override
+  set businessId(String value) =>
+      RealmObjectBase.set(this, 'businessId', value);
+
+  @override
+  String get name => RealmObjectBase.get<String>(this, 'name') as String;
+  @override
+  set name(String value) => RealmObjectBase.set(this, 'name', value);
+
+  @override
+  String get sku => RealmObjectBase.get<String>(this, 'sku') as String;
+  @override
+  set sku(String value) => RealmObjectBase.set(this, 'sku', value);
+
+  @override
+  String get category =>
+      RealmObjectBase.get<String>(this, 'category') as String;
+  @override
+  set category(String value) => RealmObjectBase.set(this, 'category', value);
+
+  @override
+  double get price => RealmObjectBase.get<double>(this, 'price') as double;
+  @override
+  set price(double value) => RealmObjectBase.set(this, 'price', value);
+
+  @override
+  double get cost => RealmObjectBase.get<double>(this, 'cost') as double;
+  @override
+  set cost(double value) => RealmObjectBase.set(this, 'cost', value);
+
+  @override
+  double get stock => RealmObjectBase.get<double>(this, 'stock') as double;
+  @override
+  set stock(double value) => RealmObjectBase.set(this, 'stock', value);
+
+  @override
+  double get minStock =>
+      RealmObjectBase.get<double>(this, 'minStock') as double;
+  @override
+  set minStock(double value) => RealmObjectBase.set(this, 'minStock', value);
+
+  @override
+  String? get unit => RealmObjectBase.get<String>(this, 'unit') as String?;
+  @override
+  set unit(String? value) => RealmObjectBase.set(this, 'unit', value);
+
+  @override
+  String? get notes => RealmObjectBase.get<String>(this, 'notes') as String?;
+  @override
+  set notes(String? value) => RealmObjectBase.set(this, 'notes', value);
+
+  @override
+  DateTime get createdAt =>
+      RealmObjectBase.get<DateTime>(this, 'createdAt') as DateTime;
+  @override
+  set createdAt(DateTime value) =>
+      RealmObjectBase.set(this, 'createdAt', value);
+
+  @override
+  bool get isDeleted => RealmObjectBase.get<bool>(this, 'isDeleted') as bool;
+  @override
+  set isDeleted(bool value) => RealmObjectBase.set(this, 'isDeleted', value);
+
+  @override
+  Stream<RealmObjectChanges<Product>> get changes =>
+      RealmObjectBase.getChanges<Product>(this);
+
+  @override
+  Stream<RealmObjectChanges<Product>> changesFor([List<String>? keyPaths]) =>
+      RealmObjectBase.getChangesFor<Product>(this, keyPaths);
+
+  @override
+  Product freeze() => RealmObjectBase.freezeObject<Product>(this);
+
+  EJsonValue toEJson() {
+    return <String, dynamic>{
+      'id': id.toEJson(),
+      'businessId': businessId.toEJson(),
+      'name': name.toEJson(),
+      'sku': sku.toEJson(),
+      'category': category.toEJson(),
+      'price': price.toEJson(),
+      'cost': cost.toEJson(),
+      'stock': stock.toEJson(),
+      'minStock': minStock.toEJson(),
+      'unit': unit.toEJson(),
+      'notes': notes.toEJson(),
+      'createdAt': createdAt.toEJson(),
+      'isDeleted': isDeleted.toEJson(),
+    };
+  }
+
+  static EJsonValue _toEJson(Product value) => value.toEJson();
+  static Product _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
+    return switch (ejson) {
+      {
+        'id': EJsonValue id,
+        'businessId': EJsonValue businessId,
+        'name': EJsonValue name,
+        'sku': EJsonValue sku,
+        'category': EJsonValue category,
+        'price': EJsonValue price,
+        'cost': EJsonValue cost,
+        'stock': EJsonValue stock,
+        'minStock': EJsonValue minStock,
+        'createdAt': EJsonValue createdAt,
+        'isDeleted': EJsonValue isDeleted,
+      } =>
+        Product(
+          fromEJson(id),
+          fromEJson(businessId),
+          fromEJson(name),
+          fromEJson(sku),
+          fromEJson(category),
+          fromEJson(price),
+          fromEJson(cost),
+          fromEJson(stock),
+          fromEJson(minStock),
+          fromEJson(createdAt),
+          fromEJson(isDeleted),
+          unit: fromEJson(ejson['unit']),
+          notes: fromEJson(ejson['notes']),
+        ),
+      _ => raiseInvalidEJson(ejson),
+    };
+  }
+
+  static final schema = () {
+    RealmObjectBase.registerFactory(Product._);
+    register(_toEJson, _fromEJson);
+    return const SchemaObject(ObjectType.realmObject, Product, 'Product', [
+      SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
+      SchemaProperty('businessId', RealmPropertyType.string),
+      SchemaProperty('name', RealmPropertyType.string),
+      SchemaProperty('sku', RealmPropertyType.string),
+      SchemaProperty('category', RealmPropertyType.string),
+      SchemaProperty('price', RealmPropertyType.double),
+      SchemaProperty('cost', RealmPropertyType.double),
+      SchemaProperty('stock', RealmPropertyType.double),
+      SchemaProperty('minStock', RealmPropertyType.double),
+      SchemaProperty('unit', RealmPropertyType.string, optional: true),
+      SchemaProperty('notes', RealmPropertyType.string, optional: true),
+      SchemaProperty('createdAt', RealmPropertyType.timestamp),
+      SchemaProperty('isDeleted', RealmPropertyType.bool),
+    ]);
+  }();
+
+  @override
+  SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
+}
+
+class StockMovement extends _StockMovement
+    with RealmEntity, RealmObjectBase, RealmObject {
+  StockMovement(
+    ObjectId id,
+    String productId,
+    String type,
+    double quantity,
+    double unitPrice,
+    DateTime date,
+    String status, {
+    String? note,
+  }) {
+    RealmObjectBase.set(this, 'id', id);
+    RealmObjectBase.set(this, 'productId', productId);
+    RealmObjectBase.set(this, 'type', type);
+    RealmObjectBase.set(this, 'quantity', quantity);
+    RealmObjectBase.set(this, 'unitPrice', unitPrice);
+    RealmObjectBase.set(this, 'date', date);
+    RealmObjectBase.set(this, 'note', note);
+    RealmObjectBase.set(this, 'status', status);
+  }
+
+  StockMovement._();
+
+  @override
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
+  @override
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
+
+  @override
+  String get productId =>
+      RealmObjectBase.get<String>(this, 'productId') as String;
+  @override
+  set productId(String value) => RealmObjectBase.set(this, 'productId', value);
+
+  @override
+  String get type => RealmObjectBase.get<String>(this, 'type') as String;
+  @override
+  set type(String value) => RealmObjectBase.set(this, 'type', value);
+
+  @override
+  double get quantity =>
+      RealmObjectBase.get<double>(this, 'quantity') as double;
+  @override
+  set quantity(double value) => RealmObjectBase.set(this, 'quantity', value);
+
+  @override
+  double get unitPrice =>
+      RealmObjectBase.get<double>(this, 'unitPrice') as double;
+  @override
+  set unitPrice(double value) => RealmObjectBase.set(this, 'unitPrice', value);
+
+  @override
+  DateTime get date => RealmObjectBase.get<DateTime>(this, 'date') as DateTime;
+  @override
+  set date(DateTime value) => RealmObjectBase.set(this, 'date', value);
+
+  @override
+  String? get note => RealmObjectBase.get<String>(this, 'note') as String?;
+  @override
+  set note(String? value) => RealmObjectBase.set(this, 'note', value);
+
+  @override
+  String get status => RealmObjectBase.get<String>(this, 'status') as String;
+  @override
+  set status(String value) => RealmObjectBase.set(this, 'status', value);
+
+  @override
+  Stream<RealmObjectChanges<StockMovement>> get changes =>
+      RealmObjectBase.getChanges<StockMovement>(this);
+
+  @override
+  Stream<RealmObjectChanges<StockMovement>> changesFor([
+    List<String>? keyPaths,
+  ]) => RealmObjectBase.getChangesFor<StockMovement>(this, keyPaths);
+
+  @override
+  StockMovement freeze() => RealmObjectBase.freezeObject<StockMovement>(this);
+
+  EJsonValue toEJson() {
+    return <String, dynamic>{
+      'id': id.toEJson(),
+      'productId': productId.toEJson(),
+      'type': type.toEJson(),
+      'quantity': quantity.toEJson(),
+      'unitPrice': unitPrice.toEJson(),
+      'date': date.toEJson(),
+      'note': note.toEJson(),
+      'status': status.toEJson(),
+    };
+  }
+
+  static EJsonValue _toEJson(StockMovement value) => value.toEJson();
+  static StockMovement _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
+    return switch (ejson) {
+      {
+        'id': EJsonValue id,
+        'productId': EJsonValue productId,
+        'type': EJsonValue type,
+        'quantity': EJsonValue quantity,
+        'unitPrice': EJsonValue unitPrice,
+        'date': EJsonValue date,
+        'status': EJsonValue status,
+      } =>
+        StockMovement(
+          fromEJson(id),
+          fromEJson(productId),
+          fromEJson(type),
+          fromEJson(quantity),
+          fromEJson(unitPrice),
+          fromEJson(date),
+          fromEJson(status),
+          note: fromEJson(ejson['note']),
+        ),
+      _ => raiseInvalidEJson(ejson),
+    };
+  }
+
+  static final schema = () {
+    RealmObjectBase.registerFactory(StockMovement._);
+    register(_toEJson, _fromEJson);
+    return const SchemaObject(
+      ObjectType.realmObject,
+      StockMovement,
+      'StockMovement',
+      [
+        SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
+        SchemaProperty('productId', RealmPropertyType.string),
+        SchemaProperty('type', RealmPropertyType.string),
+        SchemaProperty('quantity', RealmPropertyType.double),
+        SchemaProperty('unitPrice', RealmPropertyType.double),
+        SchemaProperty('date', RealmPropertyType.timestamp),
+        SchemaProperty('note', RealmPropertyType.string, optional: true),
+        SchemaProperty('status', RealmPropertyType.string),
+      ],
+    );
+  }();
+
+  @override
+  SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
+}
+
+class StaffPayment extends _StaffPayment
+    with RealmEntity, RealmObjectBase, RealmObject {
+  StaffPayment(
+    ObjectId id,
+    String staffId,
+    double amount,
+    String type,
+    DateTime date,
+    String status, {
+    String? note,
+  }) {
+    RealmObjectBase.set(this, 'id', id);
+    RealmObjectBase.set(this, 'staffId', staffId);
+    RealmObjectBase.set(this, 'amount', amount);
+    RealmObjectBase.set(this, 'type', type);
+    RealmObjectBase.set(this, 'date', date);
+    RealmObjectBase.set(this, 'note', note);
+    RealmObjectBase.set(this, 'status', status);
+  }
+
+  StaffPayment._();
+
+  @override
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
+  @override
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
+
+  @override
+  String get staffId => RealmObjectBase.get<String>(this, 'staffId') as String;
+  @override
+  set staffId(String value) => RealmObjectBase.set(this, 'staffId', value);
+
+  @override
+  double get amount => RealmObjectBase.get<double>(this, 'amount') as double;
+  @override
+  set amount(double value) => RealmObjectBase.set(this, 'amount', value);
+
+  @override
+  String get type => RealmObjectBase.get<String>(this, 'type') as String;
+  @override
+  set type(String value) => RealmObjectBase.set(this, 'type', value);
+
+  @override
+  DateTime get date => RealmObjectBase.get<DateTime>(this, 'date') as DateTime;
+  @override
+  set date(DateTime value) => RealmObjectBase.set(this, 'date', value);
+
+  @override
+  String? get note => RealmObjectBase.get<String>(this, 'note') as String?;
+  @override
+  set note(String? value) => RealmObjectBase.set(this, 'note', value);
+
+  @override
+  String get status => RealmObjectBase.get<String>(this, 'status') as String;
+  @override
+  set status(String value) => RealmObjectBase.set(this, 'status', value);
+
+  @override
+  Stream<RealmObjectChanges<StaffPayment>> get changes =>
+      RealmObjectBase.getChanges<StaffPayment>(this);
+
+  @override
+  Stream<RealmObjectChanges<StaffPayment>> changesFor([
+    List<String>? keyPaths,
+  ]) => RealmObjectBase.getChangesFor<StaffPayment>(this, keyPaths);
+
+  @override
+  StaffPayment freeze() => RealmObjectBase.freezeObject<StaffPayment>(this);
+
+  EJsonValue toEJson() {
+    return <String, dynamic>{
+      'id': id.toEJson(),
+      'staffId': staffId.toEJson(),
+      'amount': amount.toEJson(),
+      'type': type.toEJson(),
+      'date': date.toEJson(),
+      'note': note.toEJson(),
+      'status': status.toEJson(),
+    };
+  }
+
+  static EJsonValue _toEJson(StaffPayment value) => value.toEJson();
+  static StaffPayment _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
+    return switch (ejson) {
+      {
+        'id': EJsonValue id,
+        'staffId': EJsonValue staffId,
+        'amount': EJsonValue amount,
+        'type': EJsonValue type,
+        'date': EJsonValue date,
+        'status': EJsonValue status,
+      } =>
+        StaffPayment(
+          fromEJson(id),
+          fromEJson(staffId),
+          fromEJson(amount),
+          fromEJson(type),
+          fromEJson(date),
+          fromEJson(status),
+          note: fromEJson(ejson['note']),
+        ),
+      _ => raiseInvalidEJson(ejson),
+    };
+  }
+
+  static final schema = () {
+    RealmObjectBase.registerFactory(StaffPayment._);
+    register(_toEJson, _fromEJson);
+    return const SchemaObject(
+      ObjectType.realmObject,
+      StaffPayment,
+      'StaffPayment',
+      [
+        SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
+        SchemaProperty('staffId', RealmPropertyType.string),
+        SchemaProperty('amount', RealmPropertyType.double),
+        SchemaProperty('type', RealmPropertyType.string),
+        SchemaProperty('date', RealmPropertyType.timestamp),
+        SchemaProperty('note', RealmPropertyType.string, optional: true),
+        SchemaProperty('status', RealmPropertyType.string),
+      ],
+    );
+  }();
+
+  @override
+  SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
+}
+
+class StaffAttendance extends _StaffAttendance
+    with RealmEntity, RealmObjectBase, RealmObject {
+  StaffAttendance(
+    ObjectId id,
+    String staffId,
+    DateTime date,
+    String status, {
+    String? note,
+  }) {
+    RealmObjectBase.set(this, 'id', id);
+    RealmObjectBase.set(this, 'staffId', staffId);
+    RealmObjectBase.set(this, 'date', date);
+    RealmObjectBase.set(this, 'status', status);
+    RealmObjectBase.set(this, 'note', note);
+  }
+
+  StaffAttendance._();
+
+  @override
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
+  @override
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
+
+  @override
+  String get staffId => RealmObjectBase.get<String>(this, 'staffId') as String;
+  @override
+  set staffId(String value) => RealmObjectBase.set(this, 'staffId', value);
+
+  @override
+  DateTime get date => RealmObjectBase.get<DateTime>(this, 'date') as DateTime;
+  @override
+  set date(DateTime value) => RealmObjectBase.set(this, 'date', value);
+
+  @override
+  String get status => RealmObjectBase.get<String>(this, 'status') as String;
+  @override
+  set status(String value) => RealmObjectBase.set(this, 'status', value);
+
+  @override
+  String? get note => RealmObjectBase.get<String>(this, 'note') as String?;
+  @override
+  set note(String? value) => RealmObjectBase.set(this, 'note', value);
+
+  @override
+  Stream<RealmObjectChanges<StaffAttendance>> get changes =>
+      RealmObjectBase.getChanges<StaffAttendance>(this);
+
+  @override
+  Stream<RealmObjectChanges<StaffAttendance>> changesFor([
+    List<String>? keyPaths,
+  ]) => RealmObjectBase.getChangesFor<StaffAttendance>(this, keyPaths);
+
+  @override
+  StaffAttendance freeze() =>
+      RealmObjectBase.freezeObject<StaffAttendance>(this);
+
+  EJsonValue toEJson() {
+    return <String, dynamic>{
+      'id': id.toEJson(),
+      'staffId': staffId.toEJson(),
+      'date': date.toEJson(),
+      'status': status.toEJson(),
+      'note': note.toEJson(),
+    };
+  }
+
+  static EJsonValue _toEJson(StaffAttendance value) => value.toEJson();
+  static StaffAttendance _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
+    return switch (ejson) {
+      {
+        'id': EJsonValue id,
+        'staffId': EJsonValue staffId,
+        'date': EJsonValue date,
+        'status': EJsonValue status,
+      } =>
+        StaffAttendance(
+          fromEJson(id),
+          fromEJson(staffId),
+          fromEJson(date),
+          fromEJson(status),
+          note: fromEJson(ejson['note']),
+        ),
+      _ => raiseInvalidEJson(ejson),
+    };
+  }
+
+  static final schema = () {
+    RealmObjectBase.registerFactory(StaffAttendance._);
+    register(_toEJson, _fromEJson);
+    return const SchemaObject(
+      ObjectType.realmObject,
+      StaffAttendance,
+      'StaffAttendance',
+      [
+        SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
+        SchemaProperty('staffId', RealmPropertyType.string),
+        SchemaProperty('date', RealmPropertyType.timestamp),
+        SchemaProperty('status', RealmPropertyType.string),
+        SchemaProperty('note', RealmPropertyType.string, optional: true),
+      ],
+    );
+  }();
+
+  @override
+  SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
+}
+
+class Staff extends _Staff with RealmEntity, RealmObjectBase, RealmObject {
+  Staff(
+    ObjectId id,
+    String businessId,
+    String name,
+    String role,
+    double salary,
+    String salaryType,
+    DateTime joinDate,
+    bool isActive,
+    DateTime createdAt, {
+    String? phone,
+    String? address,
+    String? notes,
+  }) {
+    RealmObjectBase.set(this, 'id', id);
+    RealmObjectBase.set(this, 'businessId', businessId);
+    RealmObjectBase.set(this, 'name', name);
+    RealmObjectBase.set(this, 'role', role);
+    RealmObjectBase.set(this, 'phone', phone);
+    RealmObjectBase.set(this, 'address', address);
+    RealmObjectBase.set(this, 'salary', salary);
+    RealmObjectBase.set(this, 'salaryType', salaryType);
+    RealmObjectBase.set(this, 'joinDate', joinDate);
+    RealmObjectBase.set(this, 'isActive', isActive);
+    RealmObjectBase.set(this, 'notes', notes);
+    RealmObjectBase.set(this, 'createdAt', createdAt);
+  }
+
+  Staff._();
+
+  @override
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
+  @override
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
+
+  @override
+  String get businessId =>
+      RealmObjectBase.get<String>(this, 'businessId') as String;
+  @override
+  set businessId(String value) =>
+      RealmObjectBase.set(this, 'businessId', value);
+
+  @override
+  String get name => RealmObjectBase.get<String>(this, 'name') as String;
+  @override
+  set name(String value) => RealmObjectBase.set(this, 'name', value);
+
+  @override
+  String get role => RealmObjectBase.get<String>(this, 'role') as String;
+  @override
+  set role(String value) => RealmObjectBase.set(this, 'role', value);
+
+  @override
+  String? get phone => RealmObjectBase.get<String>(this, 'phone') as String?;
+  @override
+  set phone(String? value) => RealmObjectBase.set(this, 'phone', value);
+
+  @override
+  String? get address =>
+      RealmObjectBase.get<String>(this, 'address') as String?;
+  @override
+  set address(String? value) => RealmObjectBase.set(this, 'address', value);
+
+  @override
+  double get salary => RealmObjectBase.get<double>(this, 'salary') as double;
+  @override
+  set salary(double value) => RealmObjectBase.set(this, 'salary', value);
+
+  @override
+  String get salaryType =>
+      RealmObjectBase.get<String>(this, 'salaryType') as String;
+  @override
+  set salaryType(String value) =>
+      RealmObjectBase.set(this, 'salaryType', value);
+
+  @override
+  DateTime get joinDate =>
+      RealmObjectBase.get<DateTime>(this, 'joinDate') as DateTime;
+  @override
+  set joinDate(DateTime value) => RealmObjectBase.set(this, 'joinDate', value);
+
+  @override
+  bool get isActive => RealmObjectBase.get<bool>(this, 'isActive') as bool;
+  @override
+  set isActive(bool value) => RealmObjectBase.set(this, 'isActive', value);
+
+  @override
+  String? get notes => RealmObjectBase.get<String>(this, 'notes') as String?;
+  @override
+  set notes(String? value) => RealmObjectBase.set(this, 'notes', value);
+
+  @override
+  DateTime get createdAt =>
+      RealmObjectBase.get<DateTime>(this, 'createdAt') as DateTime;
+  @override
+  set createdAt(DateTime value) =>
+      RealmObjectBase.set(this, 'createdAt', value);
+
+  @override
+  Stream<RealmObjectChanges<Staff>> get changes =>
+      RealmObjectBase.getChanges<Staff>(this);
+
+  @override
+  Stream<RealmObjectChanges<Staff>> changesFor([List<String>? keyPaths]) =>
+      RealmObjectBase.getChangesFor<Staff>(this, keyPaths);
+
+  @override
+  Staff freeze() => RealmObjectBase.freezeObject<Staff>(this);
+
+  EJsonValue toEJson() {
+    return <String, dynamic>{
+      'id': id.toEJson(),
+      'businessId': businessId.toEJson(),
+      'name': name.toEJson(),
+      'role': role.toEJson(),
+      'phone': phone.toEJson(),
+      'address': address.toEJson(),
+      'salary': salary.toEJson(),
+      'salaryType': salaryType.toEJson(),
+      'joinDate': joinDate.toEJson(),
+      'isActive': isActive.toEJson(),
+      'notes': notes.toEJson(),
+      'createdAt': createdAt.toEJson(),
+    };
+  }
+
+  static EJsonValue _toEJson(Staff value) => value.toEJson();
+  static Staff _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
+    return switch (ejson) {
+      {
+        'id': EJsonValue id,
+        'businessId': EJsonValue businessId,
+        'name': EJsonValue name,
+        'role': EJsonValue role,
+        'salary': EJsonValue salary,
+        'salaryType': EJsonValue salaryType,
+        'joinDate': EJsonValue joinDate,
+        'isActive': EJsonValue isActive,
+        'createdAt': EJsonValue createdAt,
+      } =>
+        Staff(
+          fromEJson(id),
+          fromEJson(businessId),
+          fromEJson(name),
+          fromEJson(role),
+          fromEJson(salary),
+          fromEJson(salaryType),
+          fromEJson(joinDate),
+          fromEJson(isActive),
+          fromEJson(createdAt),
+          phone: fromEJson(ejson['phone']),
+          address: fromEJson(ejson['address']),
+          notes: fromEJson(ejson['notes']),
+        ),
+      _ => raiseInvalidEJson(ejson),
+    };
+  }
+
+  static final schema = () {
+    RealmObjectBase.registerFactory(Staff._);
+    register(_toEJson, _fromEJson);
+    return const SchemaObject(ObjectType.realmObject, Staff, 'Staff', [
+      SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
+      SchemaProperty('businessId', RealmPropertyType.string),
+      SchemaProperty('name', RealmPropertyType.string),
+      SchemaProperty('role', RealmPropertyType.string),
+      SchemaProperty('phone', RealmPropertyType.string, optional: true),
+      SchemaProperty('address', RealmPropertyType.string, optional: true),
+      SchemaProperty('salary', RealmPropertyType.double),
+      SchemaProperty('salaryType', RealmPropertyType.string),
+      SchemaProperty('joinDate', RealmPropertyType.timestamp),
+      SchemaProperty('isActive', RealmPropertyType.bool),
+      SchemaProperty('notes', RealmPropertyType.string, optional: true),
+      SchemaProperty('createdAt', RealmPropertyType.timestamp),
+    ]);
+  }();
+
+  @override
+  SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
+}

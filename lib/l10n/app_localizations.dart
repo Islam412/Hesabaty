@@ -1217,19 +1217,19 @@ abstract class AppLocalizations {
   /// No description provided for @daily.
   ///
   /// In en, this message translates to:
-  /// **'Every day'**
+  /// **'Daily'**
   String get daily;
 
   /// No description provided for @weekly.
   ///
   /// In en, this message translates to:
-  /// **'Every week'**
+  /// **'Weekly'**
   String get weekly;
 
   /// No description provided for @monthly.
   ///
   /// In en, this message translates to:
-  /// **'Every month'**
+  /// **'Monthly'**
   String get monthly;
 
   /// No description provided for @customDay.
@@ -1381,6 +1381,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Storage'**
   String get storage;
+
+  /// No description provided for @inventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory'**
+  String get inventory;
+
+  /// No description provided for @staff.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get staff;
+
+  /// No description provided for @products.
+  ///
+  /// In en, this message translates to:
+  /// **'Products'**
+  String get products;
+
+  /// No description provided for @addProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Add product'**
+  String get addProduct;
+
+  /// No description provided for @editProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit product'**
+  String get editProduct;
+
+  /// No description provided for @productName.
+  ///
+  /// In en, this message translates to:
+  /// **'Product name'**
+  String get productName;
+
+  /// No description provided for @sku.
+  ///
+  /// In en, this message translates to:
+  /// **'SKU/Code'**
+  String get sku;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @cost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get cost;
+
+  /// No description provided for @stock.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock'**
+  String get stock;
+
+  /// No description provided for @minStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Min stock'**
+  String get minStock;
+
+  /// No description provided for @unit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get unit;
+
+  /// No description provided for @addStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Add stock'**
+  String get addStock;
+
+  /// No description provided for @removeStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove stock'**
+  String get removeStock;
+
+  /// No description provided for @stockMovement.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock movement'**
+  String get stockMovement;
+
+  /// No description provided for @lowStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Low stock'**
+  String get lowStock;
+
+  /// No description provided for @outOfStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of stock'**
+  String get outOfStock;
+
+  /// No description provided for @inStock.
+  ///
+  /// In en, this message translates to:
+  /// **'In stock'**
+  String get inStock;
+
+  /// No description provided for @employees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get employees;
+
+  /// No description provided for @addEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Add employee'**
+  String get addEmployee;
+
+  /// No description provided for @editEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit employee'**
+  String get editEmployee;
+
+  /// No description provided for @employeeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee name'**
+  String get employeeName;
+
+  /// No description provided for @role.
+  ///
+  /// In en, this message translates to:
+  /// **'Job role'**
+  String get role;
+
+  /// No description provided for @salary.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary'**
+  String get salary;
+
+  /// No description provided for @salaryType.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary type'**
+  String get salaryType;
+
+  /// No description provided for @joinDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Join date'**
+  String get joinDate;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @inactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get inactive;
+
+  /// No description provided for @paySalary.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay salary'**
+  String get paySalary;
+
+  /// No description provided for @attendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance'**
+  String get attendance;
+
+  /// No description provided for @present.
+  ///
+  /// In en, this message translates to:
+  /// **'Present'**
+  String get present;
+
+  /// No description provided for @absent.
+  ///
+  /// In en, this message translates to:
+  /// **'Absent'**
+  String get absent;
+
+  /// No description provided for @leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leave;
+
+  /// No description provided for @totalProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Total products'**
+  String get totalProducts;
+
+  /// No description provided for @totalStockValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock value'**
+  String get totalStockValue;
+
+  /// No description provided for @totalEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Total employees'**
+  String get totalEmployees;
+
+  /// No description provided for @monthlySalaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly salaries'**
+  String get monthlySalaries;
+
+  /// No description provided for @piece.
+  ///
+  /// In en, this message translates to:
+  /// **'piece'**
+  String get piece;
+
+  /// No description provided for @kg.
+  ///
+  /// In en, this message translates to:
+  /// **'kg'**
+  String get kg;
+
+  /// No description provided for @box.
+  ///
+  /// In en, this message translates to:
+  /// **'box'**
+  String get box;
+
+  /// No description provided for @pack.
+  ///
+  /// In en, this message translates to:
+  /// **'pack'**
+  String get pack;
 }
 
 class _AppLocalizationsDelegate

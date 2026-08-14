@@ -105,3 +105,81 @@ class _WalletTransaction {
   late DateTime date;
   late double balanceAfter;
 }
+
+@RealmModel()
+class _Product {
+  @PrimaryKey()
+  @MapTo('id')
+  late ObjectId id;
+  late String businessId;
+  late String name;
+  late String sku;
+  late String category;
+  late double price;
+  late double cost;
+  late double stock;
+  late double minStock;
+  late String? unit;
+  late String? notes;
+  late DateTime createdAt;
+  late bool isDeleted;
+}
+
+@RealmModel()
+class _StockMovement {
+  @PrimaryKey()
+  @MapTo('id')
+  late ObjectId id;
+  late String productId;
+  late String type;
+  late double quantity;
+  late double unitPrice;
+  late DateTime date;
+  late String? note;
+  late String status;
+}
+
+
+
+@RealmModel()
+class _StaffPayment {
+  @PrimaryKey()
+  @MapTo('id')
+  late ObjectId id;
+  late String staffId;
+  late double amount;
+  late String type;
+  late DateTime date;
+  late String? note;
+  late String status;
+}
+
+@RealmModel()
+class _StaffAttendance {
+  @PrimaryKey()
+  @MapTo('id')
+  late ObjectId id;
+  late String staffId;
+  late DateTime date;
+  late String status;
+  late String? note;
+}
+
+@RealmModel()
+class _Staff {
+  @PrimaryKey()
+  @MapTo('id')
+  late ObjectId id;
+  late String businessId;
+  late String name;
+  late String role;
+  late String? phone;
+  late String? address;
+  late double salary;
+  late String salaryType;
+  late DateTime joinDate;
+  late bool isActive;
+  late String? notes;
+  late DateTime createdAt;
+}
+

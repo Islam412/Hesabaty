@@ -6,6 +6,7 @@ import 'reminders_screen.dart';
 import 'payment_services_screen.dart';
 import 'business_card_screen.dart';
 import 'backup_settings_screen.dart';
+import '../inventory_staff/inventory_staff_hub.dart';
 import 'contact_us_screen.dart';
 import 'contact_us_screen.dart';
 import 'settings_screen.dart';
@@ -88,7 +89,7 @@ class MoreScreen extends StatelessWidget {
             _bigCard(l10n.paymentServices, l10n.paymentDesc, Icons.point_of_sale, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PaymentServicesScreen()))),
             const SizedBox(height: 18),
             _row(Icons.work_outline, l10n.businessCard, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BusinessCardScreen()))),
-            _row(Icons.grid_view_outlined, l10n.inventoryStaff),
+            _row(Icons.grid_view_outlined, l10n.inventoryStaff, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const InventoryStaffHub()))),
             _row(Icons.settings_outlined, l10n.settings, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()))),
             _row(Icons.notifications_active_outlined, l10n.reminders, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RemindersScreen()))),
             _row(Icons.backup_outlined, l10n.autoBackup, extra: Icon(Icons.cloud_done, color: AppTheme.incomeGreen, size: 20), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BackupSettingsScreen()))),

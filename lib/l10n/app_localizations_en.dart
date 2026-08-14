@@ -580,13 +580,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hourly => 'Every hour';
 
   @override
-  String get daily => 'Every day';
+  String get daily => 'Daily';
 
   @override
-  String get weekly => 'Every week';
+  String get weekly => 'Weekly';
 
   @override
-  String get monthly => 'Every month';
+  String get monthly => 'Monthly';
 
   @override
   String get customDay => 'Custom day';
@@ -663,4 +663,130 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get storage => 'Storage';
+
+  @override
+  String get inventory => 'Inventory';
+
+  @override
+  String get staff => 'Staff';
+
+  @override
+  String get products => 'Products';
+
+  @override
+  String get addProduct => 'Add product';
+
+  @override
+  String get editProduct => 'Edit product';
+
+  @override
+  String get productName => 'Product name';
+
+  @override
+  String get sku => 'SKU/Code';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get cost => 'Cost';
+
+  @override
+  String get stock => 'Stock';
+
+  @override
+  String get minStock => 'Min stock';
+
+  @override
+  String get unit => 'Unit';
+
+  @override
+  String get addStock => 'Add stock';
+
+  @override
+  String get removeStock => 'Remove stock';
+
+  @override
+  String get stockMovement => 'Stock movement';
+
+  @override
+  String get lowStock => 'Low stock';
+
+  @override
+  String get outOfStock => 'Out of stock';
+
+  @override
+  String get inStock => 'In stock';
+
+  @override
+  String get employees => 'Employees';
+
+  @override
+  String get addEmployee => 'Add employee';
+
+  @override
+  String get editEmployee => 'Edit employee';
+
+  @override
+  String get employeeName => 'Employee name';
+
+  @override
+  String get role => 'Job role';
+
+  @override
+  String get salary => 'Salary';
+
+  @override
+  String get salaryType => 'Salary type';
+
+  @override
+  String get joinDate => 'Join date';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get inactive => 'Inactive';
+
+  @override
+  String get paySalary => 'Pay salary';
+
+  @override
+  String get attendance => 'Attendance';
+
+  @override
+  String get present => 'Present';
+
+  @override
+  String get absent => 'Absent';
+
+  @override
+  String get leave => 'Leave';
+
+  @override
+  String get totalProducts => 'Total products';
+
+  @override
+  String get totalStockValue => 'Stock value';
+
+  @override
+  String get totalEmployees => 'Total employees';
+
+  @override
+  String get monthlySalaries => 'Monthly salaries';
+
+  @override
+  String get piece => 'piece';
+
+  @override
+  String get kg => 'kg';
+
+  @override
+  String get box => 'box';
+
+  @override
+  String get pack => 'pack';
 }
