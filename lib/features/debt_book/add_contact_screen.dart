@@ -41,6 +41,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
     final realm = await RealmService.realm;
     realm.write(() {
       realm.add(Contact(
+      isDeleted: false,
         ObjectId(),
         'business_1',
         _name.text.trim(),

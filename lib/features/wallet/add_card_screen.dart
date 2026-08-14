@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
@@ -15,32 +16,86 @@ class _AddCardScreenState extends State<AddCardScreen> {
   final _nameCtrl = TextEditingController();
   final _expCtrl = TextEditingController();
   final _cvvCtrl = TextEditingController();
+  final _bankCtrl = TextEditingController();
+  bool _showBanks = false;
+  bool _busy = false;
+
+  static const List<String> _banks = [
+    'Banque Misr - بنك مصر',
+    'National Bank of Egypt - البنك الأهلي المصري',
+    'CIB - البنك التجاري الدولي',
+    'QNB AlAhli - بنك قطر الوطني الأهلي',
+    'Banque du Caire - بنك القاهرة',
+    'Alex Bank - بنك الإسكندرية',
+    'Arab African International Bank - البنك العربي الأفريقي',
+    'Housing & Development Bank - بنك التعمير والإسكان',
+    'Crédit Agricole Egypt - بنك كريدي أجريكول',
+    'Faisal Islamic Bank - بنك فيصل الإسلامي',
+    'Abu Dhabi Islamic Bank - مصرف أبوظبي الإسلامي',
+    'Emirates NBD - بنك الإمارات دبي الوطني',
+    'MIDBANK - ميدبنك',
+    'saib Bank - بنك سايب',
+    'Suez Canal Bank - بنك قناة السويس',
+    'Al Baraka Bank - بنك البركة',
+    'Al Ahly United Bank - البنك الأهلي المتحد',
+    'Export Development Bank - بنك تنمية الصادرات',
+  ];
+
+  List<String> get _filteredBanks {
+    final q = _bankCtrl.text.trim().toLowerCase();
+    if (q.isEmpty) return _banks;
+    return _banks.where((b) => b.toLowerCase().contains(q)).toList();
+  }
 
   void _save() async {
     final l10n = AppLocalizations.of(context)!;
-    final num = _numCtrl.text.replaceAll(' ', '');
+    final num = _numCtrl.text.replaceAll(RegExp(r'\D'), '');
+    String? err;
     if (!WalletService.luhnCheck(num)) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invalid card number')));
+      err = 'رقم البطاقة غير صحيح — تحقق من الأرقام';
+    } else if (_nameCtrl.text.trim().isEmpty) {
+      err = 'اكتب اسم حامل البطاقة';
+    } else if (!WalletService.validExpiry(_expCtrl.text.trim())) {
+      err = 'تاريخ الانتهاء بصيغة MM/YY ولازم يكون في المستقبل';
+    } else if (_cvvCtrl.text.trim().length < 3) {
+      err = 'CVV غير صحيح (3-4 أرقام)';
+    }
+    if (err != null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err), backgroundColor: AppTheme.expenseRed));
       return;
     }
-    if (_nameCtrl.text.trim().isEmpty) return;
-    if (_expCtrl.text.trim().length < 5) return;
-    if (_cvvCtrl.text.trim().length < 3) return;
-
-    await WalletService.addCard(
-      number: num,
-      name: _nameCtrl.text.trim(),
-      expiry: _expCtrl.text.trim(),
-      cvv: _cvvCtrl.text.trim(),
-    );
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.cardAdded), backgroundColor: AppTheme.incomeGreen));
-    Navigator.pop(context);
+    setState(() => _busy = true);
+    try {
+      final balance = 10000 + Random().nextInt(40000) * 1.0;
+      await WalletService.addCard(
+        number: num,
+        name: _nameCtrl.text.trim(),
+        expiry: _expCtrl.text.trim(),
+        cvv: _cvvCtrl.text.trim(),
+        bank: _bankCtrl.text.trim().isEmpty ? null : _bankCtrl.text.trim(),
+        balance: balance,
+      );
+      if (!mounted) return;
+      setState(() => _busy = false);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('${l10n.cardAdded} — الرصيد: ${balance.toStringAsFixed(2)} ج.م'),
+        backgroundColor: AppTheme.incomeGreen,
+      ));
+      Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _busy = false);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('خطأ: $e'),
+        backgroundColor: AppTheme.expenseRed,
+      ));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final brand = WalletService.detectBrand(_numCtrl.text);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.addCard)),
       body: ListView(
@@ -52,21 +107,27 @@ class _AddCardScreenState extends State<AddCardScreen> {
               gradient: LinearGradient(colors: [AppTheme.primaryBlue, const Color(0xFF1E5BB8)]),
               borderRadius: BorderRadius.circular(16),
             ),
-            height: 180,
+            height: 190,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text('💳', style: TextStyle(fontSize: 32)), Text('VISA', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))],
-                ),
-                Text(_numCtrl.text.isEmpty ? '•••• •••• •••• ••••' : _numCtrl.text, style: const TextStyle(color: Colors.white, fontSize: 22, letterSpacing: 2)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(_nameCtrl.text.isEmpty ? 'CARDHOLDER' : _nameCtrl.text.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 14)),
-                    Text(_expCtrl.text.isEmpty ? 'MM/YY' : _expCtrl.text, style: const TextStyle(color: Colors.white, fontSize: 14)),
+                    Expanded(child: Text(_bankCtrl.text.isEmpty ? brand : _bankCtrl.text.split(' - ').first, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis)),
+                    Text(brand, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Text(
+                  _numCtrl.text.isEmpty ? '•••• •••• •••• ••••' : _numCtrl.text,
+                  style: const TextStyle(color: Colors.white, fontSize: 20, letterSpacing: 2),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(_nameCtrl.text.isEmpty ? 'CARDHOLDER' : _nameCtrl.text.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 13)),
+                    Text(_expCtrl.text.isEmpty ? 'MM/YY' : _expCtrl.text, style: const TextStyle(color: Colors.white, fontSize: 13)),
                   ],
                 ),
               ],
@@ -75,9 +136,22 @@ class _AddCardScreenState extends State<AddCardScreen> {
           const SizedBox(height: 20),
           TextField(
             controller: _numCtrl,
+            textDirection: TextDirection.ltr,
+            textAlign: Directionality.of(context) == TextDirection.rtl ? TextAlign.right : TextAlign.left,
             keyboardType: TextInputType.number,
-            maxLength: 19,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(16)],
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(16),
+              TextInputFormatter.withFunction((oldV, newV) {
+                final t = newV.text;
+                final buf = StringBuffer();
+                for (int i = 0; i < t.length; i++) {
+                  if (i > 0 && i % 4 == 0) buf.write('\u200E \u200E');
+                  buf.write(t[i]);
+                }
+                return TextEditingValue(text: buf.toString(), selection: TextSelection.collapsed(offset: buf.length));
+              }),
+            ],
             onChanged: (_) => setState(() {}),
             decoration: InputDecoration(labelText: l10n.cardNumber, border: const OutlineInputBorder(), counterText: ''),
           ),
@@ -89,32 +163,92 @@ class _AddCardScreenState extends State<AddCardScreen> {
             decoration: InputDecoration(labelText: l10n.cardholderName, border: const OutlineInputBorder()),
           ),
           const SizedBox(height: 12),
+          TextField(
+            controller: _bankCtrl,
+            onTap: () => setState(() => _showBanks = true),
+            onChanged: (_) => setState(() => _showBanks = true),
+            decoration: InputDecoration(
+              labelText: l10n.bankName,
+              border: const OutlineInputBorder(),
+              suffixIcon: _showBanks
+                  ? IconButton(icon: const Icon(Icons.arrow_drop_up), onPressed: () => setState(() => _showBanks = false))
+                  : IconButton(icon: const Icon(Icons.arrow_drop_down), onPressed: () => setState(() => _showBanks = true)),
+            ),
+          ),
+          if (_showBanks)
+            Material(
+              color: Theme.of(context).cardTheme.color,
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                margin: const EdgeInsets.only(top: 4),
+                constraints: const BoxConstraints(maxHeight: 220),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppTheme.primaryBlue.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: _filteredBanks.isEmpty
+                    ? const Padding(padding: EdgeInsets.all(12), child: Center(child: Text('—')))
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _filteredBanks.length,
+                        itemBuilder: (ctx, i) {
+                          final b = _filteredBanks[i];
+                          return InkWell(
+                            onTap: () {
+                              _bankCtrl.text = b;
+                              setState(() => _showBanks = false);
+                              FocusScope.of(context).nextFocus();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              child: Text(b, style: const TextStyle(fontSize: 14)),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ),
+          const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
                 child: TextField(
                   controller: _expCtrl,
+            textDirection: TextDirection.ltr,
+            textAlign: Directionality.of(context) == TextDirection.rtl ? TextAlign.right : TextAlign.left,
                   keyboardType: TextInputType.number,
-                  maxLength: 5,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     LengthLimitingTextInputFormatter(4),
                     TextInputFormatter.withFunction((oldV, newV) {
                       final t = newV.text;
-                      if (t.length == 2 && oldV.text.length < 2) {
-                        return TextEditingValue(text: '$t/', selection: const TextSelection.collapsed(offset: 3));
+                      String text;
+                      if (t.length <= 2) {
+                        text = t;
+                      } else {
+                        text = '${t.substring(0, 2)}/${t.substring(2)}';
                       }
-                      return newV;
+                      return TextEditingValue(text: text, selection: TextSelection.collapsed(offset: text.length));
                     }),
                   ],
                   onChanged: (_) => setState(() {}),
-                  decoration: InputDecoration(labelText: l10n.expiryDate, hintText: 'MM/YY', border: const OutlineInputBorder(), counterText: ''),
+                  decoration: InputDecoration(
+                    labelText: l10n.expiryDate,
+                    hintText: 'MM/YY',
+                    border: const OutlineInputBorder(),
+                    counterText: '',
+                    suffixIcon: _expCtrl.text.length == 5
+                        ? Icon(WalletService.validExpiry(_expCtrl.text) ? Icons.check_circle : Icons.error, color: WalletService.validExpiry(_expCtrl.text) ? AppTheme.incomeGreen : AppTheme.expenseRed, size: 20)
+                        : null,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: TextField(
                   controller: _cvvCtrl,
+            textDirection: TextDirection.ltr,
+            textAlign: Directionality.of(context) == TextDirection.rtl ? TextAlign.right : TextAlign.left,
                   keyboardType: TextInputType.number,
                   maxLength: 4,
                   obscureText: true,
@@ -127,8 +261,8 @@ class _AddCardScreenState extends State<AddCardScreen> {
           const SizedBox(height: 24),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: AppTheme.primaryBlue, padding: const EdgeInsets.symmetric(vertical: 16)),
-            onPressed: _save,
-            child: Text(l10n.addCard, style: const TextStyle(fontSize: 16)),
+            onPressed: _busy ? null : _save,
+            child: _busy ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : Text(l10n.addCard, style: const TextStyle(fontSize: 16)),
           ),
         ],
       ),

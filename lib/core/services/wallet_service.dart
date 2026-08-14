@@ -22,14 +22,25 @@ class WalletService {
     return realm.all<LinkedCard>().toList();
   }
 
+  static String detectBrand(String number) {
+    final n = number.replaceAll(RegExp(r'\D'), '');
+    if (n.startsWith('4')) return 'Visa';
+    if (n.startsWith('5') || n.startsWith('2')) return 'Mastercard';
+    if (n.startsWith('3')) return 'Amex';
+    if (n.startsWith('6')) return 'Meeza';
+    return 'Card';
+  }
+
   static Future<LinkedCard> addCard({
     required String number,
     required String name,
     required String expiry,
     required String cvv,
+    String? bank,
+    double? balance,
   }) async {
     final realm = await RealmService.realm;
-    final brand = _detectBrand(number);
+    final brand = detectBrand(number);
     final last4 = number.substring(number.length - 4);
     final id = ObjectId().toString();
     final card = LinkedCard(
@@ -42,22 +53,15 @@ class WalletService {
       'tok_mock_$id',
       false,
       DateTime.now(),
+      bank: bank,
+      balance: balance,
     );
     realm.write(() => realm.add(card));
     return card;
   }
 
-  static String _detectBrand(String number) {
-    final n = number.replaceAll(RegExp(r'\s'), '');
-    if (n.startsWith('4')) return 'Visa';
-    if (n.startsWith('5') || n.startsWith('2')) return 'Mastercard';
-    if (n.startsWith('3')) return 'Amex';
-    if (n.startsWith('6')) return 'Meeza';
-    return 'Card';
-  }
-
   static bool luhnCheck(String number) {
-    final digits = number.replaceAll(RegExp(r'\s'), '');
+    final digits = number.replaceAll(RegExp(r'\D'), '');
     if (digits.length < 13 || digits.length > 19) return false;
     int sum = 0;
     bool alternate = false;
@@ -71,6 +75,18 @@ class WalletService {
       alternate = !alternate;
     }
     return sum % 10 == 0;
+  }
+
+  static bool validExpiry(String v) {
+    final m = RegExp(r'^(\d{2})/(\d{2})$').firstMatch(v);
+    if (m == null) return false;
+    final mm = int.parse(m.group(1)!);
+    final yy = int.parse(m.group(2)!);
+    if (mm < 1 || mm > 12) return false;
+    final now = DateTime.now();
+    final year = 2000 + yy;
+    if (year < now.year || (year == now.year && mm < now.month)) return false;
+    return true;
   }
 
   static Future<void> removeCard(String id) async {
@@ -89,7 +105,6 @@ class WalletService {
     final bal = await getBalance();
     final realm = await RealmService.realm;
     final id = ObjectId().toString();
-
     final result = await provider.sendMoney(
       amount: amount,
       destination: destination,
@@ -97,51 +112,28 @@ class WalletService {
       fromCard: fromCard,
       note: note,
     );
-
     final newBal = bal - amount;
     realm.write(() {
       realm.add(WalletTransaction(
-        id,
-        'business_1',
-        'send',
-        amount,
-        destinationType,
-        destination,
-        destinationType,
-        result.success ? 'success' : 'failed',
-        DateTime.now(),
-        newBal,
-        reference: result.reference,
-        note: note,
+        id, 'business_1', 'send', amount, destinationType, destination, destinationType,
+        result.success ? 'success' : 'failed', DateTime.now(), newBal,
+        reference: result.reference, note: note,
       ));
     });
     return result;
   }
 
-  static Future<PaymentResult> topUp({
-    required double amount,
-    required LinkedCard fromCard,
-  }) async {
+  static Future<PaymentResult> topUp({required double amount, required LinkedCard fromCard}) async {
     final bal = await getBalance();
     final realm = await RealmService.realm;
     final id = ObjectId().toString();
-
     final result = await provider.topUp(amount: amount, fromCard: fromCard);
     final newBal = bal + amount;
     realm.write(() {
       realm.add(WalletTransaction(
-        id,
-        'business_1',
-        'topup',
-        amount,
-        'card',
-        fromCard.last4,
-        fromCard.brand,
-        result.success ? 'success' : 'failed',
-        DateTime.now(),
-        newBal,
-        reference: result.reference,
-        note: null,
+        id, 'business_1', 'topup', amount, 'card', fromCard.last4, fromCard.brand,
+        result.success ? 'success' : 'failed', DateTime.now(), newBal,
+        reference: result.reference, note: null,
       ));
     });
     return result;

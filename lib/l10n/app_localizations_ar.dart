@@ -460,4 +460,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get shareReceipt => 'مشاركة الإيصال';
+
+  @override
+  String get bankName => 'اسم البنك (اختياري)';
 }

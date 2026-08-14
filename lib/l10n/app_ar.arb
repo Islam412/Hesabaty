@@ -147,5 +147,6 @@
   "defaultCard": "البطاقة الافتراضية",
   "fromCard": "من البطاقة",
   "insufficientBalance": "الرصيد غير كافي",
-  "shareReceipt": "مشاركة الإيصال"
+  "shareReceipt": "مشاركة الإيصال",
+  "bankName": "اسم البنك (اختياري)"
 }

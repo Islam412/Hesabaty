@@ -56,6 +56,7 @@ class _ImportContactsScreenState extends State<ImportContactsScreen> {
       for (final idx in _selected) {
         final c = _filtered[idx];
         realm.add(Contact(
+          isDeleted: false,
           ObjectId(),
           'business_1',
           c.name,

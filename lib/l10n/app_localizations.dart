@@ -985,6 +985,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share receipt'**
   String get shareReceipt;
+
+  /// No description provided for @bankName.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank name (optional)'**
+  String get bankName;
 }
 
 class _AppLocalizationsDelegate

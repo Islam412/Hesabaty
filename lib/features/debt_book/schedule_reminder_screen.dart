@@ -46,6 +46,7 @@ class _ScheduleReminderScreenState extends State<ScheduleReminderScreen> {
     final when = DateTime(_date.year, _date.month, _date.day, _time.hour, _time.minute);
 
     final reminder = Reminder(
+      isDone: false,
       ObjectId(),
       when,
       _msg.text.trim(),

@@ -11,39 +11,42 @@ part of 'app_models.dart';
 // ignore_for_file: type=lint
 class Business extends _Business
     with RealmEntity, RealmObjectBase, RealmObject {
+  static var _defaultsSet = false;
+
   Business(
     ObjectId id,
     String name,
+    String currency,
     DateTime createdAt, {
-    String? logoPath,
     String? phone,
     String? address,
+    bool isDeleted = false,
   }) {
-    RealmObjectBase.set(this, '_id', id);
+    if (!_defaultsSet) {
+      _defaultsSet = RealmObjectBase.setDefaults<Business>({
+        'isDeleted': false,
+      });
+    }
+    RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
-    RealmObjectBase.set(this, 'logoPath', logoPath);
     RealmObjectBase.set(this, 'phone', phone);
     RealmObjectBase.set(this, 'address', address);
+    RealmObjectBase.set(this, 'currency', currency);
     RealmObjectBase.set(this, 'createdAt', createdAt);
+    RealmObjectBase.set(this, 'isDeleted', isDeleted);
   }
 
   Business._();
 
   @override
-  ObjectId get id => RealmObjectBase.get<ObjectId>(this, '_id') as ObjectId;
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
   @override
-  set id(ObjectId value) => RealmObjectBase.set(this, '_id', value);
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   String get name => RealmObjectBase.get<String>(this, 'name') as String;
   @override
   set name(String value) => RealmObjectBase.set(this, 'name', value);
-
-  @override
-  String? get logoPath =>
-      RealmObjectBase.get<String>(this, 'logoPath') as String?;
-  @override
-  set logoPath(String? value) => RealmObjectBase.set(this, 'logoPath', value);
 
   @override
   String? get phone => RealmObjectBase.get<String>(this, 'phone') as String?;
@@ -57,11 +60,22 @@ class Business extends _Business
   set address(String? value) => RealmObjectBase.set(this, 'address', value);
 
   @override
+  String get currency =>
+      RealmObjectBase.get<String>(this, 'currency') as String;
+  @override
+  set currency(String value) => RealmObjectBase.set(this, 'currency', value);
+
+  @override
   DateTime get createdAt =>
       RealmObjectBase.get<DateTime>(this, 'createdAt') as DateTime;
   @override
   set createdAt(DateTime value) =>
       RealmObjectBase.set(this, 'createdAt', value);
+
+  @override
+  bool get isDeleted => RealmObjectBase.get<bool>(this, 'isDeleted') as bool;
+  @override
+  set isDeleted(bool value) => RealmObjectBase.set(this, 'isDeleted', value);
 
   @override
   Stream<RealmObjectChanges<Business>> get changes =>
@@ -76,12 +90,13 @@ class Business extends _Business
 
   EJsonValue toEJson() {
     return <String, dynamic>{
-      '_id': id.toEJson(),
+      'id': id.toEJson(),
       'name': name.toEJson(),
-      'logoPath': logoPath.toEJson(),
       'phone': phone.toEJson(),
       'address': address.toEJson(),
+      'currency': currency.toEJson(),
       'createdAt': createdAt.toEJson(),
+      'isDeleted': isDeleted.toEJson(),
     };
   }
 
@@ -90,17 +105,19 @@ class Business extends _Business
     if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
-        '_id': EJsonValue id,
+        'id': EJsonValue id,
         'name': EJsonValue name,
+        'currency': EJsonValue currency,
         'createdAt': EJsonValue createdAt,
       } =>
         Business(
           fromEJson(id),
           fromEJson(name),
+          fromEJson(currency),
           fromEJson(createdAt),
-          logoPath: fromEJson(ejson['logoPath']),
           phone: fromEJson(ejson['phone']),
           address: fromEJson(ejson['address']),
+          isDeleted: fromEJson(ejson['isDeleted'], defaultValue: false),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -110,17 +127,13 @@ class Business extends _Business
     RealmObjectBase.registerFactory(Business._);
     register(_toEJson, _fromEJson);
     return const SchemaObject(ObjectType.realmObject, Business, 'Business', [
-      SchemaProperty(
-        'id',
-        RealmPropertyType.objectid,
-        mapTo: '_id',
-        primaryKey: true,
-      ),
+      SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string),
-      SchemaProperty('logoPath', RealmPropertyType.string, optional: true),
       SchemaProperty('phone', RealmPropertyType.string, optional: true),
       SchemaProperty('address', RealmPropertyType.string, optional: true),
+      SchemaProperty('currency', RealmPropertyType.string),
       SchemaProperty('createdAt', RealmPropertyType.timestamp),
+      SchemaProperty('isDeleted', RealmPropertyType.bool),
     ]);
   }();
 
@@ -145,27 +158,27 @@ class Contact extends _Contact with RealmEntity, RealmObjectBase, RealmObject {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<Contact>({'isDeleted': false});
     }
-    RealmObjectBase.set(this, '_id', id);
+    RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'businessId', businessId);
     RealmObjectBase.set(this, 'name', name);
+    RealmObjectBase.set(this, 'type', type);
+    RealmObjectBase.set(this, 'createdAt', createdAt);
     RealmObjectBase.set(this, 'phone', phone);
     RealmObjectBase.set(this, 'address', address);
-    RealmObjectBase.set(this, 'type', type);
     RealmObjectBase.set<RealmList<String>>(
       this,
       'tags',
       RealmList<String>(tags),
     );
-    RealmObjectBase.set(this, 'createdAt', createdAt);
     RealmObjectBase.set(this, 'isDeleted', isDeleted);
   }
 
   Contact._();
 
   @override
-  ObjectId get id => RealmObjectBase.get<ObjectId>(this, '_id') as ObjectId;
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
   @override
-  set id(ObjectId value) => RealmObjectBase.set(this, '_id', value);
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   String get businessId =>
@@ -180,6 +193,18 @@ class Contact extends _Contact with RealmEntity, RealmObjectBase, RealmObject {
   set name(String value) => RealmObjectBase.set(this, 'name', value);
 
   @override
+  String get type => RealmObjectBase.get<String>(this, 'type') as String;
+  @override
+  set type(String value) => RealmObjectBase.set(this, 'type', value);
+
+  @override
+  DateTime get createdAt =>
+      RealmObjectBase.get<DateTime>(this, 'createdAt') as DateTime;
+  @override
+  set createdAt(DateTime value) =>
+      RealmObjectBase.set(this, 'createdAt', value);
+
+  @override
   String? get phone => RealmObjectBase.get<String>(this, 'phone') as String?;
   @override
   set phone(String? value) => RealmObjectBase.set(this, 'phone', value);
@@ -191,23 +216,11 @@ class Contact extends _Contact with RealmEntity, RealmObjectBase, RealmObject {
   set address(String? value) => RealmObjectBase.set(this, 'address', value);
 
   @override
-  String get type => RealmObjectBase.get<String>(this, 'type') as String;
-  @override
-  set type(String value) => RealmObjectBase.set(this, 'type', value);
-
-  @override
   RealmList<String> get tags =>
       RealmObjectBase.get<String>(this, 'tags') as RealmList<String>;
   @override
   set tags(covariant RealmList<String> value) =>
       throw RealmUnsupportedSetError();
-
-  @override
-  DateTime get createdAt =>
-      RealmObjectBase.get<DateTime>(this, 'createdAt') as DateTime;
-  @override
-  set createdAt(DateTime value) =>
-      RealmObjectBase.set(this, 'createdAt', value);
 
   @override
   bool get isDeleted => RealmObjectBase.get<bool>(this, 'isDeleted') as bool;
@@ -227,14 +240,14 @@ class Contact extends _Contact with RealmEntity, RealmObjectBase, RealmObject {
 
   EJsonValue toEJson() {
     return <String, dynamic>{
-      '_id': id.toEJson(),
+      'id': id.toEJson(),
       'businessId': businessId.toEJson(),
       'name': name.toEJson(),
+      'type': type.toEJson(),
+      'createdAt': createdAt.toEJson(),
       'phone': phone.toEJson(),
       'address': address.toEJson(),
-      'type': type.toEJson(),
       'tags': tags.toEJson(),
-      'createdAt': createdAt.toEJson(),
       'isDeleted': isDeleted.toEJson(),
     };
   }
@@ -244,7 +257,7 @@ class Contact extends _Contact with RealmEntity, RealmObjectBase, RealmObject {
     if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
-        '_id': EJsonValue id,
+        'id': EJsonValue id,
         'businessId': EJsonValue businessId,
         'name': EJsonValue name,
         'type': EJsonValue type,
@@ -269,23 +282,18 @@ class Contact extends _Contact with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.registerFactory(Contact._);
     register(_toEJson, _fromEJson);
     return const SchemaObject(ObjectType.realmObject, Contact, 'Contact', [
-      SchemaProperty(
-        'id',
-        RealmPropertyType.objectid,
-        mapTo: '_id',
-        primaryKey: true,
-      ),
+      SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
       SchemaProperty('businessId', RealmPropertyType.string),
       SchemaProperty('name', RealmPropertyType.string),
+      SchemaProperty('type', RealmPropertyType.string),
+      SchemaProperty('createdAt', RealmPropertyType.timestamp),
       SchemaProperty('phone', RealmPropertyType.string, optional: true),
       SchemaProperty('address', RealmPropertyType.string, optional: true),
-      SchemaProperty('type', RealmPropertyType.string),
       SchemaProperty(
         'tags',
         RealmPropertyType.string,
         collectionType: RealmCollectionType.list,
       ),
-      SchemaProperty('createdAt', RealmPropertyType.timestamp),
       SchemaProperty('isDeleted', RealmPropertyType.bool),
     ]);
   }();
@@ -307,23 +315,23 @@ class CashTransaction extends _CashTransaction
     String? note,
     String? imagePath,
   }) {
-    RealmObjectBase.set(this, '_id', id);
+    RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'businessId', businessId);
     RealmObjectBase.set(this, 'amount', amount);
     RealmObjectBase.set(this, 'type', type);
-    RealmObjectBase.set(this, 'note', note);
-    RealmObjectBase.set(this, 'imagePath', imagePath);
     RealmObjectBase.set(this, 'date', date);
     RealmObjectBase.set(this, 'balanceAfter', balanceAfter);
     RealmObjectBase.set(this, 'status', status);
+    RealmObjectBase.set(this, 'note', note);
+    RealmObjectBase.set(this, 'imagePath', imagePath);
   }
 
   CashTransaction._();
 
   @override
-  ObjectId get id => RealmObjectBase.get<ObjectId>(this, '_id') as ObjectId;
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
   @override
-  set id(ObjectId value) => RealmObjectBase.set(this, '_id', value);
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   String get businessId =>
@@ -343,17 +351,6 @@ class CashTransaction extends _CashTransaction
   set type(String value) => RealmObjectBase.set(this, 'type', value);
 
   @override
-  String? get note => RealmObjectBase.get<String>(this, 'note') as String?;
-  @override
-  set note(String? value) => RealmObjectBase.set(this, 'note', value);
-
-  @override
-  String? get imagePath =>
-      RealmObjectBase.get<String>(this, 'imagePath') as String?;
-  @override
-  set imagePath(String? value) => RealmObjectBase.set(this, 'imagePath', value);
-
-  @override
   DateTime get date => RealmObjectBase.get<DateTime>(this, 'date') as DateTime;
   @override
   set date(DateTime value) => RealmObjectBase.set(this, 'date', value);
@@ -371,6 +368,17 @@ class CashTransaction extends _CashTransaction
   set status(String value) => RealmObjectBase.set(this, 'status', value);
 
   @override
+  String? get note => RealmObjectBase.get<String>(this, 'note') as String?;
+  @override
+  set note(String? value) => RealmObjectBase.set(this, 'note', value);
+
+  @override
+  String? get imagePath =>
+      RealmObjectBase.get<String>(this, 'imagePath') as String?;
+  @override
+  set imagePath(String? value) => RealmObjectBase.set(this, 'imagePath', value);
+
+  @override
   Stream<RealmObjectChanges<CashTransaction>> get changes =>
       RealmObjectBase.getChanges<CashTransaction>(this);
 
@@ -385,15 +393,15 @@ class CashTransaction extends _CashTransaction
 
   EJsonValue toEJson() {
     return <String, dynamic>{
-      '_id': id.toEJson(),
+      'id': id.toEJson(),
       'businessId': businessId.toEJson(),
       'amount': amount.toEJson(),
       'type': type.toEJson(),
-      'note': note.toEJson(),
-      'imagePath': imagePath.toEJson(),
       'date': date.toEJson(),
       'balanceAfter': balanceAfter.toEJson(),
       'status': status.toEJson(),
+      'note': note.toEJson(),
+      'imagePath': imagePath.toEJson(),
     };
   }
 
@@ -402,7 +410,7 @@ class CashTransaction extends _CashTransaction
     if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
-        '_id': EJsonValue id,
+        'id': EJsonValue id,
         'businessId': EJsonValue businessId,
         'amount': EJsonValue amount,
         'type': EJsonValue type,
@@ -433,20 +441,15 @@ class CashTransaction extends _CashTransaction
       CashTransaction,
       'CashTransaction',
       [
-        SchemaProperty(
-          'id',
-          RealmPropertyType.objectid,
-          mapTo: '_id',
-          primaryKey: true,
-        ),
+        SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
         SchemaProperty('businessId', RealmPropertyType.string),
         SchemaProperty('amount', RealmPropertyType.double),
         SchemaProperty('type', RealmPropertyType.string),
-        SchemaProperty('note', RealmPropertyType.string, optional: true),
-        SchemaProperty('imagePath', RealmPropertyType.string, optional: true),
         SchemaProperty('date', RealmPropertyType.timestamp),
         SchemaProperty('balanceAfter', RealmPropertyType.double),
         SchemaProperty('status', RealmPropertyType.string),
+        SchemaProperty('note', RealmPropertyType.string, optional: true),
+        SchemaProperty('imagePath', RealmPropertyType.string, optional: true),
       ],
     );
   }();
@@ -468,23 +471,23 @@ class DebtTransaction extends _DebtTransaction
     String? note,
     String? imagePath,
   }) {
-    RealmObjectBase.set(this, '_id', id);
+    RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'contactId', contactId);
     RealmObjectBase.set(this, 'amount', amount);
     RealmObjectBase.set(this, 'type', type);
-    RealmObjectBase.set(this, 'note', note);
-    RealmObjectBase.set(this, 'imagePath', imagePath);
     RealmObjectBase.set(this, 'date', date);
     RealmObjectBase.set(this, 'balanceAfter', balanceAfter);
     RealmObjectBase.set(this, 'status', status);
+    RealmObjectBase.set(this, 'note', note);
+    RealmObjectBase.set(this, 'imagePath', imagePath);
   }
 
   DebtTransaction._();
 
   @override
-  ObjectId get id => RealmObjectBase.get<ObjectId>(this, '_id') as ObjectId;
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
   @override
-  set id(ObjectId value) => RealmObjectBase.set(this, '_id', value);
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   String get contactId =>
@@ -501,17 +504,6 @@ class DebtTransaction extends _DebtTransaction
   String get type => RealmObjectBase.get<String>(this, 'type') as String;
   @override
   set type(String value) => RealmObjectBase.set(this, 'type', value);
-
-  @override
-  String? get note => RealmObjectBase.get<String>(this, 'note') as String?;
-  @override
-  set note(String? value) => RealmObjectBase.set(this, 'note', value);
-
-  @override
-  String? get imagePath =>
-      RealmObjectBase.get<String>(this, 'imagePath') as String?;
-  @override
-  set imagePath(String? value) => RealmObjectBase.set(this, 'imagePath', value);
 
   @override
   DateTime get date => RealmObjectBase.get<DateTime>(this, 'date') as DateTime;
@@ -531,6 +523,17 @@ class DebtTransaction extends _DebtTransaction
   set status(String value) => RealmObjectBase.set(this, 'status', value);
 
   @override
+  String? get note => RealmObjectBase.get<String>(this, 'note') as String?;
+  @override
+  set note(String? value) => RealmObjectBase.set(this, 'note', value);
+
+  @override
+  String? get imagePath =>
+      RealmObjectBase.get<String>(this, 'imagePath') as String?;
+  @override
+  set imagePath(String? value) => RealmObjectBase.set(this, 'imagePath', value);
+
+  @override
   Stream<RealmObjectChanges<DebtTransaction>> get changes =>
       RealmObjectBase.getChanges<DebtTransaction>(this);
 
@@ -545,15 +548,15 @@ class DebtTransaction extends _DebtTransaction
 
   EJsonValue toEJson() {
     return <String, dynamic>{
-      '_id': id.toEJson(),
+      'id': id.toEJson(),
       'contactId': contactId.toEJson(),
       'amount': amount.toEJson(),
       'type': type.toEJson(),
-      'note': note.toEJson(),
-      'imagePath': imagePath.toEJson(),
       'date': date.toEJson(),
       'balanceAfter': balanceAfter.toEJson(),
       'status': status.toEJson(),
+      'note': note.toEJson(),
+      'imagePath': imagePath.toEJson(),
     };
   }
 
@@ -562,7 +565,7 @@ class DebtTransaction extends _DebtTransaction
     if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
-        '_id': EJsonValue id,
+        'id': EJsonValue id,
         'contactId': EJsonValue contactId,
         'amount': EJsonValue amount,
         'type': EJsonValue type,
@@ -593,20 +596,15 @@ class DebtTransaction extends _DebtTransaction
       DebtTransaction,
       'DebtTransaction',
       [
-        SchemaProperty(
-          'id',
-          RealmPropertyType.objectid,
-          mapTo: '_id',
-          primaryKey: true,
-        ),
+        SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
         SchemaProperty('contactId', RealmPropertyType.string),
         SchemaProperty('amount', RealmPropertyType.double),
         SchemaProperty('type', RealmPropertyType.string),
-        SchemaProperty('note', RealmPropertyType.string, optional: true),
-        SchemaProperty('imagePath', RealmPropertyType.string, optional: true),
         SchemaProperty('date', RealmPropertyType.timestamp),
         SchemaProperty('balanceAfter', RealmPropertyType.double),
         SchemaProperty('status', RealmPropertyType.string),
+        SchemaProperty('note', RealmPropertyType.string, optional: true),
+        SchemaProperty('imagePath', RealmPropertyType.string, optional: true),
       ],
     );
   }();
@@ -624,39 +622,24 @@ class Reminder extends _Reminder
     DateTime dueDate,
     String message, {
     String? contactId,
-    String? cashEntryId,
     bool isDone = false,
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<Reminder>({'isDone': false});
     }
-    RealmObjectBase.set(this, '_id', id);
-    RealmObjectBase.set(this, 'contactId', contactId);
-    RealmObjectBase.set(this, 'cashEntryId', cashEntryId);
+    RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'dueDate', dueDate);
     RealmObjectBase.set(this, 'message', message);
+    RealmObjectBase.set(this, 'contactId', contactId);
     RealmObjectBase.set(this, 'isDone', isDone);
   }
 
   Reminder._();
 
   @override
-  ObjectId get id => RealmObjectBase.get<ObjectId>(this, '_id') as ObjectId;
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
   @override
-  set id(ObjectId value) => RealmObjectBase.set(this, '_id', value);
-
-  @override
-  String? get contactId =>
-      RealmObjectBase.get<String>(this, 'contactId') as String?;
-  @override
-  set contactId(String? value) => RealmObjectBase.set(this, 'contactId', value);
-
-  @override
-  String? get cashEntryId =>
-      RealmObjectBase.get<String>(this, 'cashEntryId') as String?;
-  @override
-  set cashEntryId(String? value) =>
-      RealmObjectBase.set(this, 'cashEntryId', value);
+  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   DateTime get dueDate =>
@@ -668,6 +651,12 @@ class Reminder extends _Reminder
   String get message => RealmObjectBase.get<String>(this, 'message') as String;
   @override
   set message(String value) => RealmObjectBase.set(this, 'message', value);
+
+  @override
+  String? get contactId =>
+      RealmObjectBase.get<String>(this, 'contactId') as String?;
+  @override
+  set contactId(String? value) => RealmObjectBase.set(this, 'contactId', value);
 
   @override
   bool get isDone => RealmObjectBase.get<bool>(this, 'isDone') as bool;
@@ -687,11 +676,10 @@ class Reminder extends _Reminder
 
   EJsonValue toEJson() {
     return <String, dynamic>{
-      '_id': id.toEJson(),
-      'contactId': contactId.toEJson(),
-      'cashEntryId': cashEntryId.toEJson(),
+      'id': id.toEJson(),
       'dueDate': dueDate.toEJson(),
       'message': message.toEJson(),
+      'contactId': contactId.toEJson(),
       'isDone': isDone.toEJson(),
     };
   }
@@ -701,7 +689,7 @@ class Reminder extends _Reminder
     if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
-        '_id': EJsonValue id,
+        'id': EJsonValue id,
         'dueDate': EJsonValue dueDate,
         'message': EJsonValue message,
       } =>
@@ -710,7 +698,6 @@ class Reminder extends _Reminder
           fromEJson(dueDate),
           fromEJson(message),
           contactId: fromEJson(ejson['contactId']),
-          cashEntryId: fromEJson(ejson['cashEntryId']),
           isDone: fromEJson(ejson['isDone'], defaultValue: false),
         ),
       _ => raiseInvalidEJson(ejson),
@@ -721,16 +708,10 @@ class Reminder extends _Reminder
     RealmObjectBase.registerFactory(Reminder._);
     register(_toEJson, _fromEJson);
     return const SchemaObject(ObjectType.realmObject, Reminder, 'Reminder', [
-      SchemaProperty(
-        'id',
-        RealmPropertyType.objectid,
-        mapTo: '_id',
-        primaryKey: true,
-      ),
-      SchemaProperty('contactId', RealmPropertyType.string, optional: true),
-      SchemaProperty('cashEntryId', RealmPropertyType.string, optional: true),
+      SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
       SchemaProperty('dueDate', RealmPropertyType.timestamp),
       SchemaProperty('message', RealmPropertyType.string),
+      SchemaProperty('contactId', RealmPropertyType.string, optional: true),
       SchemaProperty('isDone', RealmPropertyType.bool),
     ]);
   }();
@@ -750,8 +731,10 @@ class LinkedCard extends _LinkedCard
     String cardholderName,
     String token,
     bool isDefault,
-    DateTime addedAt,
-  ) {
+    DateTime addedAt, {
+    String? bank,
+    double? balance,
+  }) {
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'businessId', businessId);
     RealmObjectBase.set(this, 'last4', last4);
@@ -760,6 +743,8 @@ class LinkedCard extends _LinkedCard
     RealmObjectBase.set(this, 'cardholderName', cardholderName);
     RealmObjectBase.set(this, 'token', token);
     RealmObjectBase.set(this, 'isDefault', isDefault);
+    RealmObjectBase.set(this, 'bank', bank);
+    RealmObjectBase.set(this, 'balance', balance);
     RealmObjectBase.set(this, 'addedAt', addedAt);
   }
 
@@ -810,6 +795,17 @@ class LinkedCard extends _LinkedCard
   set isDefault(bool value) => RealmObjectBase.set(this, 'isDefault', value);
 
   @override
+  String? get bank => RealmObjectBase.get<String>(this, 'bank') as String?;
+  @override
+  set bank(String? value) => RealmObjectBase.set(this, 'bank', value);
+
+  @override
+  double? get balance =>
+      RealmObjectBase.get<double>(this, 'balance') as double?;
+  @override
+  set balance(double? value) => RealmObjectBase.set(this, 'balance', value);
+
+  @override
   DateTime get addedAt =>
       RealmObjectBase.get<DateTime>(this, 'addedAt') as DateTime;
   @override
@@ -836,6 +832,8 @@ class LinkedCard extends _LinkedCard
       'cardholderName': cardholderName.toEJson(),
       'token': token.toEJson(),
       'isDefault': isDefault.toEJson(),
+      'bank': bank.toEJson(),
+      'balance': balance.toEJson(),
       'addedAt': addedAt.toEJson(),
     };
   }
@@ -865,6 +863,8 @@ class LinkedCard extends _LinkedCard
           fromEJson(token),
           fromEJson(isDefault),
           fromEJson(addedAt),
+          bank: fromEJson(ejson['bank']),
+          balance: fromEJson(ejson['balance']),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -886,6 +886,8 @@ class LinkedCard extends _LinkedCard
         SchemaProperty('cardholderName', RealmPropertyType.string),
         SchemaProperty('token', RealmPropertyType.string),
         SchemaProperty('isDefault', RealmPropertyType.bool),
+        SchemaProperty('bank', RealmPropertyType.string, optional: true),
+        SchemaProperty('balance', RealmPropertyType.double, optional: true),
         SchemaProperty('addedAt', RealmPropertyType.timestamp),
       ],
     );

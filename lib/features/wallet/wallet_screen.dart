@@ -157,7 +157,8 @@ class _WalletScreenState extends State<WalletScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('${c.brand} •••• ${c.last4}', style: const TextStyle(fontWeight: FontWeight.w600)),
-                          Text(c.expiry, style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+                          Text('${c.bank ?? ''}  ${c.expiry}', style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+                          if (c.balance != null) Text('الرصيد: ${c.balance!.toStringAsFixed(2)} ج.م', style: TextStyle(color: AppTheme.incomeGreen, fontSize: 12, fontWeight: FontWeight.w600)),
                         ],
                       ),
                     ),

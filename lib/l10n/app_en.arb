@@ -147,5 +147,6 @@
   "defaultCard": "Default card",
   "fromCard": "From card",
   "insufficientBalance": "Insufficient balance",
-  "shareReceipt": "Share receipt"
+  "shareReceipt": "Share receipt",
+  "bankName": "Bank name (optional)"
 }

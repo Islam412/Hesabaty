@@ -464,4 +464,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareReceipt => 'Share receipt';
+
+  @override
+  String get bankName => 'Bank name (optional)';
 }
