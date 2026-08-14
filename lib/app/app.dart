@@ -14,18 +14,26 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _mode = ThemeMode.light;
+  Locale _locale = const Locale('ar');
 
   @override
   void initState() {
     super.initState();
     _load();
     ThemeNotifier.listener = _load;
+    LocaleNotifier.localeListener = _load;
   }
 
   Future<void> _load() async {
     final p = await SharedPreferences.getInstance();
     final dark = p.getBool('theme_dark') ?? false;
-    if (mounted) setState(() => _mode = dark ? ThemeMode.dark : ThemeMode.light);
+    final lang = p.getString('locale_code') ?? 'ar';
+    if (mounted) {
+      setState(() {
+        _mode = dark ? ThemeMode.dark : ThemeMode.light;
+        _locale = Locale(lang);
+      });
+    }
   }
 
   @override
@@ -35,6 +43,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      locale: _locale,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: _mode,

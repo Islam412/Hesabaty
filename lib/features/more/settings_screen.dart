@@ -55,7 +55,39 @@ class SettingsScreen extends StatelessWidget {
           const Divider(),
 
           // ===== باقي الإعدادات =====
-          _row(Icons.language, l10n.language, const Color(0xFF7C4DFF)),
+          StatefulBuilder(
+            builder: (ctx, setState) => FutureBuilder<String>(
+              future: LocaleNotifier.getCode(),
+              builder: (ctx, snap) {
+                final code = snap.data ?? 'ar';
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 4),
+                  child: ListTile(
+                    leading: CircleAvatar(backgroundColor: const Color(0xFF7C4DFF).withOpacity(0.12), child: const Icon(Icons.language, color: Color(0xFF7C4DFF))),
+                    title: Text(l10n.language, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    subtitle: Text(code == 'ar' ? 'العربية' : 'English', style: const TextStyle(fontSize: 12)),
+                    trailing: const Icon(Icons.chevron_left, color: Color(0xFF7C4DFF)),
+                    onTap: () async {
+                      final sel = await showDialog<String>(
+                        context: context,
+                        builder: (ctx) => SimpleDialog(
+                          title: Text(l10n.language),
+                          children: [
+                            SimpleDialogOption(onPressed: () => Navigator.pop(ctx, 'ar'), child: const Text('العربية 🇪', style: TextStyle(fontSize: 16))),
+                            SimpleDialogOption(onPressed: () => Navigator.pop(ctx, 'en'), child: const Text('English 🇺🇸', style: TextStyle(fontSize: 16))),
+                          ],
+                        ),
+                      );
+                      if (sel != null) {
+                        await LocaleNotifier.setCode(sel);
+                        setState(() {});
+                      }
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
           const Divider(),
           StatefulBuilder(
             builder: (ctx, setState) => FutureBuilder<bool>(

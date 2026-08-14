@@ -132,3 +132,16 @@ class ThemeNotifier {
     listener?.call();
   }
 }
+
+class LocaleNotifier {
+  static VoidCallback? localeListener;
+  static Future<String> getCode() async {
+    final p = await SharedPreferences.getInstance();
+    return p.getString('locale_code') ?? 'ar';
+  }
+  static Future<void> setCode(String code) async {
+    final p = await SharedPreferences.getInstance();
+    await p.setString('locale_code', code);
+    localeListener?.call();
+  }
+}
