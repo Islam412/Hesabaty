@@ -1,14 +1,31 @@
-<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>كشف حساب</title>
-<style>body{font-family:system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;background:#f4f7fb;margin:0;padding:16px;color:#1f3b5c}
-.card{background:#fff;border-radius:16px;padding:20px;max-width:640px;margin:auto;box-shadow:0 2px 12px rgba(30,60,100,.08)}
-h1{font-size:20px;margin:8px 0}.bal{font-size:34px;font-weight:800}.g{color:#16a34a}.r{color:#dc2626}
-.row{display:flex;justify-content:space-between;gap:8px;padding:10px 4px;border-bottom:1px solid #eef2f7;font-size:14px}
-.mut{color:#8aa0b8;font-size:12px}.amt{font-weight:700;white-space:nowrap}</style></head><body>
-<div class="card" id="c"><p class="mut">جاري فتح الكشف…</p></div>
+<!doctype html><html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>كشف حساب</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+body{font-family:system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;background:#f5f7fa;margin:0;padding:16px;color:#16324f}
+.wrap{max-width:640px;margin:auto}
+.top{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;padding:12px;box-shadow:0 1px 8px rgba(30,60,100,.06)}
+.avatar{width:52px;height:52px;border-radius:12px;background:#e8eef7;display:flex;align-items:center;justify-content:center;font-size:24px}
+.grow{flex:1}
+.name{font-weight:700}
+.mut{color:#8aa0b8;font-size:12px}
+.wa{width:48px;height:48px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:22px}
+h1{font-size:20px;text-align:center;margin:18px 0 4px}
+.bal{font-size:36px;font-weight:800;text-align:center}
+.g{color:#16a34a}.r{color:#dc2626}
+.card{background:#fff;border-radius:16px;padding:16px;margin-top:14px;box-shadow:0 1px 8px rgba(30,60,100,.06)}
+.tot{display:flex;justify-content:space-between;padding:8px 0;font-size:14px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-left:6px}
+.row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eef2f7}
+.arr{width:44px;height:44px;border-radius:10px;background:#e8eef7;display:flex;align-items:center;justify-content:center;font-size:20px}
+.amt{font-weight:700;white-space:nowrap}
+.qrbox{text-align:center;margin-top:10px}
+</style></head><body>
+<div class="wrap" id="c"><div class="card"><p class="mut">جاري فتح الكشف…</p></div></div>
 <script>
 async function main(){
   const h=location.hash.slice(1);
-  if(!h){document.getElementById('c').innerHTML='<p>لا توجد بيانات في الرابط</p>';return;}
+  if(!h){return;}
   try{
     const b64=h.replace(/-/g,'+').replace(/_/g,'/');
     const pad=b64+'='.repeat((4-b64.length%4)%4);
@@ -17,15 +34,24 @@ async function main(){
     const text=await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();
     const d=JSON.parse(text);
     let rows='';
-    (d.t||[]).forEach(r=>{
-      const cls=r[1]==='given'?'r':'g';
-      const lbl=r[1]==='given'?'مدفوع':'مقبوض';
-      rows+='<div class="row"><span>'+r[0]+' — '+lbl+'<br><span class="mut">'+(r[3]||'')+'</span></span><span class="amt '+cls+'">'+Number(r[2]).toFixed(2)+' ج.م</span></div>';
+    (d.t||[]).slice().reverse().forEach(function(r){
+      var given=r[1]==='given';
+      rows+='<div class="row"><div class="arr">'+(given?'↑':'↓')+'</div>'+
+        '<div class="grow"><b>'+r[0]+'</b><br><span class="mut">'+(r[3]||'')+'</span></div>'+
+        '<div class="amt '+(given?'r':'g')+'">'+Number(r[2]).toFixed(2)+' ج.م</div></div>';
     });
-    document.getElementById('c').innerHTML='<h1>كشف حساب: '+(d.n||'')+'</h1><p class="mut">'+(d.p||'')+'</p>'+
-      '<p>الرصيد الحالي</p><div class="bal '+(d.b>=0?'g':'r')+'">'+Number(d.b).toFixed(2)+' ج.م</div>'+
-      '<p class="mut">إجمالي المدفوع: <span class="g">'+Number(d.g||0).toFixed(2)+'</span> — إجمالي المقبوض: <span class="r">'+Number(d.k||0).toFixed(2)+'</span></p>'+rows;
-  }catch(e){document.getElementById('c').innerHTML='<p>تعذر فتح الكشف</p>';}
+    document.getElementById('c').innerHTML=
+      '<div class="top"><div class="avatar">🏠</div><div class="grow"><div class="name">'+(d.sn||'')+'</div><div class="mut">'+(d.sp||'')+'</div></div>'+
+      (d.sp?'<a class="wa" href="https://wa.me/'+(d.sp||'').replace(/[^0-9]/g,'')+'">✆</a>':'')+'</div>'+
+      '<h1>كشف حساب: '+(d.n||'')+'</h1><div class="mut" style="text-align:center">'+(d.p||'')+'</div>'+
+      '<p class="mut" style="text-align:center;margin-top:14px">الرصيد الحالي</p>'+
+      '<div class="bal '+(d.b>=0?'g':'r')+'">'+Number(d.b).toFixed(2)+' ج.م</div>'+
+      '<div class="card"><div class="tot"><span><span class="dot" style="background:#16a34a"></span> إجمالي المدفوع</span><b class="g">'+Number(d.g||0).toFixed(2)+' ج.م</b></div>'+
+      '<div class="tot"><span><span class="dot" style="background:#dc2626"></span> إجمالي المقبوض</span><b class="r">'+Number(d.k||0).toFixed(2)+' ج.م</b></div></div>'+
+      '<div class="card">'+rows+'</div>'+
+      '<div class="card qrbox"><div id="qr" style="display:inline-block"></div><p class="mut">باركود الرسالة: '+(d.id||'').slice(0,8)+'</p></div>';
+    if(window.QRCode){new QRCode(document.getElementById('qr'),{text:location.href,width:180,height:180,correctLevel:QRCode.CorrectLevel.L});}
+  }catch(e){document.getElementById('c').innerHTML='<div class="card"><p>تعذر فتح الكشف</p></div>';}
 }
 main();
 </script></body></html>

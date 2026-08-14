@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 import '../../data/models/app_models.dart';
 
 class StatementLinkService {
-  // ⚠️ غيّر الرابط ده لرابط صفحتك المجانية على GitHub Pages بعد ما ترفعها (الخطوات تحت)
-  static const String baseUrl = 'https://islam412.github.io/hesabaty';
+  static const String baseUrl = 'https://cash-rest.vercel.app/';
 
-  static String generateLink(Contact contact, List<DebtTransaction> txs, double balance) {
+  static Future<String> generateLink(Contact contact, List<DebtTransaction> txs, double balance) async {
+    final prefs = await SharedPreferences.getInstance();
+    final sp = prefs.getString('user_phone') ?? '';
     final isCustomer = contact.type == 'customer';
     double given = 0;
     double taken = 0;
@@ -22,10 +25,20 @@ class StatementLinkService {
         t.note ?? '',
       ]);
     }
-    final map = {'n': contact.name, 'p': contact.phone ?? '', 'b': balance, 'g': given, 'k': taken, 't': rows};
+    final map = {
+      'id': const Uuid().v4(),
+      'sn': 'حساباتي',
+      'sp': sp.isNotEmpty ? '+$sp' : '',
+      'n': contact.name,
+      'p': contact.phone ?? '',
+      'b': balance,
+      'g': given,
+      'k': taken,
+      't': rows,
+    };
     final gz = gzip.encode(utf8.encode(jsonEncode(map)));
     final b64 = base64Url.encode(gz).replaceAll('=', '');
-    return '$baseUrl/#$b64';
+    return '$baseUrl#$b64';
   }
 
   static String statementText(Contact contact, List<DebtTransaction> txs, double balance) {
