@@ -1129,6 +1129,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cannot open link'**
   String get cantOpen;
+
+  /// No description provided for @appOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'App owner'**
+  String get appOwner;
+
+  /// No description provided for @devCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Development company'**
+  String get devCompany;
+
+  /// No description provided for @appEngineer.
+  ///
+  /// In en, this message translates to:
+  /// **'App engineer'**
+  String get appEngineer;
+
+  /// No description provided for @portfolio.
+  ///
+  /// In en, this message translates to:
+  /// **'Portfolio'**
+  String get portfolio;
+
+  /// No description provided for @openMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in maps'**
+  String get openMap;
+
+  /// No description provided for @whatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get whatsapp;
+
+  /// No description provided for @call.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get call;
 }
 
 class _AppLocalizationsDelegate

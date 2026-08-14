@@ -171,5 +171,12 @@
   "callSupport": "Call us",
   "rateApp": "Rate the app",
   "faq": "FAQ",
-  "cantOpen": "Cannot open link"
+  "cantOpen": "Cannot open link",
+  "appOwner": "App owner",
+  "devCompany": "Development company",
+  "appEngineer": "App engineer",
+  "portfolio": "Portfolio",
+  "openMap": "Open in maps",
+  "whatsapp": "WhatsApp",
+  "call": "Call"
 }

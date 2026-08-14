@@ -4,19 +4,30 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../app/theme.dart';
 import '../../core/services/share_service.dart';
 
-// ⚠️ غيّر دول لبيانات الدعم بتاعتك
-const String kSupportWhatsApp = '201127782279';
-const String kSupportPhone = '+201127782279';
-const String kSupportEmail = 'support@hesabaty.app';
+// ===== بيانات صاحب التطبيق =====
+const String kOwnerName = 'إسلام الصولي';
+const String kOwnerCompany = 'ابو حمزه المواد التغليف';
+const String kOwnerPhoneDisplay = '01155583620';
+const String kOwnerWhatsApp = '201155583620';
+const String kOwnerAddress = 'شارع صلاح سالم بجوار توكيل بچاچ الحوامدية';
+
+// ===== بيانات الشركة المطورة =====
+const String kDevCompany = 'Corvix';
+const String kDevPortfolio = ''; // حط لينك بورتفوليو شركة Corvix هنا لما يتوفر
+
+// ===== بيانات المهندس المصمم =====
+const String kEngineerName = 'اسلام حمدي';
+const String kEngineerPhoneDisplay = '01127782279';
+const String kEngineerWhatsApp = '201127782279';
+const String kEngineerPortfolio = 'https://islam-portfolio-phi.vercel.app/';
 
 class ContactUsScreen extends StatelessWidget {
   const ContactUsScreen({super.key});
 
   Future<void> _launch(BuildContext context, String url) async {
     final l10n = AppLocalizations.of(context)!;
-    final u = Uri.parse(url);
     try {
-      await launchUrl(u, mode: LaunchMode.externalApplication);
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } catch (_) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.cantOpen), backgroundColor: AppTheme.expenseRed));
@@ -24,65 +35,148 @@ class ContactUsScreen extends StatelessWidget {
     }
   }
 
+  Widget _actionBtn(BuildContext context, IconData icon, String label, Color color, VoidCallback onTap) {
+    return Expanded(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              Icon(icon, color: color, size: 22),
+              const SizedBox(height: 4),
+              Text(label, style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _personCard(BuildContext context, {
+    required String title,
+    required String name,
+    String? subtitle,
+    required IconData avatar,
+    required Color color,
+    required List<Widget> actions,
+  }) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                CircleAvatar(backgroundColor: color.withOpacity(0.15), radius: 24, child: Icon(avatar, color: color, size: 26)),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(name, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                      if (subtitle != null) Text(subtitle, style: TextStyle(color: Colors.grey.shade600, fontSize: 13)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(children: actions),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final mapUrl = 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(kOwnerAddress)}';
     return Scaffold(
       appBar: AppBar(title: Text(l10n.contactUs)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [AppTheme.primaryBlue, const Color(0xFF1E5BB8)], begin: Alignment.topLeft, end: Alignment.bottomRight),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), shape: BoxShape.circle),
-                  child: const Icon(Icons.account_balance_wallet, color: Colors.white, size: 44),
-                ),
-                const SizedBox(height: 12),
-                const Text('حساباتي', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 4),
-                Text('${l10n.version} 1.0.0', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13)),
-              ],
-            ),
+          // ===== صاحب التطبيق =====
+          _personCard(
+            context,
+            title: l10n.appOwner,
+            name: kOwnerName,
+            subtitle: kOwnerCompany,
+            avatar: Icons.store,
+            color: const Color(0xFFE5A83B),
+            actions: [
+              _actionBtn(context, Icons.chat, l10n.whatsapp, const Color(0xFF25D366), () => _launch(context, 'https://wa.me/$kOwnerWhatsApp?text=${Uri.encodeComponent('السلام عليكم 🌹 استفسار عن تطبيق حساباتي')}')),
+              const SizedBox(width: 8),
+              _actionBtn(context, Icons.phone, l10n.call, AppTheme.primaryBlue, () => _launch(context, 'tel:+$kOwnerWhatsApp')),
+              const SizedBox(width: 8),
+              _actionBtn(context, Icons.map, l10n.openMap, const Color(0xFFFF7043), () => _launch(context, mapUrl)),
+            ],
           ),
-          const SizedBox(height: 20),
           Card(
-            child: Column(
-              children: [
-                ListTile(
-                  leading: CircleAvatar(backgroundColor: const Color(0xFF25D366).withOpacity(0.15), child: const Icon(Icons.chat, color: Color(0xFF25D366))),
-                  title: Text(l10n.supportWhatsApp, style: const TextStyle(fontWeight: FontWeight.w600)),
-                  subtitle: const Text('+$kSupportWhatsApp', textDirection: TextDirection.ltr),
-                  trailing: const Icon(Icons.chevron_left, color: AppTheme.primaryBlue),
-                  onTap: () => _launch(context, 'https://wa.me/$kSupportWhatsApp?text=${Uri.encodeComponent('استفسار عن تطبيق حساباتي 🙋‍♂️')}'),
-                ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: CircleAvatar(backgroundColor: AppTheme.primaryBlue.withOpacity(0.15), child: const Icon(Icons.email_outlined, color: AppTheme.primaryBlue)),
-                  title: Text(l10n.supportEmail, style: const TextStyle(fontWeight: FontWeight.w600)),
-                  subtitle: Text(kSupportEmail, textDirection: TextDirection.ltr),
-                  trailing: const Icon(Icons.chevron_left, color: AppTheme.primaryBlue),
-                  onTap: () => _launch(context, 'mailto:$kSupportEmail?subject=${Uri.encodeComponent('استفسار - تطبيق حساباتي')}'),
-                ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: CircleAvatar(backgroundColor: AppTheme.incomeGreen.withOpacity(0.15), child: const Icon(Icons.phone, color: AppTheme.incomeGreen)),
-                  title: Text(l10n.callSupport, style: const TextStyle(fontWeight: FontWeight.w600)),
-                  subtitle: Text(kSupportPhone, textDirection: TextDirection.ltr),
-                  trailing: const Icon(Icons.chevron_left, color: AppTheme.primaryBlue),
-                  onTap: () => _launch(context, 'tel:$kSupportPhone'),
-                ),
-              ],
+            margin: const EdgeInsets.only(bottom: 12),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  const Icon(Icons.location_on, color: Color(0xFFFF7043), size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(kOwnerAddress, style: TextStyle(color: Colors.grey.shade700, fontSize: 13))),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 12),
+
+          // ===== الشركة المطورة =====
+          _personCard(
+            context,
+            title: l10n.devCompany,
+            name: kDevCompany,
+            subtitle: 'Software Solutions',
+            avatar: Icons.business,
+            color: const Color(0xFF7C4DFF),
+            actions: [
+              if (kDevPortfolio.isNotEmpty)
+                _actionBtn(context, Icons.language, l10n.portfolio, const Color(0xFF7C4DFF), () => _launch(context, kDevPortfolio))
+              else
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(color: const Color(0xFF7C4DFF).withOpacity(0.08), borderRadius: BorderRadius.circular(12)),
+                    child: Center(child: Text('corvix © ${DateTime.now().year}', style: const TextStyle(color: Color(0xFF7C4DFF), fontWeight: FontWeight.bold, fontSize: 14))),
+                  ),
+                ),
+            ],
+          ),
+
+          // ===== المهندس المصمم =====
+          _personCard(
+            context,
+            title: l10n.appEngineer,
+            name: kEngineerName,
+            subtitle: 'Flutter Developer',
+            avatar: Icons.engineering,
+            color: AppTheme.primaryBlue,
+            actions: [
+              _actionBtn(context, Icons.chat, l10n.whatsapp, const Color(0xFF25D366), () => _launch(context, 'https://wa.me/$kEngineerWhatsApp?text=${Uri.encodeComponent('السلام عليكم 🌹 بخصوص تطبيق حساباتي')}')),
+              const SizedBox(width: 8),
+              _actionBtn(context, Icons.phone, l10n.call, AppTheme.primaryBlue, () => _launch(context, 'tel:+$kEngineerWhatsApp')),
+              const SizedBox(width: 8),
+              _actionBtn(context, Icons.language, l10n.portfolio, const Color(0xFF00BCD4), () => _launch(context, kEngineerPortfolio)),
+            ],
+          ),
+
+          const SizedBox(height: 4),
           Row(
             children: [
               Expanded(
@@ -97,13 +191,14 @@ class ContactUsScreen extends StatelessWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
-                  onPressed: () => ShareService.shareText(context, '📒 تطبيق حساباتي — دفتر النقدية والديون والمحفظة في تطبيق واحد!\nحمّله دلوقتي: https://hesabaty.app'),
+                  onPressed: () => ShareService.shareText(context, '📒 تطبيق حساباتي — دفتر النقدية والديون والمحفظة في تطبيق واحد!\nصاحب التطبيق: $kOwnerName — $kOwnerCompany\nتطوير: $kDevCompany | تصميم: $kEngineerName'),
                   icon: const Icon(Icons.share, color: AppTheme.primaryBlue),
                   label: Text(l10n.shareApp),
                 ),
               ),
             ],
           ),
+
           const SizedBox(height: 20),
           Text(l10n.faq, style: TextStyle(color: AppTheme.primaryBlue, fontSize: 17, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
@@ -123,7 +218,7 @@ class ContactUsScreen extends StatelessWidget {
                 ),
               )),
           const SizedBox(height: 16),
-          Center(child: Text(l10n.aboutApp, style: TextStyle(color: Colors.grey.shade400, fontSize: 12))),
+          Center(child: Text('${l10n.aboutApp} — ${l10n.version} 1.0.0', style: TextStyle(color: Colors.grey.shade400, fontSize: 12))),
         ],
       ),
     );

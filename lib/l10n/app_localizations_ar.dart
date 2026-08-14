@@ -532,4 +532,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cantOpen => 'تعذر فتح الرابط';
+
+  @override
+  String get appOwner => 'صاحب التطبيق';
+
+  @override
+  String get devCompany => 'الشركة المطورة';
+
+  @override
+  String get appEngineer => 'مهندس التطبيق';
+
+  @override
+  String get portfolio => 'البورتفوليو';
+
+  @override
+  String get openMap => 'العنوان على الخريطة';
+
+  @override
+  String get whatsapp => 'واتساب';
+
+  @override
+  String get call => 'اتصال';
 }

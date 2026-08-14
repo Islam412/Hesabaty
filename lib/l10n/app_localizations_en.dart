@@ -536,4 +536,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cantOpen => 'Cannot open link';
+
+  @override
+  String get appOwner => 'App owner';
+
+  @override
+  String get devCompany => 'Development company';
+
+  @override
+  String get appEngineer => 'App engineer';
+
+  @override
+  String get portfolio => 'Portfolio';
+
+  @override
+  String get openMap => 'Open in maps';
+
+  @override
+  String get whatsapp => 'WhatsApp';
+
+  @override
+  String get call => 'Call';
 }
