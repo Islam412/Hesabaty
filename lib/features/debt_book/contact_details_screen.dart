@@ -7,6 +7,8 @@ import '../shared/success_screen.dart';
 import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
+import '../../core/services/pdf_service.dart';
+import 'dart:io';
 
 class ContactDetailsScreen extends StatefulWidget {
   final Contact contact;
@@ -191,7 +193,10 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
       appBar: AppBar(
         title: Text(widget.contact.name),
         actions: [
-          IconButton(icon: const Icon(Icons.message_outlined), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.picture_as_pdf_outlined), onPressed: () async {
+            final file = await PdfService.generateContactStatement(contact: widget.contact, businessName: 'حساباتي', transactions: _txs);
+            if (context.mounted) await Share.shareXFiles([XFile(file.path)], subject: 'Statement - ${widget.contact.name}');
+          }),
           IconButton(icon: const Icon(Icons.call_outlined), onPressed: () {}),
         ],
       ),
@@ -232,7 +237,17 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                           onLongPress: () => _manage(t),
                           leading: Icon(t.type == 'given' ? Icons.arrow_upward : Icons.arrow_downward, color: c),
                           title: Text(t.type == 'given' ? l10n.given : l10n.taken),
-                          subtitle: Text('${t.date.day}/${t.date.month}/${t.date.year}  ${t.note ?? ''}'),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('${t.date.day}/${t.date.month}/${t.date.year}  ${t.note ?? ''}'),
+                              if (t.imagePath != null && t.imagePath!.isNotEmpty && File(t.imagePath!).existsSync())
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 6),
+                                  child: ClipRRect(borderRadius: BorderRadius.circular(6), child: Image.file(File(t.imagePath!), height: 60, width: 60, fit: BoxFit.cover)),
+                                ),
+                            ],
+                          ),
                           trailing: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.end,

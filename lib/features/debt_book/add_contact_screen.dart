@@ -4,6 +4,7 @@ import 'package:realm/realm.dart';
 import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
+import 'import_contacts_screen.dart';
 
 class AddContactScreen extends StatefulWidget {
   final bool isSupplier;
@@ -45,9 +46,9 @@ class _AddContactScreenState extends State<AddContactScreen> {
         _name.text.trim(),
         widget.isSupplier ? 'supplier' : 'customer',
         DateTime.now(),
-        tags: _tags,
         phone: _phone.text.trim().isEmpty ? null : _phone.text.trim(),
         address: _address.text.trim().isEmpty ? null : _address.text.trim(),
+        tags: _tags,
       ));
     });
     if (mounted) Navigator.pop(context, true);
@@ -58,6 +59,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
     final l10n = AppLocalizations.of(context)!;
     final label = TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold);
     final border = OutlineInputBorder(borderRadius: BorderRadius.circular(12));
+    
     return Scaffold(
       appBar: AppBar(title: Text(widget.isSupplier ? l10n.addSupplier : l10n.addCustomer)),
       body: ListView(
@@ -110,6 +112,16 @@ class _AddContactScreenState extends State<AddContactScreen> {
                 Text(l10n.tagsDesc, style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
               ],
             ),
+          ),
+          const SizedBox(height: 16),
+          OutlinedButton.icon(
+            onPressed: () async {
+              final result = await Navigator.push(context, MaterialPageRoute(builder: (_) => ImportContactsScreen(isSupplier: widget.isSupplier)));
+              if (result == true && mounted) Navigator.pop(context, true);
+            },
+            icon: const Icon(Icons.contacts),
+            label: Text(l10n.importContacts),
+            style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
           ),
         ],
       ),

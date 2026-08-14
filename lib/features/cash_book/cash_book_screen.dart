@@ -7,6 +7,8 @@ import '../shared/success_screen.dart';
 import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
+import '../../core/services/image_picker_service.dart';
+import 'dart:io';
 
 class CashBookScreen extends StatefulWidget {
   const CashBookScreen({super.key});
@@ -64,6 +66,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
   Future<void> _add(String type) async {
     final amountC = TextEditingController();
     final noteC = TextEditingController();
+    String? _imgPath;
     final l10n = AppLocalizations.of(context)!;
     final isIncome = type == 'income';
     await showModalBottomSheet(
@@ -87,6 +90,31 @@ class _CashBookScreenState extends State<CashBookScreen> {
             ),
             const SizedBox(height: 12),
             TextField(controller: noteC, decoration: InputDecoration(labelText: l10n.note, border: const OutlineInputBorder())),
+            StatefulBuilder(
+              builder: (ctx, setS) => Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(child: OutlinedButton.icon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: true); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.camera_alt), label: Text(l10n.note))),
+                        const SizedBox(width: 8),
+                        Expanded(child: OutlinedButton.icon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: false); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.photo), label: Text(l10n.note))),
+                      ],
+                    ),
+                    if (_imgPath != null) ...[
+                      const SizedBox(height: 8),
+                      Stack(
+                        children: [
+                          ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.file(File(_imgPath!), height: 120, width: double.infinity, fit: BoxFit.cover)),
+                          Positioned(top: 4, right: 4, child: IconButton(icon: const Icon(Icons.close, color: Colors.white), onPressed: () => setS(() => _imgPath = null), style: IconButton.styleFrom(backgroundColor: Colors.black54))),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(height: 16),
             FilledButton(
               style: FilledButton.styleFrom(backgroundColor: isIncome ? AppTheme.incomeGreen : AppTheme.expenseRed, minimumSize: const Size(double.infinity, 52)),
@@ -105,6 +133,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
                     newBalance,
                     'active',
                     note: noteC.text.trim().isEmpty ? null : noteC.text.trim(),
+                    imagePath: _imgPath,
                   ));
                 });
                 if (ctx.mounted) {
