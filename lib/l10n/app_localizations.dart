@@ -1093,6 +1093,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Swipe to choose card style'**
   String get chooseTemplate;
+
+  /// No description provided for @supportWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp support'**
+  String get supportWhatsApp;
+
+  /// No description provided for @supportEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email support'**
+  String get supportEmail;
+
+  /// No description provided for @callSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Call us'**
+  String get callSupport;
+
+  /// No description provided for @rateApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate the app'**
+  String get rateApp;
+
+  /// No description provided for @faq.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ'**
+  String get faq;
+
+  /// No description provided for @cantOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot open link'**
+  String get cantOpen;
 }
 
 class _AppLocalizationsDelegate

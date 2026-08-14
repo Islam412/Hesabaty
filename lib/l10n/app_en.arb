@@ -165,5 +165,11 @@
   "pickBackground": "Pick background from phone",
   "customDesign": "My custom design",
   "cardDownloaded": "Card saved to Documents",
-  "chooseTemplate": "Swipe to choose card style"
+  "chooseTemplate": "Swipe to choose card style",
+  "supportWhatsApp": "WhatsApp support",
+  "supportEmail": "Email support",
+  "callSupport": "Call us",
+  "rateApp": "Rate the app",
+  "faq": "FAQ",
+  "cantOpen": "Cannot open link"
 }

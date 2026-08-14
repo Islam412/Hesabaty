@@ -518,4 +518,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chooseTemplate => 'Swipe to choose card style';
+
+  @override
+  String get supportWhatsApp => 'WhatsApp support';
+
+  @override
+  String get supportEmail => 'Email support';
+
+  @override
+  String get callSupport => 'Call us';
+
+  @override
+  String get rateApp => 'Rate the app';
+
+  @override
+  String get faq => 'FAQ';
+
+  @override
+  String get cantOpen => 'Cannot open link';
 }

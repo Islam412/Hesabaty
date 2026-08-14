@@ -514,4 +514,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get chooseTemplate => 'اسحب يمين وشمال لاختيار شكل البطاقة';
+
+  @override
+  String get supportWhatsApp => 'واتساب الدعم الفني';
+
+  @override
+  String get supportEmail => 'البريد الإلكتروني للدعم';
+
+  @override
+  String get callSupport => 'اتصال هاتفي';
+
+  @override
+  String get rateApp => 'قيّم التطبيق';
+
+  @override
+  String get faq => 'الأسئلة الشائعة';
+
+  @override
+  String get cantOpen => 'تعذر فتح الرابط';
 }
