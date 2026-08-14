@@ -97,7 +97,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get name => 'الاسم';
 
   @override
-  String get phoneNumber => 'رقم الهاتف';
+  String get phoneNumber => 'رقم الموبايل';
 
   @override
   String get address => 'العنوان';
@@ -346,4 +346,118 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get tapForContactInfo => 'اضغط هنا لمعلومات الاتصال';
+
+  @override
+  String get wallet => 'المحفظة';
+
+  @override
+  String get myWallet => 'محفظتي';
+
+  @override
+  String get availableBalance => 'الرصيد المتاح';
+
+  @override
+  String get sendMoney => 'إرسال فلوس';
+
+  @override
+  String get receiveMoney => 'استقبال فلوس';
+
+  @override
+  String get topUp => 'شحن المحفظة';
+
+  @override
+  String get linkedCards => 'البطاقات المربوطة';
+
+  @override
+  String get addCard => 'إضافة بطاقة';
+
+  @override
+  String get cardNumber => 'رقم البطاقة';
+
+  @override
+  String get cardholderName => 'اسم حامل البطاقة';
+
+  @override
+  String get expiryDate => 'تاريخ الانتهاء';
+
+  @override
+  String get cvv => 'CVV';
+
+  @override
+  String get sendTo => 'إرسال إلى';
+
+  @override
+  String get selectDestination => 'اختار الوجهة';
+
+  @override
+  String get vodafoneCash => 'فودافون كاش';
+
+  @override
+  String get orangeCash => 'اورنج كاش';
+
+  @override
+  String get etisalatCash => 'اتصالات كاش';
+
+  @override
+  String get instapay => 'انستا باي';
+
+  @override
+  String get meeza => 'بطاقة ميزة';
+
+  @override
+  String get bankAccount => 'حساب بنكي';
+
+  @override
+  String get cardOrAccount => 'رقم البطاقة أو الحساب';
+
+  @override
+  String get enterAmount => 'ادخل المبلغ';
+
+  @override
+  String get confirmSend => 'تأكيد وإرسال';
+
+  @override
+  String get transactionSuccess => 'تمت العملية بنجاح';
+
+  @override
+  String get transactionFailed => 'فشلت العملية';
+
+  @override
+  String get processing => 'جاري المعالجة...';
+
+  @override
+  String get referenceNumber => 'رقم المرجع';
+
+  @override
+  String get walletHistory => 'سجل المحفظة';
+
+  @override
+  String get noTransactions => 'لا توجد عمليات بعد';
+
+  @override
+  String get sent => 'مرسل';
+
+  @override
+  String get received => 'مستلم';
+
+  @override
+  String get toppedUp => 'شحن';
+
+  @override
+  String get cardAdded => 'تم إضافة البطاقة بنجاح';
+
+  @override
+  String get removeCard => 'إزالة البطاقة';
+
+  @override
+  String get defaultCard => 'البطاقة الافتراضية';
+
+  @override
+  String get fromCard => 'من البطاقة';
+
+  @override
+  String get insufficientBalance => 'الرصيد غير كافي';
+
+  @override
+  String get shareReceipt => 'مشاركة الإيصال';
 }

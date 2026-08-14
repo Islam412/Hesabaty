@@ -1,32 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import '../../app/theme.dart';
-import 'settings_screen.dart';
+import '../wallet/wallet_screen.dart';
 import 'reminders_screen.dart';
+import 'settings_screen.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 
-  Widget _bigCard(String title, String subtitle, IconData icon) {
+  Widget _bigCard(String title, String subtitle, IconData icon, {VoidCallback? onTap}) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Icon(icon, size: 44, color: AppTheme.primaryBlue),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 6),
-                  Text(subtitle, style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
-                ],
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Icon(icon, size: 44, color: AppTheme.primaryBlue),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 6),
+                    Text(subtitle, style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+                  ],
+                ),
               ),
-            ),
-            Icon(Icons.chevron_left, color: AppTheme.primaryBlue, size: 30),
-          ],
+              Icon(Icons.chevron_left, color: AppTheme.primaryBlue, size: 30),
+            ],
+          ),
         ),
       ),
     );
@@ -68,9 +73,16 @@ class MoreScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            _bigCard(l10n.myBusinessWallet, l10n.walletDesc, Icons.account_balance_wallet),
+            _bigCard(
+              l10n.myBusinessWallet,
+              l10n.walletDesc,
+              Icons.account_balance_wallet,
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const WalletScreen())),
+            ),
             const SizedBox(height: 14),
-            _bigCard(l10n.paymentServices, l10n.paymentDesc, Icons.point_of_sale),
+            _bigCard(l10n.paymentServices, l10n.paymentDesc, Icons.point_of_sale, onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.comingSoon)));
+            }),
             const SizedBox(height: 18),
             _row(Icons.work_outline, l10n.businessCard),
             _row(Icons.grid_view_outlined, l10n.inventoryStaff),

@@ -350,4 +350,118 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapForContactInfo => 'Tap here for contact info';
+
+  @override
+  String get wallet => 'Wallet';
+
+  @override
+  String get myWallet => 'My Wallet';
+
+  @override
+  String get availableBalance => 'Available balance';
+
+  @override
+  String get sendMoney => 'Send money';
+
+  @override
+  String get receiveMoney => 'Receive money';
+
+  @override
+  String get topUp => 'Top up';
+
+  @override
+  String get linkedCards => 'Linked cards';
+
+  @override
+  String get addCard => 'Add card';
+
+  @override
+  String get cardNumber => 'Card number';
+
+  @override
+  String get cardholderName => 'Cardholder name';
+
+  @override
+  String get expiryDate => 'Expiry date';
+
+  @override
+  String get cvv => 'CVV';
+
+  @override
+  String get sendTo => 'Send to';
+
+  @override
+  String get selectDestination => 'Select destination';
+
+  @override
+  String get vodafoneCash => 'Vodafone Cash';
+
+  @override
+  String get orangeCash => 'Orange Cash';
+
+  @override
+  String get etisalatCash => 'Etisalat Cash';
+
+  @override
+  String get instapay => 'InstaPay';
+
+  @override
+  String get meeza => 'Meeza Card';
+
+  @override
+  String get bankAccount => 'Bank account';
+
+  @override
+  String get cardOrAccount => 'Card or account number';
+
+  @override
+  String get enterAmount => 'Enter amount';
+
+  @override
+  String get confirmSend => 'Confirm & send';
+
+  @override
+  String get transactionSuccess => 'Transaction successful';
+
+  @override
+  String get transactionFailed => 'Transaction failed';
+
+  @override
+  String get processing => 'Processing...';
+
+  @override
+  String get referenceNumber => 'Reference number';
+
+  @override
+  String get walletHistory => 'Wallet history';
+
+  @override
+  String get noTransactions => 'No transactions yet';
+
+  @override
+  String get sent => 'Sent';
+
+  @override
+  String get received => 'Received';
+
+  @override
+  String get toppedUp => 'Top up';
+
+  @override
+  String get cardAdded => 'Card added successfully';
+
+  @override
+  String get removeCard => 'Remove card';
+
+  @override
+  String get defaultCard => 'Default card';
+
+  @override
+  String get fromCard => 'From card';
+
+  @override
+  String get insufficientBalance => 'Insufficient balance';
+
+  @override
+  String get shareReceipt => 'Share receipt';
 }

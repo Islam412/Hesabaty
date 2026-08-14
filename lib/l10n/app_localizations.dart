@@ -757,6 +757,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap here for contact info'**
   String get tapForContactInfo;
+
+  /// No description provided for @wallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get wallet;
+
+  /// No description provided for @myWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'My Wallet'**
+  String get myWallet;
+
+  /// No description provided for @availableBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Available balance'**
+  String get availableBalance;
+
+  /// No description provided for @sendMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Send money'**
+  String get sendMoney;
+
+  /// No description provided for @receiveMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive money'**
+  String get receiveMoney;
+
+  /// No description provided for @topUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Top up'**
+  String get topUp;
+
+  /// No description provided for @linkedCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked cards'**
+  String get linkedCards;
+
+  /// No description provided for @addCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Add card'**
+  String get addCard;
+
+  /// No description provided for @cardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Card number'**
+  String get cardNumber;
+
+  /// No description provided for @cardholderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardholder name'**
+  String get cardholderName;
+
+  /// No description provided for @expiryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry date'**
+  String get expiryDate;
+
+  /// No description provided for @cvv.
+  ///
+  /// In en, this message translates to:
+  /// **'CVV'**
+  String get cvv;
+
+  /// No description provided for @sendTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to'**
+  String get sendTo;
+
+  /// No description provided for @selectDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Select destination'**
+  String get selectDestination;
+
+  /// No description provided for @vodafoneCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Vodafone Cash'**
+  String get vodafoneCash;
+
+  /// No description provided for @orangeCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange Cash'**
+  String get orangeCash;
+
+  /// No description provided for @etisalatCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Etisalat Cash'**
+  String get etisalatCash;
+
+  /// No description provided for @instapay.
+  ///
+  /// In en, this message translates to:
+  /// **'InstaPay'**
+  String get instapay;
+
+  /// No description provided for @meeza.
+  ///
+  /// In en, this message translates to:
+  /// **'Meeza Card'**
+  String get meeza;
+
+  /// No description provided for @bankAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank account'**
+  String get bankAccount;
+
+  /// No description provided for @cardOrAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Card or account number'**
+  String get cardOrAccount;
+
+  /// No description provided for @enterAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter amount'**
+  String get enterAmount;
+
+  /// No description provided for @confirmSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm & send'**
+  String get confirmSend;
+
+  /// No description provided for @transactionSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction successful'**
+  String get transactionSuccess;
+
+  /// No description provided for @transactionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction failed'**
+  String get transactionFailed;
+
+  /// No description provided for @processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get processing;
+
+  /// No description provided for @referenceNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference number'**
+  String get referenceNumber;
+
+  /// No description provided for @walletHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet history'**
+  String get walletHistory;
+
+  /// No description provided for @noTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions yet'**
+  String get noTransactions;
+
+  /// No description provided for @sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get sent;
+
+  /// No description provided for @received.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get received;
+
+  /// No description provided for @toppedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Top up'**
+  String get toppedUp;
+
+  /// No description provided for @cardAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Card added successfully'**
+  String get cardAdded;
+
+  /// No description provided for @removeCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove card'**
+  String get removeCard;
+
+  /// No description provided for @defaultCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Default card'**
+  String get defaultCard;
+
+  /// No description provided for @fromCard.
+  ///
+  /// In en, this message translates to:
+  /// **'From card'**
+  String get fromCard;
+
+  /// No description provided for @insufficientBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient balance'**
+  String get insufficientBalance;
+
+  /// No description provided for @shareReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Share receipt'**
+  String get shareReceipt;
 }
 
 class _AppLocalizationsDelegate

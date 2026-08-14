@@ -75,3 +75,34 @@ class _Reminder {
   late String message;
   bool isDone = false;
 }
+
+@RealmModel()
+class _LinkedCard {
+  @PrimaryKey()
+  late String id;
+  late String businessId;
+  late String last4;
+  late String brand;
+  late String expiry;
+  late String cardholderName;
+  late String token;
+  late bool isDefault;
+  late DateTime addedAt;
+}
+
+@RealmModel()
+class _WalletTransaction {
+  @PrimaryKey()
+  late String id;
+  late String businessId;
+  late String type;
+  late double amount;
+  late String provider;
+  late String destination;
+  late String destinationType;
+  late String status;
+  late String? reference;
+  late String? note;
+  late DateTime date;
+  late double balanceAfter;
+}
