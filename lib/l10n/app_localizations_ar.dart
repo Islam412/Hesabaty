@@ -493,4 +493,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get shareAsVcard => 'مشاركة كجهة اتصال';
+
+  @override
+  String get editCard => 'تعديل بطاقة العمل';
+
+  @override
+  String get download => 'تحميل';
+
+  @override
+  String get sendCard => 'إرسال';
+
+  @override
+  String get pickBackground => 'اختار خلفية من الموبايل';
+
+  @override
+  String get customDesign => 'تصميمي الخاص';
+
+  @override
+  String get cardDownloaded => 'تم حفظ البطاقة في المستندات';
+
+  @override
+  String get chooseTemplate => 'اسحب يمين وشمال لاختيار شكل البطاقة';
 }

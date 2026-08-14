@@ -158,5 +158,12 @@
   "activity": "نوع النشاط",
   "cardSaved": "تم حفظ البطاقة بنجاح",
   "shareAsImage": "مشاركة كصورة",
-  "shareAsVcard": "مشاركة كجهة اتصال"
+  "shareAsVcard": "مشاركة كجهة اتصال",
+  "editCard": "تعديل بطاقة العمل",
+  "download": "تحميل",
+  "sendCard": "إرسال",
+  "pickBackground": "اختار خلفية من الموبايل",
+  "customDesign": "تصميمي الخاص",
+  "cardDownloaded": "تم حفظ البطاقة في المستندات",
+  "chooseTemplate": "اسحب يمين وشمال لاختيار شكل البطاقة"
 }

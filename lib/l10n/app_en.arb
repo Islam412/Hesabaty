@@ -158,5 +158,12 @@
   "activity": "Business type",
   "cardSaved": "Card saved successfully",
   "shareAsImage": "Share as image",
-  "shareAsVcard": "Share as contact"
+  "shareAsVcard": "Share as contact",
+  "editCard": "Edit business card",
+  "download": "Download",
+  "sendCard": "Send",
+  "pickBackground": "Pick background from phone",
+  "customDesign": "My custom design",
+  "cardDownloaded": "Card saved to Documents",
+  "chooseTemplate": "Swipe to choose card style"
 }

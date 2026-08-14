@@ -1051,6 +1051,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share as contact'**
   String get shareAsVcard;
+
+  /// No description provided for @editCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit business card'**
+  String get editCard;
+
+  /// No description provided for @download.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get download;
+
+  /// No description provided for @sendCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get sendCard;
+
+  /// No description provided for @pickBackground.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick background from phone'**
+  String get pickBackground;
+
+  /// No description provided for @customDesign.
+  ///
+  /// In en, this message translates to:
+  /// **'My custom design'**
+  String get customDesign;
+
+  /// No description provided for @cardDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Card saved to Documents'**
+  String get cardDownloaded;
+
+  /// No description provided for @chooseTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe to choose card style'**
+  String get chooseTemplate;
 }
 
 class _AppLocalizationsDelegate

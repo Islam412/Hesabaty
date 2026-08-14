@@ -497,4 +497,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareAsVcard => 'Share as contact';
+
+  @override
+  String get editCard => 'Edit business card';
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get sendCard => 'Send';
+
+  @override
+  String get pickBackground => 'Pick background from phone';
+
+  @override
+  String get customDesign => 'My custom design';
+
+  @override
+  String get cardDownloaded => 'Card saved to Documents';
+
+  @override
+  String get chooseTemplate => 'Swipe to choose card style';
 }
