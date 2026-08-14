@@ -171,4 +171,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get share => 'Share';
+
+  @override
+  String get welcomeTitle => 'Welcome to Hesabaty';
+
+  @override
+  String get onb1Body =>
+      'A ledger that makes it easy to record and manage debts for customers and suppliers. From any phone, anywhere.';
+
+  @override
+  String get onb2 =>
+      'All customer debts and payments in your hand at any time, without a paper ledger.';
+
+  @override
+  String get onb3 => 'A detailed statement for every customer.';
+
+  @override
+  String get onb4 => 'Automatic, free payment reminders via WhatsApp.';
+
+  @override
+  String get onb5 =>
+      'Add a note and a photo of the goods or invoice to every transaction.';
+
+  @override
+  String get start => 'Start';
+
+  @override
+  String get comingSoon => 'Coming soon';
+
+  @override
+  String get txSuccess => 'Transaction completed successfully';
+
+  @override
+  String get finish => 'Done';
+
+  @override
+  String get backupSection => 'Backup';
+
+  @override
+  String get autoBackupLabel => 'Daily automatic backup';
+
+  @override
+  String get exportShare => 'Export & share now';
+
+  @override
+  String get restore => 'Restore from backup';
+
+  @override
+  String get lastBackupAt => 'Last backup';
+
+  @override
+  String get noBackup => 'No backup yet';
+
+  @override
+  String get restoreDone => 'Backup restored successfully';
 }

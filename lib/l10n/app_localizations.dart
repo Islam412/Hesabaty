@@ -409,6 +409,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share'**
   String get share;
+
+  /// No description provided for @welcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Hesabaty'**
+  String get welcomeTitle;
+
+  /// No description provided for @onb1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A ledger that makes it easy to record and manage debts for customers and suppliers. From any phone, anywhere.'**
+  String get onb1Body;
+
+  /// No description provided for @onb2.
+  ///
+  /// In en, this message translates to:
+  /// **'All customer debts and payments in your hand at any time, without a paper ledger.'**
+  String get onb2;
+
+  /// No description provided for @onb3.
+  ///
+  /// In en, this message translates to:
+  /// **'A detailed statement for every customer.'**
+  String get onb3;
+
+  /// No description provided for @onb4.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic, free payment reminders via WhatsApp.'**
+  String get onb4;
+
+  /// No description provided for @onb5.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a note and a photo of the goods or invoice to every transaction.'**
+  String get onb5;
+
+  /// No description provided for @start.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get start;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get comingSoon;
+
+  /// No description provided for @txSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction completed successfully'**
+  String get txSuccess;
+
+  /// No description provided for @finish.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get finish;
+
+  /// No description provided for @backupSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get backupSection;
+
+  /// No description provided for @autoBackupLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily automatic backup'**
+  String get autoBackupLabel;
+
+  /// No description provided for @exportShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Export & share now'**
+  String get exportShare;
+
+  /// No description provided for @restore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from backup'**
+  String get restore;
+
+  /// No description provided for @lastBackupAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backup'**
+  String get lastBackupAt;
+
+  /// No description provided for @noBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup yet'**
+  String get noBackup;
+
+  /// No description provided for @restoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored successfully'**
+  String get restoreDone;
 }
 
 class _AppLocalizationsDelegate

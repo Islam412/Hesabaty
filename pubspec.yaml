@@ -29,6 +29,7 @@ dependencies:
   local_auth: any
   flutter_secure_storage: any
   go_router: any
+  file_picker: ^3.0.4
 
 dev_dependencies:
   flutter_test:

@@ -168,4 +168,58 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get share => 'مشاركة';
+
+  @override
+  String get welcomeTitle => 'مرحبا بك في حساباتي';
+
+  @override
+  String get onb1Body =>
+      'دفتر لتسهيل تسجيل وتسيير الديون الممنوحة للعملاء والموردين. من أي هاتف وفي أي مكان.';
+
+  @override
+  String get onb2 =>
+      'كل ديون ومدفوعات العملاء بين يديك في أي وقت بدون الحاجة لسجل الديون.';
+
+  @override
+  String get onb3 => 'حساب مفصل لجميع العملاء.';
+
+  @override
+  String get onb4 => 'تذكير بالدفع تلقائي ومجاني عبر الواتساب.';
+
+  @override
+  String get onb5 =>
+      'إمكانية إضافة ملاحظة وصورة البضاعة أو الفاتورة لكل معاملة.';
+
+  @override
+  String get start => 'إبدأ';
+
+  @override
+  String get comingSoon => 'قريبًا';
+
+  @override
+  String get txSuccess => 'تمت المعاملة بنجاح';
+
+  @override
+  String get finish => 'انهاء';
+
+  @override
+  String get backupSection => 'النسخ الاحتياطي';
+
+  @override
+  String get autoBackupLabel => 'نسخ احتياطي تلقائي يومي';
+
+  @override
+  String get exportShare => 'تصدير ومشاركة الآن';
+
+  @override
+  String get restore => 'استعادة من نسخة';
+
+  @override
+  String get lastBackupAt => 'آخر نسخة';
+
+  @override
+  String get noBackup => 'لا توجد نسخة بعد';
+
+  @override
+  String get restoreDone => 'تمت الاستعادة بنجاح';
 }

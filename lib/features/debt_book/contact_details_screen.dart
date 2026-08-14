@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:realm/realm.dart';
 import 'package:share_plus/share_plus.dart';
+import '../shared/amount_calculator_screen.dart';
+import '../shared/success_screen.dart';
 import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
@@ -132,7 +134,15 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
           children: [
             Text(type == 'given' ? l10n.given : l10n.taken, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen)),
             const SizedBox(height: 12),
-            TextField(controller: amountC, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: l10n.amount, border: const OutlineInputBorder())),
+            InkWell(
+              onTap: () async {
+                final v = await Navigator.push<double>(context, MaterialPageRoute(builder: (_) => AmountCalculatorScreen(title: type == 'given' ? l10n.given : l10n.taken, color: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen)));
+                if (v != null) amountC.text = v.toString();
+              },
+              child: AbsorbPointer(
+                child: TextField(controller: amountC, decoration: InputDecoration(labelText: l10n.amount, border: const OutlineInputBorder())),
+              ),
+            ),
             const SizedBox(height: 12),
             TextField(controller: noteC, decoration: InputDecoration(labelText: l10n.note, border: const OutlineInputBorder())),
             const SizedBox(height: 16),
@@ -155,7 +165,10 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                     note: noteC.text.trim().isEmpty ? null : noteC.text.trim(),
                   ));
                 });
-                if (ctx.mounted) Navigator.pop(ctx);
+                if (ctx.mounted) {
+                  Navigator.pop(ctx);
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => SuccessScreen(amount: amount, label: type == 'given' ? l10n.given : l10n.taken, color: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen)));
+                }
                 _load();
               },
               child: Text(l10n.save),

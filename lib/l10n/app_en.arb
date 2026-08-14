@@ -51,5 +51,22 @@
   "system": "System default",
   "edit": "Edit",
   "voidTx": "Void transaction",
-  "share": "Share"
+  "share": "Share",
+  "welcomeTitle": "Welcome to Hesabaty",
+  "onb1Body": "A ledger that makes it easy to record and manage debts for customers and suppliers. From any phone, anywhere.",
+  "onb2": "All customer debts and payments in your hand at any time, without a paper ledger.",
+  "onb3": "A detailed statement for every customer.",
+  "onb4": "Automatic, free payment reminders via WhatsApp.",
+  "onb5": "Add a note and a photo of the goods or invoice to every transaction.",
+  "start": "Start",
+  "comingSoon": "Coming soon",
+  "txSuccess": "Transaction completed successfully",
+  "finish": "Done",
+  "backupSection": "Backup",
+  "autoBackupLabel": "Daily automatic backup",
+  "exportShare": "Export & share now",
+  "restore": "Restore from backup",
+  "lastBackupAt": "Last backup",
+  "noBackup": "No backup yet",
+  "restoreDone": "Backup restored successfully"
 }
