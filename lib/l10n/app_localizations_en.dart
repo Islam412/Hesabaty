@@ -479,4 +479,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentMethods => 'Payment methods';
+
+  @override
+  String get businessName => 'Business name';
+
+  @override
+  String get ownerName => 'Owner name';
+
+  @override
+  String get activity => 'Business type';
+
+  @override
+  String get cardSaved => 'Card saved successfully';
+
+  @override
+  String get shareAsImage => 'Share as image';
+
+  @override
+  String get shareAsVcard => 'Share as contact';
 }

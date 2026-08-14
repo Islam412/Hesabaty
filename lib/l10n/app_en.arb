@@ -152,5 +152,11 @@
   "createPaymentLink": "Create payment link",
   "chooseCustomer": "Choose customer",
   "linkReady": "Link ready — share it now",
-  "paymentMethods": "Payment methods"
+  "paymentMethods": "Payment methods",
+  "businessName": "Business name",
+  "ownerName": "Owner name",
+  "activity": "Business type",
+  "cardSaved": "Card saved successfully",
+  "shareAsImage": "Share as image",
+  "shareAsVcard": "Share as contact"
 }

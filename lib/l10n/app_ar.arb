@@ -152,5 +152,11 @@
   "createPaymentLink": "إنشاء رابط تحصيل",
   "chooseCustomer": "اختار العميل",
   "linkReady": "تم إنشاء الرابط — شاركه دلوقتي",
-  "paymentMethods": "طرق الدفع"
+  "paymentMethods": "طرق الدفع",
+  "businessName": "اسم النشاط التجاري",
+  "ownerName": "اسم صاحب النشاط",
+  "activity": "نوع النشاط",
+  "cardSaved": "تم حفظ البطاقة بنجاح",
+  "shareAsImage": "مشاركة كصورة",
+  "shareAsVcard": "مشاركة كجهة اتصال"
 }

@@ -1015,6 +1015,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payment methods'**
   String get paymentMethods;
+
+  /// No description provided for @businessName.
+  ///
+  /// In en, this message translates to:
+  /// **'Business name'**
+  String get businessName;
+
+  /// No description provided for @ownerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner name'**
+  String get ownerName;
+
+  /// No description provided for @activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Business type'**
+  String get activity;
+
+  /// No description provided for @cardSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Card saved successfully'**
+  String get cardSaved;
+
+  /// No description provided for @shareAsImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Share as image'**
+  String get shareAsImage;
+
+  /// No description provided for @shareAsVcard.
+  ///
+  /// In en, this message translates to:
+  /// **'Share as contact'**
+  String get shareAsVcard;
 }
 
 class _AppLocalizationsDelegate

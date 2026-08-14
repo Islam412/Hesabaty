@@ -475,4 +475,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get paymentMethods => 'طرق الدفع';
+
+  @override
+  String get businessName => 'اسم النشاط التجاري';
+
+  @override
+  String get ownerName => 'اسم صاحب النشاط';
+
+  @override
+  String get activity => 'نوع النشاط';
+
+  @override
+  String get cardSaved => 'تم حفظ البطاقة بنجاح';
+
+  @override
+  String get shareAsImage => 'مشاركة كصورة';
+
+  @override
+  String get shareAsVcard => 'مشاركة كجهة اتصال';
 }
