@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'account_service.dart';
 import 'backup_service.dart';
 
 enum BackupFrequency { hourly, daily, weekly, monthly }
@@ -15,84 +16,84 @@ class AutoBackupService {
   static const String _kLastRun = 'ab_last_run';
 
   static Future<bool> isEnabled() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getBool(_kEnabled) ?? false;
   }
 
   static Future<void> setEnabled(bool v) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setBool(_kEnabled, v);
   }
 
   static Future<BackupFrequency> getFrequency() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     final s = p.getString(_kFrequency) ?? 'daily';
     return BackupFrequency.values.firstWhere((e) => e.name == s, orElse: () => BackupFrequency.daily);
   }
 
   static Future<void> setFrequency(BackupFrequency f) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setString(_kFrequency, f.name);
   }
 
   static Future<int> getHour() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getInt(_kHour) ?? 3;
   }
 
   static Future<void> setHour(int h) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setInt(_kHour, h);
   }
 
   static Future<int> getMinute() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getInt(_kMinute) ?? 0;
   }
 
   static Future<void> setMinute(int m) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setInt(_kMinute, m);
   }
 
   static Future<int> getWeekDay() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getInt(_kWeekDay) ?? DateTime.friday;
   }
 
   static Future<void> setWeekDay(int d) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setInt(_kWeekDay, d);
   }
 
   static Future<int> getMonthDay() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getInt(_kMonthDay) ?? 1;
   }
 
   static Future<void> setMonthDay(int d) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setInt(_kMonthDay, d);
   }
 
   static Future<bool> shouldDeleteOld() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getBool(_kDeleteOld) ?? true;
   }
 
   static Future<void> setDeleteOld(bool v) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setBool(_kDeleteOld, v);
   }
 
   static Future<DateTime?> getLastRun() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     final s = p.getString(_kLastRun);
     return s == null ? null : DateTime.tryParse(s);
   }
 
   static Future<void> _setLastRun(DateTime d) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setString(_kLastRun, d.toIso8601String());
   }
 

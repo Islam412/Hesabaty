@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterPhone.
   ///
   /// In en, this message translates to:
-  /// **'Please enter your phone number'**
+  /// **'Phone number'**
   String get enterPhone;
 
   /// No description provided for @phoneDesc.
@@ -593,7 +593,7 @@ abstract class AppLocalizations {
   /// No description provided for @wrongCode.
   ///
   /// In en, this message translates to:
-  /// **'Incorrect code, please try again'**
+  /// **'Wrong code'**
   String get wrongCode;
 
   /// No description provided for @reminders.
@@ -1633,6 +1633,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'pack'**
   String get pack;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get editProfile;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get logout;
+
+  /// No description provided for @logoutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to log out?'**
+  String get logoutConfirm;
+
+  /// No description provided for @sendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get sendCode;
+
+  /// No description provided for @verifyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify code'**
+  String get verifyCode;
+
+  /// No description provided for @profileSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile saved'**
+  String get profileSaved;
+
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get welcome;
 }
 
 class _AppLocalizationsDelegate

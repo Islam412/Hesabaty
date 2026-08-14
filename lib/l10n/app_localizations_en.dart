@@ -227,7 +227,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get restoreDone => 'Backup restored successfully';
 
   @override
-  String get enterPhone => 'Please enter your phone number';
+  String get enterPhone => 'Phone number';
 
   @override
   String get phoneDesc =>
@@ -268,7 +268,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otpMessage => 'Your verification code is:';
 
   @override
-  String get wrongCode => 'Incorrect code, please try again';
+  String get wrongCode => 'Wrong code';
 
   @override
   String get reminders => 'Reminders';
@@ -789,4 +789,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pack => 'pack';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get editProfile => 'Edit profile';
+
+  @override
+  String get logout => 'Log out';
+
+  @override
+  String get logoutConfirm => 'Do you want to log out?';
+
+  @override
+  String get sendCode => 'Send code';
+
+  @override
+  String get verifyCode => 'Verify code';
+
+  @override
+  String get profileSaved => 'Profile saved';
+
+  @override
+  String get welcome => 'Welcome';
 }

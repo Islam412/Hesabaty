@@ -69,7 +69,7 @@
   "lastBackupAt": "Last backup",
   "noBackup": "No backup yet",
   "restoreDone": "Backup restored successfully",
-  "enterPhone": "Please enter your phone number",
+  "enterPhone": "Phone number",
   "phoneDesc": "Your phone number lets you securely access your account from any phone, anywhere.",
   "continueBtn": "Continue",
   "enterOtp": "Please enter the secret code you received",
@@ -82,7 +82,7 @@
   "privacyPolicy": "Privacy Policy",
   "termsOfUse": "Terms of Use",
   "otpMessage": "Your verification code is:",
-  "wrongCode": "Incorrect code, please try again",
+  "wrongCode": "Wrong code",
   "reminders": "Reminders",
   "scheduleReminder": "Schedule reminder",
   "reminderDate": "Reminder date",
@@ -255,5 +255,13 @@
   "piece": "piece",
   "kg": "kg",
   "box": "box",
-  "pack": "pack"
+  "pack": "pack",
+  "profile": "Profile",
+  "editProfile": "Edit profile",
+  "logout": "Log out",
+  "logoutConfirm": "Do you want to log out?",
+  "sendCode": "Send code",
+  "verifyCode": "Verify code",
+  "profileSaved": "Profile saved",
+  "welcome": "Welcome"
 }

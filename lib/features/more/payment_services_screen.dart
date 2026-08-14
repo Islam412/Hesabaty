@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/account_service.dart';
 import 'package:realm/realm.dart';
 import '../../app/theme.dart';
 import '../../core/services/share_service.dart';
@@ -36,7 +37,7 @@ class _PaymentServicesScreenState extends State<PaymentServicesScreen> {
   }
 
   Future<void> _load() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await AccPrefs.scoped();
     setState(() {
       _enabled = Map<String, bool>.from(jsonDecode(prefs.getString('pay_enabled') ?? '{}'));
       _accounts = Map<String, String>.from(jsonDecode(prefs.getString('pay_accounts') ?? '{}'));
@@ -45,7 +46,7 @@ class _PaymentServicesScreenState extends State<PaymentServicesScreen> {
   }
 
   Future<void> _save() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await AccPrefs.scoped();
     await prefs.setString('pay_enabled', jsonEncode(_enabled));
     await prefs.setString('pay_accounts', jsonEncode(_accounts));
   }

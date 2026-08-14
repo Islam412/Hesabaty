@@ -224,7 +224,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get restoreDone => 'تمت الاستعادة بنجاح';
 
   @override
-  String get enterPhone => 'المرجو إدخال رقم الهاتف';
+  String get enterPhone => 'رقم الموبايل';
 
   @override
   String get phoneDesc =>
@@ -264,7 +264,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get otpMessage => 'رمز التأكيد الخاص بك هو:';
 
   @override
-  String get wrongCode => 'الرمز غير صحيح، حاول مرة أخرى';
+  String get wrongCode => 'الكود غير صحيح';
 
   @override
   String get reminders => 'التذكيرات';
@@ -785,4 +785,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pack => 'باكيت';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get editProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get logout => 'تسجيل الخروج';
+
+  @override
+  String get logoutConfirm => 'هل تريد تسجيل الخروج؟';
+
+  @override
+  String get sendCode => 'إرسال الكود';
+
+  @override
+  String get verifyCode => 'تأكيد الكود';
+
+  @override
+  String get profileSaved => 'تم حفظ الملف الشخصي';
+
+  @override
+  String get welcome => 'مرحبًا بك';
 }

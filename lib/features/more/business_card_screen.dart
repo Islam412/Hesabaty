@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/account_service.dart';
 import '../../app/theme.dart';
 import '../../core/services/business_card_image_service.dart';
 import '../../core/services/image_picker_service.dart';
@@ -33,7 +34,7 @@ class _BusinessCardScreenState extends State<BusinessCardScreen> {
   }
 
   Future<void> _load() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await AccPrefs.scoped();
     _biz.text = prefs.getString('bc_biz') ?? '';
     _owner.text = prefs.getString('bc_owner') ?? '';
     _phone.text = prefs.getString('bc_phone') ?? '';
@@ -59,7 +60,7 @@ class _BusinessCardScreenState extends State<BusinessCardScreen> {
   Future<void> _pickCustomBg() async {
     final path = await ImagePickerService.pickAndSave(fromCamera: false);
     if (path == null) return;
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await AccPrefs.scoped();
     await prefs.setString('bc_custom_bg', path);
     setState(() {
       _customBg = path;
@@ -70,7 +71,7 @@ class _BusinessCardScreenState extends State<BusinessCardScreen> {
 
   Future<void> _save() async {
     final l10n = AppLocalizations.of(context)!;
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await AccPrefs.scoped();
     await prefs.setString('bc_biz', _biz.text.trim());
     await prefs.setString('bc_owner', _owner.text.trim());
     await prefs.setString('bc_phone', _phone.text.trim());

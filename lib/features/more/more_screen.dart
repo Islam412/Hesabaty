@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/account_service.dart';
+import '../../data/services/realm_service.dart';
+import 'login_screen.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import '../../app/theme.dart';
 import '../wallet/wallet_screen.dart';
@@ -6,6 +10,7 @@ import 'reminders_screen.dart';
 import 'payment_services_screen.dart';
 import 'business_card_screen.dart';
 import 'backup_settings_screen.dart';
+import 'profile_screen.dart';
 import '../inventory_staff/inventory_staff_hub.dart';
 import 'contact_us_screen.dart';
 import 'contact_us_screen.dart';
@@ -79,6 +84,16 @@ class MoreScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
+            Card(
+              child: ListTile(
+                leading: CircleAvatar(backgroundColor: AppTheme.primaryBlue, child: const Icon(Icons.person, color: Colors.white)),
+                title: Text(l10n.profile, style: const TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text(l10n.editProfile),
+                trailing: const Icon(Icons.chevron_left, color: AppTheme.primaryBlue),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen())),
+              ),
+            ),
+            const SizedBox(height: 14),
             _bigCard(
               l10n.myBusinessWallet,
               l10n.walletDesc,
@@ -94,6 +109,33 @@ class MoreScreen extends StatelessWidget {
             _row(Icons.notifications_active_outlined, l10n.reminders, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RemindersScreen()))),
             _row(Icons.backup_outlined, l10n.autoBackup, extra: Icon(Icons.cloud_done, color: AppTheme.incomeGreen, size: 20), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BackupSettingsScreen()))),
             _row(Icons.chat_bubble_outline, l10n.contactUs, extra: CircleAvatar(radius: 12, backgroundColor: AppTheme.primaryBlue.withOpacity(0.15), child: Text('0', style: TextStyle(fontSize: 11, color: AppTheme.primaryBlue))), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ContactUsScreen()))),
+            Card(
+              color: AppTheme.expenseRed.withOpacity(0.08),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: BorderSide(color: AppTheme.expenseRed.withOpacity(0.4))),
+              child: ListTile(
+                leading: const Icon(Icons.logout, color: AppTheme.expenseRed),
+                title: Text(l10n.logout, style: const TextStyle(color: AppTheme.expenseRed, fontWeight: FontWeight.bold)),
+                onTap: () async {
+                  final ok = await showDialog<bool>(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: Text(l10n.logout),
+                      content: Text(l10n.logoutConfirm),
+                      actions: [
+                        TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+                        FilledButton(style: FilledButton.styleFrom(backgroundColor: AppTheme.expenseRed), onPressed: () => Navigator.pop(ctx, true), child: Text(l10n.logout)),
+                      ],
+                    ),
+                  );
+                  if (ok != true) return;
+                  final prefs = await SharedPreferences.getInstance();
+                  await AccountService.logout();
+                  RealmService.reset();
+                  if (!context.mounted) return;
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const LoginScreen()), (r) => false);
+                },
+              ),
+            ),
             const SizedBox(height: 26),
             Center(child: Text(l10n.aboutApp, style: TextStyle(color: Colors.grey.shade400))),
             const SizedBox(height: 4),

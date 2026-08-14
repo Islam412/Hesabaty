@@ -9,7 +9,7 @@ class StatementLinkService {
 
   static Future<String> generateLink(Contact contact, List<DebtTransaction> txs, double balance, {List<Map<String, String>> payMethods = const []}) async {
     final prefs = await SharedPreferences.getInstance();
-    final sp = prefs.getString('user_phone') ?? '';
+    final sp = (prefs.getString('profile_phone') ?? prefs.getString('user_phone')) ?? '';
     final isCustomer = contact.type == 'customer';
     double given = 0;
     double taken = 0;
@@ -27,7 +27,7 @@ class StatementLinkService {
     }
     final map = {
       'id': const Uuid().v4(),
-      'sn': 'حساباتي',
+      'sn': prefs.getString('profile_name') ?? 'حساباتي',
       'sp': sp.isNotEmpty ? '+$sp' : '',
       'n': contact.name,
       'p': contact.phone ?? '',
@@ -44,10 +44,10 @@ class StatementLinkService {
 
   static Future<String> statementText(Contact contact, List<DebtTransaction> txs, double balance) async {
     final prefs = await SharedPreferences.getInstance();
-    final sp = prefs.getString('user_phone') ?? '';
+    final sp = (prefs.getString('profile_phone') ?? prefs.getString('user_phone')) ?? '';
     final sb = StringBuffer();
     sb.writeln('كشف حساب: ${contact.name}${(contact.phone ?? '').isNotEmpty ? ' (${contact.phone})' : ''}');
-    sb.writeln('من: حساباتي ${sp.isNotEmpty ? '+$sp' : ''}');
+    sb.writeln('من: ${prefs.getString('profile_name') ?? 'حساباتي'} ${sp.isNotEmpty ? '+$sp' : ''}');
     sb.writeln('ليك رصيد');
     sb.writeln('-----');
     sb.writeln('${balance.abs().toStringAsFixed(2)} ج.م.');
