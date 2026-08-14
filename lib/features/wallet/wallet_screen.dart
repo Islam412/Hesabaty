@@ -71,7 +71,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 children: [
                   Text(l10n.availableBalance, style: TextStyle(color: Colors.white.withOpacity(0.85), fontSize: 14)),
                   const SizedBox(height: 8),
-                  Text('${_balance.toStringAsFixed(2)} ج.م', style: const TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.bold)),
+                  Text('${_balance.toStringAsFixed(2)} ${Cur.v}', style: const TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
                   Row(
                     children: [
@@ -158,7 +158,7 @@ class _WalletScreenState extends State<WalletScreen> {
                         children: [
                           Text('${c.brand} •••• ${c.last4}', style: const TextStyle(fontWeight: FontWeight.w600)),
                           Text('${c.bank ?? ''}  ${c.expiry}', style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
-                          if (c.balance != null) Text('الرصيد: ${c.balance!.toStringAsFixed(2)} ج.م', style: TextStyle(color: AppTheme.incomeGreen, fontSize: 12, fontWeight: FontWeight.w600)),
+                          if (c.balance != null) Text('الرصيد: ${c.balance!.toStringAsFixed(2)} ${Cur.v}', style: TextStyle(color: AppTheme.incomeGreen, fontSize: 12, fontWeight: FontWeight.w600)),
                         ],
                       ),
                     ),

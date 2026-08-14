@@ -63,7 +63,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
                     style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
                       hintText: '0.00',
-                      suffixText: 'ج.م',
+                      suffixText: Cur.v,
                       border: InputBorder.none,
                     ),
                   ),

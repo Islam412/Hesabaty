@@ -40,7 +40,7 @@ class SuccessScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text(label, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
-                    Text('${amount.toStringAsFixed(2)} ج.م', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: color)),
+                    Text('${amount.toStringAsFixed(2)} ${Cur.v}', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: color)),
                     const SizedBox(height: 24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import '../../app/theme.dart';
+import '../../core/services/account_service.dart';
 import 'backup_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -107,7 +108,41 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const Divider(),
-          _row(Icons.currency_exchange, l10n.currency, const Color(0xFFE5A83B)),
+          StatefulBuilder(
+            builder: (ctx, setState) => FutureBuilder<String>(
+              future: CurrencyNotifier.getSymbol(),
+              builder: (ctx, snap) {
+                final sym = snap.data ?? Cur.v;
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 4),
+                  child: ListTile(
+                    leading: CircleAvatar(backgroundColor: const Color(0xFFE5A83B).withOpacity(0.12), child: const Icon(Icons.currency_exchange, color: Color(0xFFE5A83B))),
+                    title: Text(l10n.currency, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    subtitle: Text(sym, style: const TextStyle(fontSize: 12)),
+                    trailing: const Icon(Icons.chevron_left, color: Color(0xFFE5A83B)),
+                    onTap: () async {
+                      final sel = await showDialog<String>(
+                        context: context,
+                        builder: (ctx) => SimpleDialog(
+                          title: Text(l10n.currency),
+                          children: kCurrencies.map((c) => SimpleDialogOption(
+                            onPressed: () => Navigator.pop(ctx, c['symbol']),
+                            child: Text(c['label']!, style: const TextStyle(fontSize: 15)),
+                          )).toList(),
+                        ),
+                      );
+                      if (sel != null) {
+                        await CurrencyNotifier.setSymbol(sel);
+                        final sess = await AccountService.sessionPhone();
+                        if (sess != null) await AccountService.update(sess, {'currency': sel});
+                        setState(() {});
+                      }
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
           const Divider(),
           _row(Icons.notifications_outlined, l10n.notifications, const Color(0xFFFF7043)),
           const Divider(),

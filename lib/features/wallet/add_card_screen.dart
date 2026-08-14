@@ -78,7 +78,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
       if (!mounted) return;
       setState(() => _busy = false);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('${l10n.cardAdded} — الرصيد: ${balance.toStringAsFixed(2)} ج.م'),
+        content: Text('${l10n.cardAdded} — الرصيد: ${balance.toStringAsFixed(2)} ${Cur.v}'),
         backgroundColor: AppTheme.incomeGreen,
       ));
       Navigator.pop(context);

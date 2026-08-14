@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../../app/theme.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -110,7 +111,7 @@ class ReceiptImageService {
     for (final r in rows) {
       final labelTp = _tp(r.label, 26, const Color(0xFF1F3B5C), bold: true);
       final dateTp = _tp(r.date, 20, const Color(0xFF8AA0B8));
-      final amtTp = _tp('${r.amount.toStringAsFixed(2)} ج.م', 26, r.isGiven ? const Color(0xFFDC2626) : const Color(0xFF16A34A), bold: true);
+      final amtTp = _tp('${r.amount.toStringAsFixed(2)} ${Cur.v}', 26, r.isGiven ? const Color(0xFFDC2626) : const Color(0xFF16A34A), bold: true);
       labelTp.paint(canvas, Offset(width - 40 - labelTp.width, y + 6));
       dateTp.paint(canvas, Offset(width - 40 - dateTp.width, y + 40));
       amtTp.paint(canvas, Offset(40, y + 16));
@@ -122,7 +123,7 @@ class ReceiptImageService {
     y += 30;
     _center(canvas, 'الرصيد الحالي', y, 28, const Color(0xFF1F3B5C), width, bold: true);
     y += 44;
-    _center(canvas, '${balance.abs().toStringAsFixed(2)} ج.م', y, 54, balance >= 0 ? const Color(0xFF16A34A) : const Color(0xFFDC2626), width, bold: true);
+    _center(canvas, '${balance.abs().toStringAsFixed(2)} ${Cur.v}', y, 54, balance >= 0 ? const Color(0xFF16A34A) : const Color(0xFFDC2626), width, bold: true);
     y += 90;
     _center(canvas, 'حساباتي', y, 34, const Color(0xFF2E7CF6), width, bold: true);
 

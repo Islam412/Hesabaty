@@ -52,7 +52,7 @@ class TransactionDetailsScreen extends StatelessWidget {
         children: [
           Center(
             child: Text(
-              '${amount.toStringAsFixed(2)} ج.م',
+              '${amount.toStringAsFixed(2)} ${Cur.v}',
               style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold, color: color),
             ),
           ),

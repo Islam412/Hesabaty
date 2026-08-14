@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'app/app.dart';
-import 'data/services/realm_service.dart';
+import 'app/theme.dart';
+import 'core/services/auto_backup_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await RealmService.realm;
+  await Cur.load();
+  Future.microtask(() async {
+    try {
+      await AutoBackupService.checkAndRunIfNeeded();
+    } catch (_) {}
+  });
   runApp(const MyApp());
 }

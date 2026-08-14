@@ -149,7 +149,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text('${p.stock.toStringAsFixed(0)} ${p.unit ?? l10n.piece}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                                    Text('${p.price.toStringAsFixed(2)} ج.م', style: TextStyle(color: Colors.grey.shade500, fontSize: 11)),
+                                    Text('${p.price.toStringAsFixed(2)} ${Cur.v}', style: TextStyle(color: Colors.grey.shade500, fontSize: 11)),
                                   ],
                                 ),
                               ],

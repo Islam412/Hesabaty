@@ -56,7 +56,7 @@ class _StaffScreenState extends State<StaffScreen> {
             child: Row(
               children: [
                 _stat('${_staff.length}', l10n.totalEmployees, const Color(0xFF7C4DFF)),
-                _stat('${total.toStringAsFixed(0)} ج.م', l10n.monthlySalaries, const Color(0xFFE5A83B)),
+                _stat('${total.toStringAsFixed(0)} ${Cur.v}', l10n.monthlySalaries, const Color(0xFFE5A83B)),
               ],
             ),
           ),
@@ -109,7 +109,7 @@ class _StaffScreenState extends State<StaffScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text('${s.salary.toStringAsFixed(0)} ج.م', style: const TextStyle(fontWeight: FontWeight.bold)),
+                                    Text('${s.salary.toStringAsFixed(0)} ${Cur.v}', style: const TextStyle(fontWeight: FontWeight.bold)),
                                     Text(s.salaryType == 'monthly' ? l10n.monthly : (s.salaryType == 'weekly' ? l10n.weekly : l10n.daily), style: TextStyle(color: Colors.grey.shade500, fontSize: 11)),
                                   ],
                                 ),

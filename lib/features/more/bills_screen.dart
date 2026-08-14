@@ -158,7 +158,7 @@ class _BillsScreenState extends State<BillsScreen> {
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 labelText: 'المبلغ',
-                suffixText: 'ج.م',
+                suffixText: Cur.v,
                 border: const OutlineInputBorder(),
               ),
             ),

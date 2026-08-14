@@ -43,7 +43,7 @@ class ReceiptScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      Text('${amount.toStringAsFixed(2)} ج.م', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold)),
+                      Text('${amount.toStringAsFixed(2)} ${Cur.v}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       Text('$destinationLabel: $destination', style: TextStyle(color: Colors.grey.shade600)),
                       const SizedBox(height: 8),

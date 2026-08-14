@@ -147,7 +147,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
                 Text(s.role, style: const TextStyle(color: Color(0xFFE1BEE7))),
                 const SizedBox(height: 12),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  _infoChip(l10n.salary, '${s.salary.toStringAsFixed(0)} ج.م'),
+                  _infoChip(l10n.salary, '${s.salary.toStringAsFixed(0)} ${Cur.v}'),
                   const SizedBox(width: 8),
                   _infoChip(s.salaryType == 'monthly' ? l10n.monthly : (s.salaryType == 'weekly' ? l10n.weekly : l10n.daily), ''),
                 ]),
@@ -156,7 +156,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
           ),
           const SizedBox(height: 12),
           Row(children: [
-            _stat('إجمالي المصروف', '${paid.toStringAsFixed(0)} ج.م', AppTheme.expenseRed),
+            _stat('إجمالي المصروف', '${paid.toStringAsFixed(0)} ${Cur.v}', AppTheme.expenseRed),
             _stat('الحضور', '${_attendance.length}', AppTheme.incomeGreen),
           ]),
           if (s.phone != null) _detailRow(Icons.phone, l10n.phoneNumber, s.phone!),
@@ -190,7 +190,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
               margin: const EdgeInsets.only(bottom: 6),
               child: ListTile(
                 leading: CircleAvatar(backgroundColor: AppTheme.expenseRed.withOpacity(0.15), child: const Icon(Icons.payments, color: AppTheme.expenseRed)),
-                title: Text('${p.amount.toStringAsFixed(2)} ج.م', style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text('${p.amount.toStringAsFixed(2)} ${Cur.v}', style: const TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text('${p.date.day}/${p.date.month}/${p.date.year}${p.note != null ? ' • ${p.note}' : ''}', style: const TextStyle(fontSize: 12)),
               ),
             )),

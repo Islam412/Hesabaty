@@ -17,7 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _owner = '';
   String _phone = '';
   String _address = '';
-  String _currency = 'ج.م';
+  String _currency = Cur.v;
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _owner = p.getString('profile_owner') ?? '';
       _phone = p.getString('profile_phone') ?? p.getString('user_phone') ?? '';
       _address = p.getString('profile_address') ?? '';
-      _currency = p.getString('profile_currency') ?? 'ج.م';
+      _currency = p.getString('profile_currency') ?? Cur.v;
     });
   }
 

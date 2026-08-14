@@ -145,3 +145,36 @@ class LocaleNotifier {
     localeListener?.call();
   }
 }
+
+class Cur {
+  static String v = 'ج.م';
+  static Future<void> load() async {
+    final p = await SharedPreferences.getInstance();
+    v = p.getString('profile_currency') ?? 'ج.م';
+  }
+}
+
+const List<Map<String, String>> kCurrencies = [
+  {'symbol': 'ج.م', 'label': 'جنيه مصري (ج.م)'},
+  {'symbol': '\$', 'label': 'دولار أمريكي (\$)'},
+  {'symbol': 'ر.س', 'label': 'ريال سعودي (ر.س)'},
+  {'symbol': 'د.إ', 'label': 'درهم إماراتي (د.إ)'},
+  {'symbol': 'د.ك', 'label': 'دينار كويتي (د.ك)'},
+  {'symbol': 'ر.ق', 'label': 'ريال قطري (ر.ق)'},
+  {'symbol': 'د.ل', 'label': 'دينار ليبي (د.ل)'},
+  {'symbol': 'د.م', 'label': 'درهم مغربي (د.م)'},
+];
+
+class CurrencyNotifier {
+  static VoidCallback? listener;
+  static Future<String> getSymbol() async {
+    final p = await SharedPreferences.getInstance();
+    return p.getString('profile_currency') ?? 'ج.م';
+  }
+  static Future<void> setSymbol(String sym) async {
+    final p = await SharedPreferences.getInstance();
+    await p.setString('profile_currency', sym);
+    Cur.v = sym;
+    listener?.call();
+  }
+}

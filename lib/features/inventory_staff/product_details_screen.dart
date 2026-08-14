@@ -133,9 +133,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           const SizedBox(height: 12),
           Row(
             children: [
-              _info('السعر', '${p.price.toStringAsFixed(2)} ج.م', AppTheme.primaryBlue),
-              _info('التكلفة', '${p.cost.toStringAsFixed(2)} ج.م', const Color(0xFFFF7043)),
-              _info('القيمة', '${value.toStringAsFixed(2)} ج.م', const Color(0xFFE5A83B)),
+              _info('السعر', '${p.price.toStringAsFixed(2)} ${Cur.v}', AppTheme.primaryBlue),
+              _info('التكلفة', '${p.cost.toStringAsFixed(2)} ${Cur.v}', const Color(0xFFFF7043)),
+              _info('القيمة', '${value.toStringAsFixed(2)} ${Cur.v}', const Color(0xFFE5A83B)),
             ],
           ),
           if (p.category.isNotEmpty) _detailRow(Icons.category, l10n.category, p.category),

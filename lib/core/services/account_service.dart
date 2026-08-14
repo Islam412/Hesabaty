@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../../app/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountService {
@@ -34,7 +35,7 @@ class AccountService {
       'name': name,
       'owner': owner,
       'address': address,
-      'currency': 'ج.م',
+      'currency': Cur.v,
       'createdAt': DateTime.now().toIso8601String(),
     };
     await _saveAll(all);
@@ -60,7 +61,7 @@ class AccountService {
       await p.setString('profile_name', (acc['name'] ?? 'حساباتي').toString());
       await p.setString('profile_owner', (acc['owner'] ?? '').toString());
       await p.setString('profile_address', (acc['address'] ?? '').toString());
-      await p.setString('profile_currency', (acc['currency'] ?? 'ج.م').toString());
+      await p.setString('profile_currency', (acc['currency'] ?? Cur.v).toString());
     }
   }
 

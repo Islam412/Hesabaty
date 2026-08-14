@@ -109,7 +109,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   decoration: InputDecoration(
                     labelText: l10n.enterAmount,
-                    suffixText: 'ج.م',
+                    suffixText: Cur.v,
                     border: const OutlineInputBorder(),
                   ),
                 ),
