@@ -82,5 +82,15 @@
   "privacyPolicy": "سياسة الخصوصية",
   "termsOfUse": "شروط الاستعمال",
   "otpMessage": "رمز التأكيد الخاص بك هو:",
-  "wrongCode": "الرمز غير صحيح، حاول مرة أخرى"
+  "wrongCode": "الرمز غير صحيح، حاول مرة أخرى",
+  "reminders": "التذكيرات",
+  "scheduleReminder": "جدولة تذكير",
+  "reminderDate": "تاريخ التذكير",
+  "reminderMsg": "رسالة التذكير",
+  "reminderSaved": "تم جدولة التذكير بنجاح",
+  "noReminders": "لا توجد تذكيرات مجدولة",
+  "daysUntil": "يوم متبقي",
+  "today": "اليوم",
+  "overdue": "متأخر",
+  "cancelReminder": "إلغاء التذكير"
 }

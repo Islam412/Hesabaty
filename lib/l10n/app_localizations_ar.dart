@@ -265,4 +265,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get wrongCode => 'الرمز غير صحيح، حاول مرة أخرى';
+
+  @override
+  String get reminders => 'التذكيرات';
+
+  @override
+  String get scheduleReminder => 'جدولة تذكير';
+
+  @override
+  String get reminderDate => 'تاريخ التذكير';
+
+  @override
+  String get reminderMsg => 'رسالة التذكير';
+
+  @override
+  String get reminderSaved => 'تم جدولة التذكير بنجاح';
+
+  @override
+  String get noReminders => 'لا توجد تذكيرات مجدولة';
+
+  @override
+  String get daysUntil => 'يوم متبقي';
+
+  @override
+  String get today => 'اليوم';
+
+  @override
+  String get overdue => 'متأخر';
+
+  @override
+  String get cancelReminder => 'إلغاء التذكير';
 }

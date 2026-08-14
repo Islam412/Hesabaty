@@ -24,7 +24,7 @@ dependencies:
   flutter_contacts: any
   pdf: any
   printing: any
-  flutter_local_notifications: any
+  flutter_local_notifications: ^17.0.0
   timezone: any
   local_auth: any
   flutter_secure_storage: any

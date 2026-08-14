@@ -269,4 +269,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get wrongCode => 'Incorrect code, please try again';
+
+  @override
+  String get reminders => 'Reminders';
+
+  @override
+  String get scheduleReminder => 'Schedule reminder';
+
+  @override
+  String get reminderDate => 'Reminder date';
+
+  @override
+  String get reminderMsg => 'Reminder message';
+
+  @override
+  String get reminderSaved => 'Reminder scheduled successfully';
+
+  @override
+  String get noReminders => 'No reminders scheduled';
+
+  @override
+  String get daysUntil => 'days remaining';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get overdue => 'Overdue';
+
+  @override
+  String get cancelReminder => 'Cancel reminder';
 }

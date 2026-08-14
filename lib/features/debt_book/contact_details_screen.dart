@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:realm/realm.dart';
 import 'package:share_plus/share_plus.dart';
+import 'schedule_reminder_screen.dart';
 import '../shared/amount_calculator_screen.dart';
 import '../shared/success_screen.dart';
 import '../../app/theme.dart';
@@ -196,6 +197,10 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
           IconButton(icon: const Icon(Icons.picture_as_pdf_outlined), onPressed: () async {
             final file = await PdfService.generateContactStatement(contact: widget.contact, businessName: 'حساباتي', transactions: _txs);
             if (context.mounted) await Share.shareXFiles([XFile(file.path)], subject: 'Statement - ${widget.contact.name}');
+          }),
+          IconButton(icon: const Icon(Icons.notifications_active_outlined), onPressed: () async {
+            final l10n = AppLocalizations.of(context)!;
+            await Navigator.push(context, MaterialPageRoute(builder: (_) => ScheduleReminderScreen(contact: widget.contact, currentBalance: _balance)));
           }),
           IconButton(icon: const Icon(Icons.call_outlined), onPressed: () {}),
         ],

@@ -595,6 +595,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Incorrect code, please try again'**
   String get wrongCode;
+
+  /// No description provided for @reminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get reminders;
+
+  /// No description provided for @scheduleReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule reminder'**
+  String get scheduleReminder;
+
+  /// No description provided for @reminderDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder date'**
+  String get reminderDate;
+
+  /// No description provided for @reminderMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder message'**
+  String get reminderMsg;
+
+  /// No description provided for @reminderSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder scheduled successfully'**
+  String get reminderSaved;
+
+  /// No description provided for @noReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminders scheduled'**
+  String get noReminders;
+
+  /// No description provided for @daysUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'days remaining'**
+  String get daysUntil;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @overdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get overdue;
+
+  /// No description provided for @cancelReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel reminder'**
+  String get cancelReminder;
 }
 
 class _AppLocalizationsDelegate

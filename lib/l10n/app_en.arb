@@ -82,5 +82,15 @@
   "privacyPolicy": "Privacy Policy",
   "termsOfUse": "Terms of Use",
   "otpMessage": "Your verification code is:",
-  "wrongCode": "Incorrect code, please try again"
+  "wrongCode": "Incorrect code, please try again",
+  "reminders": "Reminders",
+  "scheduleReminder": "Schedule reminder",
+  "reminderDate": "Reminder date",
+  "reminderMsg": "Reminder message",
+  "reminderSaved": "Reminder scheduled successfully",
+  "noReminders": "No reminders scheduled",
+  "daysUntil": "days remaining",
+  "today": "Today",
+  "overdue": "Overdue",
+  "cancelReminder": "Cancel reminder"
 }

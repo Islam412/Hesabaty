@@ -4,6 +4,7 @@ import 'package:riverpod/riverpod.dart';
 import 'app/app.dart';
 import 'core/services/settings_service.dart';
 import 'core/services/backup_service.dart';
+import 'core/services/notification_service.dart';
 
 ThemeMode _parseTheme(String? code) {
   switch (code) {
@@ -20,6 +21,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final localeCode = await SettingsService.getLocale();
   final themeCode = await SettingsService.getThemeMode();
+  NotificationService.init();
   BackupService.autoBackup();
   runApp(
     ProviderScope(
