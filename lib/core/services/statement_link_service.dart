@@ -7,7 +7,7 @@ import '../../data/models/app_models.dart';
 class StatementLinkService {
   static const String baseUrl = 'https://cash-rest.vercel.app/';
 
-  static Future<String> generateLink(Contact contact, List<DebtTransaction> txs, double balance) async {
+  static Future<String> generateLink(Contact contact, List<DebtTransaction> txs, double balance, {List<Map<String, String>> payMethods = const []}) async {
     final prefs = await SharedPreferences.getInstance();
     final sp = prefs.getString('user_phone') ?? '';
     final isCustomer = contact.type == 'customer';
@@ -35,6 +35,7 @@ class StatementLinkService {
       'g': given,
       'k': taken,
       't': rows,
+      'pay': payMethods,
     };
     final gz = gzip.encode(utf8.encode(jsonEncode(map)));
     final b64 = base64Url.encode(gz).replaceAll('=', '');

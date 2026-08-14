@@ -467,4 +467,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bankName => 'Bank name (optional)';
+
+  @override
+  String get createPaymentLink => 'Create payment link';
+
+  @override
+  String get chooseCustomer => 'Choose customer';
+
+  @override
+  String get linkReady => 'Link ready — share it now';
+
+  @override
+  String get paymentMethods => 'Payment methods';
 }

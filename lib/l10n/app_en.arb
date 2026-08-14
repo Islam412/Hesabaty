@@ -148,5 +148,9 @@
   "fromCard": "From card",
   "insufficientBalance": "Insufficient balance",
   "shareReceipt": "Share receipt",
-  "bankName": "Bank name (optional)"
+  "bankName": "Bank name (optional)",
+  "createPaymentLink": "Create payment link",
+  "chooseCustomer": "Choose customer",
+  "linkReady": "Link ready — share it now",
+  "paymentMethods": "Payment methods"
 }

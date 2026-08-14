@@ -991,6 +991,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bank name (optional)'**
   String get bankName;
+
+  /// No description provided for @createPaymentLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Create payment link'**
+  String get createPaymentLink;
+
+  /// No description provided for @chooseCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose customer'**
+  String get chooseCustomer;
+
+  /// No description provided for @linkReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Link ready — share it now'**
+  String get linkReady;
+
+  /// No description provided for @paymentMethods.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment methods'**
+  String get paymentMethods;
 }
 
 class _AppLocalizationsDelegate

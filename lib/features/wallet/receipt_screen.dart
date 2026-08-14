@@ -65,7 +65,7 @@ class ReceiptScreen extends StatelessWidget {
                         onPressed: () async {
                           final path = await ReceiptImageService.generateReceiptImage(
                             businessName: 'حساباتي',
-                            title: type == 'send' ? l10n.sent : l10n.toppedUp,
+                            title: type == 'send' ? l10n.sent : (type == 'bill' ? 'دفع فاتورة' : l10n.toppedUp),
                             amount: amount,
                             amountColor: type == 'send' ? AppTheme.expenseRed : AppTheme.incomeGreen,
                           );

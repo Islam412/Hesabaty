@@ -3,6 +3,7 @@ import 'package:debt_cash_app/l10n/app_localizations.dart';
 import '../../app/theme.dart';
 import '../wallet/wallet_screen.dart';
 import 'reminders_screen.dart';
+import 'payment_services_screen.dart';
 import 'settings_screen.dart';
 
 class MoreScreen extends StatelessWidget {
@@ -80,9 +81,7 @@ class MoreScreen extends StatelessWidget {
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const WalletScreen())),
             ),
             const SizedBox(height: 14),
-            _bigCard(l10n.paymentServices, l10n.paymentDesc, Icons.point_of_sale, onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.comingSoon)));
-            }),
+            _bigCard(l10n.paymentServices, l10n.paymentDesc, Icons.point_of_sale, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PaymentServicesScreen()))),
             const SizedBox(height: 18),
             _row(Icons.work_outline, l10n.businessCard),
             _row(Icons.grid_view_outlined, l10n.inventoryStaff),

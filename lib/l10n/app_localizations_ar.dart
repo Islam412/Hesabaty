@@ -463,4 +463,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get bankName => 'اسم البنك (اختياري)';
+
+  @override
+  String get createPaymentLink => 'إنشاء رابط تحصيل';
+
+  @override
+  String get chooseCustomer => 'اختار العميل';
+
+  @override
+  String get linkReady => 'تم إنشاء الرابط — شاركه دلوقتي';
+
+  @override
+  String get paymentMethods => 'طرق الدفع';
 }

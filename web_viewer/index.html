@@ -20,6 +20,7 @@ h1{font-size:20px;text-align:center;margin:18px 0 4px}
 .arr{width:44px;height:44px;border-radius:10px;background:#e8eef7;display:flex;align-items:center;justify-content:center;font-size:20px}
 .amt{font-weight:700;white-space:nowrap}
 .qrbox{text-align:center;margin-top:10px}
+.paybtn{background:#25d366;color:#fff;padding:14px 20px;border-radius:12px;text-decoration:none;display:inline-block;font-weight:700}
 </style></head><body>
 <div class="wrap" id="c"><div class="card"><p class="mut">جاري فتح الكشف…</p></div></div>
 <script>
@@ -40,14 +41,26 @@ async function main(){
         '<div class="grow"><b>'+r[0]+'</b><br><span class="mut">'+(r[3]||'')+'</span></div>'+
         '<div class="amt '+(given?'r':'g')+'">'+Number(r[2]).toFixed(2)+' ج.م</div></div>';
     });
+    var pay='';
+    if(d.pay && d.pay.length){
+      pay='<div class="card"><b>💳 طرق الدفع المتاحة</b>';
+      d.pay.forEach(function(p){
+        pay+='<div class="row"><span>'+p.label+'</span><span class="amt">'+(p.account||'')+'</span></div>';
+      });
+      pay+='</div>';
+      if(d.sp){
+        pay+='<div class="card" style="text-align:center"><a class="paybtn" href="https://wa.me/'+String(d.sp).replace(/[^0-9]/g,'')+'?text='+encodeURIComponent('✅ تم دفع المبلغ')+'">✅ أكدت الدفع عبر واتساب</a></div>';
+      }
+    }
     document.getElementById('c').innerHTML=
       '<div class="top"><div class="avatar">🏠</div><div class="grow"><div class="name">'+(d.sn||'')+'</div><div class="mut">'+(d.sp||'')+'</div></div>'+
-      (d.sp?'<a class="wa" href="https://wa.me/'+(d.sp||'').replace(/[^0-9]/g,'')+'">✆</a>':'')+'</div>'+
+      (d.sp?'<a class="wa" href="https://wa.me/'+String(d.sp).replace(/[^0-9]/g,'')+'">✆</a>':'')+'</div>'+
       '<h1>كشف حساب: '+(d.n||'')+'</h1><div class="mut" style="text-align:center">'+(d.p||'')+'</div>'+
       '<p class="mut" style="text-align:center;margin-top:14px">الرصيد الحالي</p>'+
       '<div class="bal '+(d.b>=0?'g':'r')+'">'+Number(d.b).toFixed(2)+' ج.م</div>'+
       '<div class="card"><div class="tot"><span><span class="dot" style="background:#16a34a"></span> إجمالي المدفوع</span><b class="g">'+Number(d.g||0).toFixed(2)+' ج.م</b></div>'+
       '<div class="tot"><span><span class="dot" style="background:#dc2626"></span> إجمالي المقبوض</span><b class="r">'+Number(d.k||0).toFixed(2)+' ج.م</b></div></div>'+
+      pay+
       '<div class="card">'+rows+'</div>'+
       '<div class="card qrbox"><div id="qr" style="display:inline-block"></div><p class="mut">باركود الرسالة: '+(d.id||'').slice(0,8)+'</p></div>';
     if(window.QRCode){new QRCode(document.getElementById('qr'),{text:location.href,width:180,height:180,correctLevel:QRCode.CorrectLevel.L});}

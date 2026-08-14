@@ -148,5 +148,9 @@
   "fromCard": "من البطاقة",
   "insufficientBalance": "الرصيد غير كافي",
   "shareReceipt": "مشاركة الإيصال",
-  "bankName": "اسم البنك (اختياري)"
+  "bankName": "اسم البنك (اختياري)",
+  "createPaymentLink": "إنشاء رابط تحصيل",
+  "chooseCustomer": "اختار العميل",
+  "linkReady": "تم إنشاء الرابط — شاركه دلوقتي",
+  "paymentMethods": "طرق الدفع"
 }
