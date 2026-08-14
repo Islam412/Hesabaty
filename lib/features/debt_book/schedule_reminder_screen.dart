@@ -54,12 +54,7 @@ class _ScheduleReminderScreenState extends State<ScheduleReminderScreen> {
     );
 
     await ReminderRepository.add(reminder);
-    await NotificationService.schedule(
-      id: reminder.id.hashCode,
-      title: widget.contact.name,
-      body: _msg.text.trim(),
-      when: when,
-    );
+    await NotificationService.schedule(reminder.id.hashCode, when, widget.contact.name, _msg.text.trim());
 
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(

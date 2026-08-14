@@ -3,6 +3,10 @@ import 'package:debt_cash_app/l10n/app_localizations.dart';
 import '../../app/theme.dart';
 import '../../core/services/account_service.dart';
 import 'backup_settings_screen.dart';
+import 'notifications_screen.dart';
+import '../../core/services/notification_service.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart' as sp;
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -144,7 +148,29 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const Divider(),
-          _row(Icons.notifications_outlined, l10n.notifications, const Color(0xFFFF7043)),
+          StatefulBuilder(
+            builder: (ctx, setState) => FutureBuilder<int>(
+              future: NotificationService.unreadCount(),
+              builder: (ctx, snap) {
+                final unread = snap.data ?? 0;
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 4),
+                  child: ListTile(
+                    leading: CircleAvatar(backgroundColor: const Color(0xFFFF7043).withOpacity(0.12), child: const Icon(Icons.notifications_outlined, color: Color(0xFFFF7043))),
+                    title: Text(l10n.notifications, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    subtitle: Text(unread > 0 ? '$unread إشعار غير مقروء' : 'كل الإشعارات مقروءة', style: const TextStyle(fontSize: 12)),
+                    trailing: unread > 0
+                        ? CircleAvatar(radius: 11, backgroundColor: AppTheme.expenseRed, child: Text('$unread', style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)))
+                        : const Icon(Icons.chevron_left, color: Color(0xFFFF7043)),
+                    onTap: () async {
+                      await Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen()));
+                      setState(() {});
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
           const Divider(),
           _row(Icons.lock_outline, l10n.appLock, const Color(0xFFE91E63)),
           const Divider(),
