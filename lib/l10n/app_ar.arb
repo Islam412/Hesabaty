@@ -92,5 +92,22 @@
   "daysUntil": "يوم متبقي",
   "today": "اليوم",
   "overdue": "متأخر",
-  "cancelReminder": "إلغاء التذكير"
+  "cancelReminder": "إلغاء التذكير",
+  "reportPeriod": "فترة التقرير",
+  "startDate": "تاريخ البداية",
+  "endDate": "تاريخ النهاية",
+  "allDates": "جميع التواريخ",
+  "yesterday": "الأمس",
+  "thisWeek": "الأسبوع الحالي",
+  "lastWeek": "الأسبوع الماضي",
+  "thisMonth": "الشهر الحالي",
+  "lastMonth": "الشهر الماضي",
+  "thisYear": "السنة الحالية",
+  "lastYear": "السنة الماضية",
+  "apply": "ترتيب",
+  "sendTransactions": "إرسال المعاملات",
+  "importTransactions": "استيراد معاملات",
+  "transactionsImported": "تم استيراد المعاملات بنجاح",
+  "seeAllTransactions": "رؤية جميع المعاملات:",
+  "tapForContactInfo": "اضغط هنا لمعلومات الاتصال"
 }

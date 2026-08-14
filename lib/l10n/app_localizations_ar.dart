@@ -295,4 +295,55 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cancelReminder => 'إلغاء التذكير';
+
+  @override
+  String get reportPeriod => 'فترة التقرير';
+
+  @override
+  String get startDate => 'تاريخ البداية';
+
+  @override
+  String get endDate => 'تاريخ النهاية';
+
+  @override
+  String get allDates => 'جميع التواريخ';
+
+  @override
+  String get yesterday => 'الأمس';
+
+  @override
+  String get thisWeek => 'الأسبوع الحالي';
+
+  @override
+  String get lastWeek => 'الأسبوع الماضي';
+
+  @override
+  String get thisMonth => 'الشهر الحالي';
+
+  @override
+  String get lastMonth => 'الشهر الماضي';
+
+  @override
+  String get thisYear => 'السنة الحالية';
+
+  @override
+  String get lastYear => 'السنة الماضية';
+
+  @override
+  String get apply => 'ترتيب';
+
+  @override
+  String get sendTransactions => 'إرسال المعاملات';
+
+  @override
+  String get importTransactions => 'استيراد معاملات';
+
+  @override
+  String get transactionsImported => 'تم استيراد المعاملات بنجاح';
+
+  @override
+  String get seeAllTransactions => 'رؤية جميع المعاملات:';
+
+  @override
+  String get tapForContactInfo => 'اضغط هنا لمعلومات الاتصال';
 }

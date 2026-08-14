@@ -299,4 +299,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancelReminder => 'Cancel reminder';
+
+  @override
+  String get reportPeriod => 'Report period';
+
+  @override
+  String get startDate => 'Start date';
+
+  @override
+  String get endDate => 'End date';
+
+  @override
+  String get allDates => 'All dates';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String get thisWeek => 'This week';
+
+  @override
+  String get lastWeek => 'Last week';
+
+  @override
+  String get thisMonth => 'This month';
+
+  @override
+  String get lastMonth => 'Last month';
+
+  @override
+  String get thisYear => 'This year';
+
+  @override
+  String get lastYear => 'Last year';
+
+  @override
+  String get apply => 'Apply';
+
+  @override
+  String get sendTransactions => 'Send transactions';
+
+  @override
+  String get importTransactions => 'Import transactions';
+
+  @override
+  String get transactionsImported => 'Transactions imported successfully';
+
+  @override
+  String get seeAllTransactions => 'See all transactions:';
+
+  @override
+  String get tapForContactInfo => 'Tap here for contact info';
 }

@@ -92,5 +92,22 @@
   "daysUntil": "days remaining",
   "today": "Today",
   "overdue": "Overdue",
-  "cancelReminder": "Cancel reminder"
+  "cancelReminder": "Cancel reminder",
+  "reportPeriod": "Report period",
+  "startDate": "Start date",
+  "endDate": "End date",
+  "allDates": "All dates",
+  "yesterday": "Yesterday",
+  "thisWeek": "This week",
+  "lastWeek": "Last week",
+  "thisMonth": "This month",
+  "lastMonth": "Last month",
+  "thisYear": "This year",
+  "lastYear": "Last year",
+  "apply": "Apply",
+  "sendTransactions": "Send transactions",
+  "importTransactions": "Import transactions",
+  "transactionsImported": "Transactions imported successfully",
+  "seeAllTransactions": "See all transactions:",
+  "tapForContactInfo": "Tap here for contact info"
 }

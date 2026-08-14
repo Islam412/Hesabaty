@@ -1,19 +1,21 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:realm/realm.dart';
-import '../../core/services/share_service.dart';
-import '../../core/services/receipt_image_service.dart';
-import '../../core/services/receipt_image_service.dart';
-import 'schedule_reminder_screen.dart';
-import '../shared/amount_calculator_screen.dart';
-import '../shared/success_screen.dart';
-import '../shared/transaction_details_screen.dart';
 import '../../app/theme.dart';
+import '../../core/services/image_picker_service.dart';
+import '../../core/services/pdf_service.dart';
+import '../../core/services/receipt_image_service.dart';
+import '../../core/services/share_service.dart';
+import '../../core/services/statement_link_service.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
-import '../../core/services/pdf_service.dart';
-import '../../core/services/image_picker_service.dart';
-import 'dart:io';
+import '../shared/report_period_sheet.dart';
+import '../shared/transaction_details_screen.dart';
+import 'schedule_reminder_screen.dart';
 
 class ContactDetailsScreen extends StatefulWidget {
   final Contact contact;
@@ -25,6 +27,7 @@ class ContactDetailsScreen extends StatefulWidget {
 class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
   List<DebtTransaction> _txs = [];
   double _balance = 0;
+  bool _showInfo = false;
 
   @override
   void initState() {
@@ -66,6 +69,100 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
       }
     });
     _load();
+  }
+
+  Future<void> _shareContact() async {
+    final l10n = AppLocalizations.of(context)!;
+    final sRows = <StatementRow>[];
+    double givenTot = 0;
+    double takenTot = 0;
+    final sorted = List<DebtTransaction>.from(_txs)..sort((a, b) => a.date.compareTo(b.date));
+    for (final t in sorted) {
+      final isGiven = widget.contact.type == 'customer' ? t.type == 'given' : t.type == 'taken';
+      if (isGiven) { givenTot += t.amount; } else { takenTot += t.amount; }
+      sRows.add(StatementRow(
+        date: '${t.date.year}-${t.date.month.toString().padLeft(2, '0')}-${t.date.day.toString().padLeft(2, '0')}',
+        label: isGiven ? l10n.given : l10n.taken,
+        amount: t.amount,
+        isGiven: isGiven,
+      ));
+    }
+    final path = await ReceiptImageService.generateStatementImage(
+      businessName: 'حساباتي',
+      contactName: widget.contact.name,
+      contactPhone: widget.contact.phone ?? '',
+      rows: sRows,
+      totalGiven: givenTot,
+      totalTaken: takenTot,
+      balance: _balance,
+    );
+    final link = await StatementLinkService.generateLink(widget.contact, _txs, _balance);
+    final text = await StatementLinkService.statementText(widget.contact, _txs, _balance);
+    if (!mounted) return;
+    await ShareService.shareReceiptImage(context, path, '$text\n${l10n.seeAllTransactions}\n$link');
+  }
+
+  Future<void> _exportPdf() async {
+    final res = await showModalBottomSheet<Object>(context: context, builder: (_) => const ReportPeriodSheet());
+    if (res == null) return;
+    DateTime? from;
+    DateTime? to;
+    if (res is DateTimeRange) {
+      from = res.start;
+      to = res.end;
+    }
+    final filtered = _txs.where((t) {
+      if (from != null && t.date.isBefore(from!)) return false;
+      if (to != null && t.date.isAfter(to!.add(const Duration(days: 1)))) return false;
+      return true;
+    }).toList();
+    final file = await PdfService.generateStatementPdf(
+      businessName: 'حساباتي',
+      contact: widget.contact,
+      transactions: filtered,
+    );
+    if (!mounted) return;
+    await ShareService.shareReceiptImage(context, file.path, 'تقرير معاملات: ${widget.contact.name}');
+  }
+
+  Future<void> _sendTransactions() async {
+    final data = {
+      'contact': {'name': widget.contact.name, 'phone': widget.contact.phone, 'type': widget.contact.type},
+      'transactions': _txs.map((t) => {'amount': t.amount, 'type': t.type, 'note': t.note, 'date': t.date.toIso8601String(), 'balanceAfter': t.balanceAfter}).toList(),
+    };
+    final dir = await getTemporaryDirectory();
+    final f = File('${dir.path}/transactions_${DateTime.now().millisecondsSinceEpoch}.json');
+    await f.writeAsString(jsonEncode(data));
+    if (!mounted) return;
+    await ShareService.shareReceiptImage(context, f.path, 'معاملات: ${widget.contact.name}');
+  }
+
+  Future<void> _importTransactions() async {
+    final l10n = AppLocalizations.of(context)!;
+    final result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['json']);
+    final path = result?.files.single.path;
+    if (path == null) return;
+    try {
+      final data = jsonDecode(await File(path).readAsString());
+      final list = (data['transactions'] as List);
+      final realm = await RealmService.realm;
+      realm.write(() {
+        for (final m in list) {
+          realm.add(DebtTransaction(
+            ObjectId(),
+            widget.contact.id.toString(),
+            (m['amount'] as num).toDouble(),
+            m['type'],
+            DateTime.parse(m['date']),
+            (m['balanceAfter'] as num?)?.toDouble() ?? 0,
+            'active',
+            note: m['note'],
+          ));
+        }
+      });
+      await _recompute();
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l10n.transactionsImported} (${list.length})'), backgroundColor: AppTheme.incomeGreen));
+    } catch (_) {}
   }
 
   Future<void> _manage(DebtTransaction t) async {
@@ -123,29 +220,13 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
       await _recompute();
     } else if (action == 'share') {
       final label = t.type == 'given' ? l10n.given : l10n.taken;
-      final sRows = <StatementRow>[];
-      double givenTot = 0;
-      double takenTot = 0;
-      final sortedTxs = List<DebtTransaction>.from(_txs)..sort((a, b) => a.date.compareTo(b.date));
-      for (final t in sortedTxs) {
-        final isGiven = widget.contact.type == 'customer' ? t.type == 'given' : t.type == 'taken';
-        if (isGiven) { givenTot += t.amount; } else { takenTot += t.amount; }
-        sRows.add(StatementRow(
-          date: '${t.date.year}-${t.date.month.toString().padLeft(2, '0')}-${t.date.day.toString().padLeft(2, '0')}',
-          label: isGiven ? l10n.given : l10n.taken,
-          amount: t.amount,
-          isGiven: isGiven,
-        ));
-      }
-      final path = await ReceiptImageService.generateStatementImage(
-        businessName: 'حساباتي',
-        contactName: widget.contact.name,
-        contactPhone: widget.contact.phone ?? '',
-        rows: sRows,
-        totalGiven: givenTot,
-        totalTaken: takenTot,
-        balance: _balance,
+      final path = await ReceiptImageService.generateReceiptImage(
+        businessName: widget.contact.name,
+        title: label,
+        amount: t.amount,
+        amountColor: t.type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen,
       );
+      if (!mounted) return;
       await ShareService.shareReceiptImage(context, path, '$label ${t.amount.toStringAsFixed(2)} ج.م. — ${widget.contact.name}');
     }
   }
@@ -167,57 +248,10 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
           children: [
             Text(type == 'given' ? l10n.given : l10n.taken, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen)),
             const SizedBox(height: 12),
-            InkWell(
-              onTap: () async {
-                final v = await Navigator.push<double>(context, MaterialPageRoute(builder: (_) => AmountCalculatorScreen(title: type == 'given' ? l10n.given : l10n.taken, color: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen)));
-                if (v != null) amountC.text = v.toString();
-              },
-              child: AbsorbPointer(
-                child: TextField(controller: amountC, decoration: InputDecoration(labelText: l10n.amount, border: const OutlineInputBorder())),
-              ),
-            ),
+            TextField(controller: amountC, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: l10n.amount, border: const OutlineInputBorder())),
             const SizedBox(height: 12),
             TextField(controller: noteC, decoration: InputDecoration(labelText: l10n.note, border: const OutlineInputBorder())),
             const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: InkWell(
-                    onTap: () async {
-                      final d = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(2020), lastDate: DateTime.now().add(const Duration(days: 30)));
-                      if (d != null) setState(() => selectedDate = d);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400), borderRadius: BorderRadius.circular(8)),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                        const Icon(Icons.calendar_today, size: 18),
-                        const SizedBox(width: 6),
-                        Text('${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'),
-                      ]),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: InkWell(
-                    onTap: () async {
-                      final t = await showTimePicker(context: context, initialTime: selectedTime);
-                      if (t != null) setState(() => selectedTime = t);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400), borderRadius: BorderRadius.circular(8)),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                        const Icon(Icons.access_time, size: 18),
-                        const SizedBox(width: 6),
-                        Text('${selectedTime.hour.toString().padLeft(2,'0')}:${selectedTime.minute.toString().padLeft(2,'0')}'),
-                      ]),
-                    ),
-                  ),
-                ),
-              ],
-            ),
             StatefulBuilder(
               builder: (ctx2, setS) => Column(
                 children: [
@@ -256,10 +290,7 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                     imagePath: _imgPath,
                   ));
                 });
-                if (ctx.mounted) {
-                  Navigator.pop(ctx);
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => SuccessScreen(amount: amount, label: type == 'given' ? l10n.given : l10n.taken, color: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen)));
-                }
+                if (ctx.mounted) Navigator.pop(ctx);
                 _load();
               },
               child: Text(l10n.save),
@@ -280,17 +311,29 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
     final label = isCustomer ? l10n.owedToMe : l10n.owedByMe;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.contact.name),
+        title: Column(
+          children: [
+            Text(widget.contact.name, style: const TextStyle(fontSize: 18)),
+            GestureDetector(
+              onTap: () => setState(() => _showInfo = !_showInfo),
+              child: Text(
+                _showInfo ? '${widget.contact.phone ?? ''} ${widget.contact.address ?? ''}' : l10n.tapForContactInfo,
+                style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
+              ),
+            ),
+          ],
+        ),
         actions: [
-          IconButton(icon: const Icon(Icons.picture_as_pdf_outlined), onPressed: () async {
-            final file = await PdfService.generateContactStatement(contact: widget.contact, businessName: 'حساباتي', transactions: _txs);
-            if (context.mounted) await ShareService.shareReceiptImage(context, file.path, 'Statement - ${widget.contact.name}');
-          }),
-          IconButton(icon: const Icon(Icons.notifications_active_outlined), onPressed: () async {
-            final l10n = AppLocalizations.of(context)!;
-            await Navigator.push(context, MaterialPageRoute(builder: (_) => ScheduleReminderScreen(contact: widget.contact, currentBalance: _balance)));
-          }),
-          IconButton(icon: const Icon(Icons.call_outlined), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.share), onPressed: _shareContact),
+          IconButton(icon: const Icon(Icons.picture_as_pdf_outlined), onPressed: _exportPdf),
+          IconButton(icon: const Icon(Icons.notifications_active_outlined), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ScheduleReminderScreen(contact: widget.contact, currentBalance: _balance)))),
+          PopupMenuButton<String>(
+            onSelected: (v) { if (v == 'send') { _sendTransactions(); } else { _importTransactions(); } },
+            itemBuilder: (ctx) => [
+              PopupMenuItem(value: 'send', child: Text(l10n.sendTransactions)),
+              PopupMenuItem(value: 'import', child: Text(l10n.importTransactions)),
+            ],
+          ),
         ],
       ),
       body: Column(
@@ -313,6 +356,15 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                   Text(_balance.abs().toStringAsFixed(2), style: TextStyle(color: color, fontSize: 22, fontWeight: FontWeight.bold)),
                 ],
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${l10n.debtBook} (${_txs.length})', style: TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold)),
+              ],
             ),
           ),
           Expanded(
@@ -345,17 +397,7 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                           onLongPress: () => _manage(t),
                           leading: Icon(t.type == 'given' ? Icons.arrow_upward : Icons.arrow_downward, color: c),
                           title: Text(t.type == 'given' ? l10n.given : l10n.taken),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('${t.date.day}/${t.date.month}/${t.date.year}  ${t.note ?? ''}'),
-                              if (t.imagePath != null && t.imagePath!.isNotEmpty && File(t.imagePath!).existsSync())
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 6),
-                                  child: ClipRRect(borderRadius: BorderRadius.circular(6), child: Image.file(File(t.imagePath!), height: 60, width: 60, fit: BoxFit.cover)),
-                                ),
-                            ],
-                          ),
+                          subtitle: Text('${t.date.day}/${t.date.month}/${t.date.year}  ${t.note ?? ''}'),
                           trailing: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -371,13 +413,17 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
           ),
         ],
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FloatingActionButton.extended(heroTag: 'det_given', backgroundColor: AppTheme.expenseRed, onPressed: () => _addTx('given'), label: Text(l10n.given)),
-          const SizedBox(width: 12),
-          FloatingActionButton.extended(heroTag: 'det_taken', backgroundColor: AppTheme.incomeGreen, onPressed: () => _addTx('taken'), label: Text(l10n.taken)),
-        ],
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Expanded(child: FilledButton(style: FilledButton.styleFrom(backgroundColor: AppTheme.incomeGreen.withOpacity(0.8), padding: const EdgeInsets.symmetric(vertical: 16)), onPressed: () => _addTx('taken'), child: Text(l10n.taken, style: const TextStyle(fontSize: 16)))),
+              const SizedBox(width: 12),
+              Expanded(child: FilledButton(style: FilledButton.styleFrom(backgroundColor: AppTheme.expenseRed.withOpacity(0.8), padding: const EdgeInsets.symmetric(vertical: 16)), onPressed: () => _addTx('given'), child: Text(l10n.given, style: const TextStyle(fontSize: 16)))),
+            ],
+          ),
+        ),
       ),
     );
   }

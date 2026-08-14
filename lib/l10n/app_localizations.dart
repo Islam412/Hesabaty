@@ -655,6 +655,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel reminder'**
   String get cancelReminder;
+
+  /// No description provided for @reportPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Report period'**
+  String get reportPeriod;
+
+  /// No description provided for @startDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get startDate;
+
+  /// No description provided for @endDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get endDate;
+
+  /// No description provided for @allDates.
+  ///
+  /// In en, this message translates to:
+  /// **'All dates'**
+  String get allDates;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get thisWeek;
+
+  /// No description provided for @lastWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Last week'**
+  String get lastWeek;
+
+  /// No description provided for @thisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get thisMonth;
+
+  /// No description provided for @lastMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Last month'**
+  String get lastMonth;
+
+  /// No description provided for @thisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'This year'**
+  String get thisYear;
+
+  /// No description provided for @lastYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Last year'**
+  String get lastYear;
+
+  /// No description provided for @apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
+
+  /// No description provided for @sendTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Send transactions'**
+  String get sendTransactions;
+
+  /// No description provided for @importTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Import transactions'**
+  String get importTransactions;
+
+  /// No description provided for @transactionsImported.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions imported successfully'**
+  String get transactionsImported;
+
+  /// No description provided for @seeAllTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'See all transactions:'**
+  String get seeAllTransactions;
+
+  /// No description provided for @tapForContactInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap here for contact info'**
+  String get tapForContactInfo;
 }
 
 class _AppLocalizationsDelegate

@@ -41,16 +41,21 @@ class StatementLinkService {
     return '$baseUrl#$b64';
   }
 
-  static String statementText(Contact contact, List<DebtTransaction> txs, double balance) {
+  static Future<String> statementText(Contact contact, List<DebtTransaction> txs, double balance) async {
+    final prefs = await SharedPreferences.getInstance();
+    final sp = prefs.getString('user_phone') ?? '';
     final sb = StringBuffer();
-    sb.writeln('كشف حساب: ${contact.name}');
-    sb.writeln('------------------');
+    sb.writeln('كشف حساب: ${contact.name}${(contact.phone ?? '').isNotEmpty ? ' (${contact.phone})' : ''}');
+    sb.writeln('من: حساباتي ${sp.isNotEmpty ? '+$sp' : ''}');
+    sb.writeln('ليك رصيد');
+    sb.writeln('-----');
+    sb.writeln('${balance.abs().toStringAsFixed(2)} ج.م.');
+    sb.writeln('-----');
     final sorted = List<DebtTransaction>.from(txs)..sort((a, b) => b.date.compareTo(a.date));
     for (final t in sorted) {
       sb.writeln('${t.date.day}/${t.date.month}/${t.date.year}  ${t.type == 'given' ? 'مدفوع' : 'مقبوض'}  ${t.amount.toStringAsFixed(2)} ج.م  ${t.note ?? ''}');
     }
-    sb.writeln('------------------');
-    sb.writeln('الرصيد الحالي: ${balance.abs().toStringAsFixed(2)} ج.م');
+    sb.writeln('-----');
     return sb.toString();
   }
 }
