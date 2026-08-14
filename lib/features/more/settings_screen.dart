@@ -57,7 +57,23 @@ class SettingsScreen extends StatelessWidget {
           // ===== باقي الإعدادات =====
           _row(Icons.language, l10n.language, const Color(0xFF7C4DFF)),
           const Divider(),
-          _row(Icons.dark_mode_outlined, l10n.darkMode, const Color(0xFF607D8B)),
+          StatefulBuilder(
+            builder: (ctx, setState) => FutureBuilder<bool>(
+              future: ThemeNotifier.isDark(),
+              builder: (ctx, snap) => Card(
+                margin: const EdgeInsets.symmetric(vertical: 4),
+                child: SwitchListTile(
+                  secondary: CircleAvatar(backgroundColor: const Color(0xFF607D8B).withOpacity(0.12), child: const Icon(Icons.dark_mode_outlined, color: Color(0xFF607D8B))),
+                  title: Text(l10n.darkMode, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  value: snap.data ?? false,
+                  onChanged: (v) async {
+                    await ThemeNotifier.toggle();
+                    setState(() {});
+                  },
+                ),
+              ),
+            ),
+          ),
           const Divider(),
           _row(Icons.currency_exchange, l10n.currency, const Color(0xFFE5A83B)),
           const Divider(),
