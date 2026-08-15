@@ -72,7 +72,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get autoBackup => 'النسخ الاحتياطي التلقائي';
 
   @override
-  String get contactUs => 'إتصل بنا';
+  String get contactUs => 'تواصل معنا';
 
   @override
   String get aboutApp => 'حول التطبيق';
@@ -809,4 +809,31 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get welcome => 'مرحبًا بك';
+
+  @override
+  String get about => 'حول التطبيق';
+
+  @override
+  String get aboutDesc => 'تطبيق إدارة الحسابات والمخزون والموظفين الشامل';
+
+  @override
+  String get developer => 'المطور';
+
+  @override
+  String get developerName => 'م. إسلام حمدي';
+
+  @override
+  String get company => 'Corvix';
+
+  @override
+  String get telegram => 'تليجرام';
+
+  @override
+  String get email => 'البريد الإلكتروني';
+
+  @override
+  String get github => 'المشروع على GitHub';
+
+  @override
+  String get copyright => 'جميع الحقوق محفوظة';
 }

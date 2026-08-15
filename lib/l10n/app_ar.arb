@@ -20,7 +20,7 @@
   "inventoryStaff": "المخزون والموظفون",
   "settings": "إعدادات",
   "autoBackup": "النسخ الاحتياطي التلقائي",
-  "contactUs": "إتصل بنا",
+  "contactUs": "تواصل معنا",
   "aboutApp": "حول التطبيق",
   "addCustomer": "إضافة عميل",
   "addSupplier": "إضافة مورد",
@@ -263,5 +263,14 @@
   "sendCode": "إرسال الكود",
   "verifyCode": "تأكيد الكود",
   "profileSaved": "تم حفظ الملف الشخصي",
-  "welcome": "مرحبًا بك"
+  "welcome": "مرحبًا بك",
+  "about": "حول التطبيق",
+  "aboutDesc": "تطبيق إدارة الحسابات والمخزون والموظفين الشامل",
+  "developer": "المطور",
+  "developerName": "م. إسلام حمدي",
+  "company": "Corvix",
+  "telegram": "تليجرام",
+  "email": "البريد الإلكتروني",
+  "github": "المشروع على GitHub",
+  "copyright": "جميع الحقوق محفوظة"
 }

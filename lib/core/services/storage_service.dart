@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,7 +66,11 @@ class StorageService {
 
   static Future<void> migrate(String newPath) async {
     final old = await basePath();
-    if (old == newPath) return;
+    debugPrint('🔄 Migration: $old → $newPath');
+    if (old == newPath) {
+      debugPrint('⚠️ Same path, skipping');
+      return;
+    }
     final newDir = Directory(newPath);
     if (!await newDir.exists()) await newDir.create(recursive: true);
     final oldDir = Directory(old);
@@ -73,7 +78,7 @@ class StorageService {
       await for (final e in oldDir.list()) {
         final name = e.path.split('/').last;
         if (e is File && name.endsWith('.realm')) {
-          try { await e.copy('$newPath/$name'); } catch (_) {}
+          try { await e.copy('$newPath/$name'); debugPrint('✅ Copied: $name'); } catch (e) { debugPrint('❌ Failed to copy $name: $e'); }
         }
         if (e is Directory && name.endsWith('.management')) {
           try { await _copyDir(e, '$newPath/$name'); } catch (_) {}
@@ -85,6 +90,7 @@ class StorageService {
       try { await _copyDir(ob, '$newPath/HesabatyBackups'); } catch (_) {}
     }
     await setBasePath(newPath);
+    debugPrint('✅ Migration completed successfully');
   }
 
   static Future<void> _copyDir(Directory src, String dst) async {

@@ -74,7 +74,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoBackup => 'Auto backup';
 
   @override
-  String get contactUs => 'Contact Us';
+  String get contactUs => 'تواصل معنا';
 
   @override
   String get aboutApp => 'About the App';
@@ -146,7 +146,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search => 'Search';
 
   @override
-  String get version => 'Version';
+  String get version => 'الإصدار';
 
   @override
   String get language => 'Language';
@@ -553,7 +553,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openMap => 'Open in maps';
 
   @override
-  String get whatsapp => 'WhatsApp';
+  String get whatsapp => 'واتساب';
 
   @override
   String get call => 'Call';
@@ -813,4 +813,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcome => 'Welcome';
+
+  @override
+  String get about => 'حول التطبيق';
+
+  @override
+  String get aboutDesc => 'تطبيق إدارة الحسابات والمخزون والموظفين الشامل';
+
+  @override
+  String get developer => 'المطور';
+
+  @override
+  String get developerName => 'م. إسلام حمدي';
+
+  @override
+  String get company => 'Corvix';
+
+  @override
+  String get telegram => 'تليجرام';
+
+  @override
+  String get email => 'البريد الإلكتروني';
+
+  @override
+  String get github => 'المشروع على GitHub';
+
+  @override
+  String get copyright => 'جميع الحقوق محفوظة';
 }

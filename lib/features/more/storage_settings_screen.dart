@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -35,8 +37,72 @@ class _StorageSettingsScreenState extends State<StorageSettingsScreen> {
     });
   }
 
+  Future<String?> _pickDirectory() async {
+    try {
+      final dir = await FilePicker.platform.getDirectoryPath();
+      if (dir != null) return dir;
+    } catch (e) {
+      debugPrint('⚠️ FilePicker غير مدعوم هنا: $e');
+    }
+    return await _manualPick();
+  }
+
+  Future<String?> _manualPick() async {
+    final home = Platform.environment['HOME'] ?? '/';
+    final ctrl = TextEditingController(text: home);
+    final suggestions = [home, '$home/Documents', '$home/Downloads', '$home/Desktop', '$home/Hesabaty'];
+    String? result;
+    await showDialog(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx2, setS) => AlertDialog(
+          title: const Text('📁 اختر مكان التخزين'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: ctrl,
+                textDirection: TextDirection.ltr,
+                decoration: const InputDecoration(labelText: 'مسار المجلد', border: OutlineInputBorder(), prefixIcon: Icon(Icons.folder)),
+              ),
+              const SizedBox(height: 12),
+              const Text('أو اختر بسرعة:', style: TextStyle(fontSize: 12, color: Colors.grey)),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  for (final sg in suggestions)
+                    ActionChip(
+                      label: Text(sg == home ? '🏠 الرئيسية' : sg.split('/').last, style: const TextStyle(fontSize: 12)),
+                      onPressed: () => setS(() => ctrl.text = sg),
+                    ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('إلغاء')),
+            FilledButton(
+              onPressed: () {
+                final v = ctrl.text.trim();
+                if (v.isEmpty) return;
+                Navigator.pop(ctx);
+                result = v;
+              },
+              child: const Text('اختيار'),
+            ),
+          ],
+        ),
+      ),
+    );
+    return (result == null || result!.isEmpty) ? null : result;
+  }
+
   Future<void> _change() async {
-    final dir = await FilePicker.platform.getDirectoryPath();
+    debugPrint('📂 Opening directory picker...');
+    final dir = await _pickDirectory();
+    debugPrint('📂 Selected: $dir');
     if (dir == null) return;
     final ok = await showDialog<bool>(
       context: context,
@@ -51,9 +117,17 @@ class _StorageSettingsScreenState extends State<StorageSettingsScreen> {
     );
     if (ok != true) return;
     setState(() => _busy = true);
+      debugPrint('🔒 Closing Realm...');
     try {
-      RealmService.reset();
+      try {
+        RealmService.reset();
+        debugPrint('✅ Realm closed');
+      } catch (e) {
+        debugPrint('⚠️ Realm close error: $e');
+      }
+      debugPrint('🔄 Starting migration...');
       await StorageService.migrate(dir);
+      debugPrint('✅ Migration done');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('✅ تم نقل التخزين بنجاح'), backgroundColor: AppTheme.incomeGreen));
       await _load();
@@ -68,7 +142,13 @@ class _StorageSettingsScreenState extends State<StorageSettingsScreen> {
     final def = await StorageService.defaultPath();
     if (def == _path) return;
     setState(() => _busy = true);
-    RealmService.reset();
+      debugPrint('🔒 Closing Realm...');
+    try {
+        RealmService.reset();
+        debugPrint('✅ Realm closed');
+      } catch (e) {
+        debugPrint('⚠️ Realm close error: $e');
+      }
     await StorageService.migrate(def);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('✅ رجعنا للمكان الافتراضي'), backgroundColor: AppTheme.incomeGreen));

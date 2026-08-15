@@ -221,7 +221,7 @@ abstract class AppLocalizations {
   /// No description provided for @contactUs.
   ///
   /// In en, this message translates to:
-  /// **'Contact Us'**
+  /// **'تواصل معنا'**
   String get contactUs;
 
   /// No description provided for @aboutApp.
@@ -359,7 +359,7 @@ abstract class AppLocalizations {
   /// No description provided for @version.
   ///
   /// In en, this message translates to:
-  /// **'Version'**
+  /// **'الإصدار'**
   String get version;
 
   /// No description provided for @language.
@@ -1163,7 +1163,7 @@ abstract class AppLocalizations {
   /// No description provided for @whatsapp.
   ///
   /// In en, this message translates to:
-  /// **'WhatsApp'**
+  /// **'واتساب'**
   String get whatsapp;
 
   /// No description provided for @call.
@@ -1681,6 +1681,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome'**
   String get welcome;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'حول التطبيق'**
+  String get about;
+
+  /// No description provided for @aboutDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'تطبيق إدارة الحسابات والمخزون والموظفين الشامل'**
+  String get aboutDesc;
+
+  /// No description provided for @developer.
+  ///
+  /// In en, this message translates to:
+  /// **'المطور'**
+  String get developer;
+
+  /// No description provided for @developerName.
+  ///
+  /// In en, this message translates to:
+  /// **'م. إسلام حمدي'**
+  String get developerName;
+
+  /// No description provided for @company.
+  ///
+  /// In en, this message translates to:
+  /// **'Corvix'**
+  String get company;
+
+  /// No description provided for @telegram.
+  ///
+  /// In en, this message translates to:
+  /// **'تليجرام'**
+  String get telegram;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'البريد الإلكتروني'**
+  String get email;
+
+  /// No description provided for @github.
+  ///
+  /// In en, this message translates to:
+  /// **'المشروع على GitHub'**
+  String get github;
+
+  /// No description provided for @copyright.
+  ///
+  /// In en, this message translates to:
+  /// **'جميع الحقوق محفوظة'**
+  String get copyright;
 }
 
 class _AppLocalizationsDelegate
