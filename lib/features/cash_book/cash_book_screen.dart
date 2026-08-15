@@ -1,4 +1,6 @@
 import '../../core/widgets/calculator_sheet.dart';
+import '../../core/widgets/receipt_card.dart';
+import '../more/image_export_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:realm/realm.dart';
@@ -251,6 +253,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
           ],
         ),
         actions: [
+          
           TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel)),
           FilledButton(
             onPressed: () async {
@@ -383,6 +386,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
       appBar: AppBar(
         title: Text(l10n.cashBook),
         actions: [
+          IconButton(icon: const Icon(Icons.image_outlined), tooltip: 'تصدير الكل كصورة', onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ImageExportScreen(child: CashAllCard(), fileName: 'cash_book_all')))),
           IconButton(
             icon: Icon(_hide ? Icons.visibility_off : Icons.visibility),
             onPressed: () => setState(() => _hide = !_hide),

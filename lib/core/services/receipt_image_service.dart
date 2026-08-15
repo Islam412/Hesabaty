@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:share_plus/share_plus.dart';
 import '../../app/theme.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
