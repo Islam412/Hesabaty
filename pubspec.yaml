@@ -17,6 +17,7 @@ dependencies:
   shared_preferences: any
   path_provider: any
   uuid: any
+  crypto: any
   realm: any
   image_picker: any
   share_plus: any

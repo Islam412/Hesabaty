@@ -5,6 +5,8 @@ import 'theme.dart';
 import 'splash_screen.dart';
 import '../features/main_shell.dart';
 import '../features/more/login_screen.dart';
+import '../features/security/lock_screen.dart';
+import '../features/security/lock_service.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -61,6 +63,7 @@ class AuthGate extends StatefulWidget {
 class _AuthGateState extends State<AuthGate> {
   bool _loading = true;
   bool _logged = false;
+  bool _locked = false;
 
   @override
   void initState() {
@@ -75,11 +78,17 @@ class _AuthGateState extends State<AuthGate> {
       _logged = p.getBool('logged_in') ?? false;
       _loading = false;
     });
+    if (_logged) {
+      final l = await LockService.isLocked();
+      if (mounted) setState(() => _locked = l);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     if (_loading) return const SplashScreen();
-    return _logged ? const MainShell() : const LoginScreen();
+    if (!_logged) return const LoginScreen();
+    if (_locked) return LockScreen(onUnlocked: () => setState(() => _locked = false));
+    return const MainShell();
   }
 }
