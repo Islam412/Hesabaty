@@ -177,15 +177,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     },
                   ),
                 ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          await NotificationService.notify('🧪 إشعار تجريبي', 'لو شايف الرسالة دي فخدمة الإشعارات شغالة!', icon: '✅');
-          _load();
-          if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تم إرسال إشعار تجريبي ✓')));
-        },
-        icon: const Icon(Icons.send),
-        label: const Text('إرسال تجريبي'),
-      ),
+      
     );
   }
 }
