@@ -2,10 +2,16 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'account_service.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
+  static Future<String> _storeKey() async {
+    final phone = await AccountService.sessionPhone();
+    return 'notif_${phone ?? 'global'}_center';
+  }
+
   static final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
   static bool _initialized = false;
 
@@ -33,7 +39,7 @@ class NotificationService {
     // منع التكرار خلال 3 ثواني
     try {
       final p0 = await SharedPreferences.getInstance();
-      final l0 = List<Map<String, dynamic>>.from(jsonDecode(p0.getString('notif_center') ?? '[]'));
+      final l0 = List<Map<String, dynamic>>.from(jsonDecode(p0.getString(await _storeKey()) ?? '[]'));
       if (l0.isNotEmpty && l0[0]['title'] == title && l0[0]['body'] == body) {
         final t0 = DateTime.tryParse(l0[0]['time'] ?? '');
         if (t0 != null && DateTime.now().difference(t0).inSeconds < 3) return;
@@ -55,7 +61,7 @@ class NotificationService {
     if (important) {
       try {
         final p = await SharedPreferences.getInstance();
-        final raw = p.getString('notif_center') ?? '[]';
+        final raw = p.getString(await _storeKey()) ?? '[]';
         final decoded = jsonDecode(raw);
         final list = decoded is List ? List<Map<String, dynamic>>.from(decoded) : <Map<String, dynamic>>[];
         list.insert(0, {
@@ -66,7 +72,7 @@ class NotificationService {
           'read': false,
         });
         if (list.length > 200) list.removeRange(200, list.length);
-        await p.setString('notif_center', jsonEncode(list));
+        await p.setString(await _storeKey(), jsonEncode(list));
         debugPrint('💾 Saved to notif_center (total: ${list.length})');
       } catch (e) {
         debugPrint('❌ Failed to save to center: $e');
@@ -76,7 +82,7 @@ class NotificationService {
 
   static Future<List<Map<String, dynamic>>> getAll() async {
     final p = await SharedPreferences.getInstance();
-    final raw = p.getString('notif_center') ?? '[]';
+    final raw = p.getString(await _storeKey()) ?? '[]';
     try {
       final decoded = jsonDecode(raw);
       if (decoded is List) return List<Map<String, dynamic>>.from(decoded);
@@ -95,12 +101,12 @@ class NotificationService {
       i['read'] = true;
     }
     final p = await SharedPreferences.getInstance();
-    await p.setString('notif_center', jsonEncode(list));
+    await p.setString(await _storeKey(), jsonEncode(list));
   }
 
   static Future<void> clearAll() async {
     final p = await SharedPreferences.getInstance();
-    await p.setString('notif_center', '[]');
+    await p.setString(await _storeKey(), '[]');
   }
 
   static Future<void> schedule(int id, DateTime when, String title, String body) async {

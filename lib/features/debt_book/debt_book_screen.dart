@@ -54,19 +54,19 @@ class _DebtBookScreenState extends State<DebtBookScreen> with SingleTickerProvid
       double b = 0;
       for (final t in txs) {
         if (t.contactId != cid) continue;
-        final sign = c.type == 'customer' ? (t.type == 'given' ? 1.0 : -1.0) : (t.type == 'taken' ? 1.0 : -1.0);
+        final sign = (c.isValid && (c.isValid && c.type == 'customer')) ? (t.type == 'given' ? 1.0 : -1.0) : (t.type == 'taken' ? 1.0 : -1.0);
         b += t.amount * sign;
       }
       balances[cid] = b;
-      if (c.type == 'customer' && b > 0) owedToMe += b;
-      if (c.type == 'supplier' && b > 0) owedByMe += b;
+      if ((c.isValid && (c.isValid && c.type == 'customer')) && b > 0) owedToMe += b;
+      if ((c.isValid && (c.isValid && c.type == 'supplier')) && b > 0) owedByMe += b;
     }
     if (!mounted) return;
     setState(() {
       _balances = balances;
       _lastActive = lastActive;
-      _customers = all.where((c) => c.type == 'customer').toList();
-      _suppliers = all.where((c) => c.type == 'supplier').toList();
+      _customers = all.where((c) => (c.isValid && (c.isValid && c.type == 'customer'))).toList();
+      _suppliers = all.where((c) => (c.isValid && (c.isValid && c.type == 'supplier'))).toList();
       _owedToMe = owedToMe;
       _owedByMe = owedByMe;
     });
@@ -183,8 +183,8 @@ class _DebtBookScreenState extends State<DebtBookScreen> with SingleTickerProvid
                             final c = list[i];
                             final bal = _balances[c.id.toString()] ?? 0;
                             final positive = bal > 0;
-                            final color = c.type == 'customer' ? (positive ? AppTheme.incomeGreen : AppTheme.expenseRed) : (positive ? AppTheme.expenseRed : AppTheme.incomeGreen);
-                            final label = c.type == 'customer' ? l10n.owedToMe : l10n.owedByMe;
+                            final color = (c.isValid && (c.isValid && c.type == 'customer')) ? (positive ? AppTheme.incomeGreen : AppTheme.expenseRed) : (positive ? AppTheme.expenseRed : AppTheme.incomeGreen);
+                            final label = (c.isValid && (c.isValid && c.type == 'customer')) ? l10n.owedToMe : l10n.owedByMe;
                             final last = _lastActive[c.id.toString()];
                             final subtitle = last == null ? label : '$label  •  ${_rel(context, last)}';
                             return Card(

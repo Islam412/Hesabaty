@@ -105,6 +105,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (await AccountService.exists(key)) {
         final acc = await AccountService.get(key);
         await AccountService.login(key);
+        await Cur.load();
+        ThemeNotifier.listener?.call();
+        LocaleNotifier.localeListener?.call();
         RealmService.reset();
         WatcherService.start();
         if (!mounted) return;
@@ -118,6 +121,9 @@ class _LoginScreenState extends State<LoginScreen> {
         }
         await AccountService.register(key, name: data['name']!, owner: data['owner'] ?? '', address: data['address'] ?? '');
         await AccountService.login(key);
+        await Cur.load();
+        ThemeNotifier.listener?.call();
+        LocaleNotifier.localeListener?.call();
         RealmService.reset();
         WatcherService.start();
         if (!mounted) return;

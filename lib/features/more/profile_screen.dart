@@ -74,6 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               await p.setString('profile_phone', phone.text.trim());
               await p.setString('profile_address', address.text.trim());
               await p.setString('profile_currency', currency.text.trim());
+              Cur.v = currency.text.trim();
               final sess = await AccountService.sessionPhone();
               if (sess != null) await AccountService.update(sess, {'name': name.text.trim(), 'owner': owner.text.trim(), 'address': address.text.trim(), 'currency': currency.text.trim()});
               if (sess != null) await AccountService.update(sess, {'name': name.text.trim(), 'owner': owner.text.trim(), 'address': address.text.trim(), 'currency': currency.text.trim()});

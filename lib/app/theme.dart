@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../core/services/account_service.dart';
 
 class AppTheme {
   static const Color primaryBlue = Color(0xFF2E7CF6);
@@ -121,27 +122,35 @@ class AppTheme {
 
 class ThemeNotifier {
   static VoidCallback? listener;
+  static Future<String> _themeKey() async {
+    final ph = await AccountService.sessionPhone();
+    return 'theme_dark_${ph ?? 'global'}';
+  }
   static Future<bool> isDark() async {
     final p = await SharedPreferences.getInstance();
-    return p.getBool('theme_dark') ?? false;
+    return p.getBool(await _themeKey()) ?? false;
   }
   static Future<void> toggle() async {
     final p = await SharedPreferences.getInstance();
-    final dark = p.getBool('theme_dark') ?? false;
-    await p.setBool('theme_dark', !dark);
+    final dark = p.getBool(await _themeKey()) ?? false;
+    await p.setBool(await _themeKey(), !dark);
     listener?.call();
   }
 }
 
 class LocaleNotifier {
   static VoidCallback? localeListener;
+  static Future<String> _localeKey() async {
+    final ph = await AccountService.sessionPhone();
+    return 'locale_code_${ph ?? 'global'}';
+  }
   static Future<String> getCode() async {
     final p = await SharedPreferences.getInstance();
-    return p.getString('locale_code') ?? 'ar';
+    return p.getString(await _localeKey()) ?? 'ar';
   }
   static Future<void> setCode(String code) async {
     final p = await SharedPreferences.getInstance();
-    await p.setString('locale_code', code);
+    await p.setString(await _localeKey(), code);
     localeListener?.call();
   }
 }

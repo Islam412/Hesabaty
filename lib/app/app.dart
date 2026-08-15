@@ -28,8 +28,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _load() async {
     final p = await SharedPreferences.getInstance();
-    final dark = p.getBool('theme_dark') ?? false;
-    final lang = p.getString('locale_code') ?? 'ar';
+    final dark = await ThemeNotifier.isDark();
+    final lang = await LocaleNotifier.getCode();
     if (mounted) {
       setState(() {
         _mode = dark ? ThemeMode.dark : ThemeMode.light;

@@ -1,3 +1,4 @@
+import '../../core/widgets/calculator_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -306,6 +307,9 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    if (!widget.contact.isValid) {
+      return Scaffold(appBar: AppBar(), body: const Center(child: Text('تم حذف هذا السجل')));
+    }
     final isCustomer = widget.contact.type == 'customer';
     final positive = _balance > 0;
     final color = isCustomer ? (positive ? AppTheme.incomeGreen : AppTheme.expenseRed) : (positive ? AppTheme.expenseRed : AppTheme.incomeGreen);

@@ -55,7 +55,7 @@ class _PaymentServicesScreenState extends State<PaymentServicesScreen> {
   Future<void> _createLink() async {
     final l10n = AppLocalizations.of(context)!;
     final realm = await RealmService.realm;
-    final customers = realm.all<Contact>().where((c) => c.type == 'customer' && !c.isDeleted).toList();
+    final customers = realm.all<Contact>().where((c) => (c.isValid && (c.isValid && c.type == 'customer')) && !c.isDeleted).toList();
     if (customers.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('ضيف عميل الأول من دفتر الديون')));
       return;
