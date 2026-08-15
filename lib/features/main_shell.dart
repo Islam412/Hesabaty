@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../core/services/watcher_service.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'cash_book/cash_book_screen.dart';
 import 'debt_book/debt_book_screen.dart';
@@ -11,6 +12,12 @@ class MainShell extends StatefulWidget {
 }
 
 class _MainShellState extends State<MainShell> {
+  @override
+  void initState() {
+    super.initState();
+    WatcherService.start();
+  }
+
   int _index = 1;
 
   @override

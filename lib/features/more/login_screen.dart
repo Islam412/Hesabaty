@@ -5,6 +5,8 @@ import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../app/theme.dart';
 import '../../core/services/account_service.dart';
+import '../../core/services/notification_service.dart';
+import '../../core/services/watcher_service.dart';
 import '../../data/services/realm_service.dart';
 import '../main_shell.dart';
 
@@ -104,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final acc = await AccountService.get(key);
         await AccountService.login(key);
         RealmService.reset();
+        WatcherService.start();
         if (!mounted) return;
         setState(() => _busy = false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('مرحبًا بعودتك 👋 حساب: ${acc?['name'] ?? ''}'), backgroundColor: AppTheme.incomeGreen));
@@ -116,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await AccountService.register(key, name: data['name']!, owner: data['owner'] ?? '', address: data['address'] ?? '');
         await AccountService.login(key);
         RealmService.reset();
+        WatcherService.start();
         if (!mounted) return;
         setState(() => _busy = false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('✅ اتعمل حساب جديد لـ ${data['name']}'), backgroundColor: AppTheme.incomeGreen));
