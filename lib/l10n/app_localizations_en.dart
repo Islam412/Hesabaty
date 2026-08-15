@@ -1095,28 +1095,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get faq1a =>
-      'Yes ✅ All your data is stored only on your device in an encrypted database, nothing is shared.';
+      'Yes ✅ All your data is stored only on your device in an encrypted database, and nothing is uploaded to the internet unless you share it yourself.';
 
   @override
   String get faq2q => 'How do I make a backup?';
 
   @override
   String get faq2a =>
-      'Settings → Backup settings → Create backup. Auto backup is also available.';
+      'From More ← Settings ← Auto backup runs daily, and you can export & restore manually at any time.';
 
   @override
   String get faq3q => 'How do I share a statement with a client?';
 
   @override
   String get faq3a =>
-      'Open the client → share button sends the statement image + a link with all transactions.';
+      'Open the client ← the share button sends the statement image + a link with all transactions and payment methods.';
 
   @override
   String get faq4q => 'How do I pay bills from the app?';
 
   @override
   String get faq4a =>
-      'More → Electronic Payment Services → choose the bill type and pay.';
+      'More ← Electronic Payment Services ← Bill payments & top-ups ← choose the service and enter the number and amount.';
 
   @override
   String get devName => 'Eng. Islam Hamdy';
@@ -1126,4 +1126,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gallery => 'Gallery';
+
+  @override
+  String get rightsOwner =>
+      'All rights reserved © Islam Elsouly (Abu Hamza Packaging)';
+
+  @override
+  String get devLine => 'Developed by Eng. Islam Hamdy';
+
+  @override
+  String get billsSub =>
+      'Electricity, gas, water, phone, internet, balance top-up...';
+
+  @override
+  String get vodafone => 'Vodafone Cash';
+
+  @override
+  String get fawry => 'Fawry';
+
+  @override
+  String get bankCard => 'Bank card';
+
+  @override
+  String get ewallet => 'E-wallet';
+
+  @override
+  String get vodafoneHint => 'Vodafone Cash number';
+
+  @override
+  String get instapayHint => 'InstaPay address';
+
+  @override
+  String get fawryHint => 'Fawry number';
+
+  @override
+  String get cardHint => 'Card number';
+
+  @override
+  String get walletHint => 'Wallet number';
 }

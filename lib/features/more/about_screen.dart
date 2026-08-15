@@ -209,9 +209,9 @@ class AboutScreen extends StatelessWidget {
                   Center(
                     child: Column(
                       children: [
-                        Text('${l10n.rights} © ${DateTime.now().year}', style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+                        Text(l10n.rightsOwner, style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
                         const SizedBox(height: 2),
-                        Text('$ownerCompany — ${l10n.devBy} $devName', style: TextStyle(color: Colors.grey.shade400, fontSize: 11)),
+                        Text(l10n.devLine, style: TextStyle(color: Colors.grey.shade400, fontSize: 11)),
                       ],
                     ),
                   ),

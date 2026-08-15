@@ -1092,28 +1092,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get faq1a =>
-      'نعم ✅ كل بياناتك متخزنة على جهازك فقط في قاعدة بيانات مشفرة، ومفيش أي حاجة بتشارك.';
+      'نعم ✅ كل بياناتك متخزنة على جهازك فقط في قاعدة بيانات مشفرة، ومفيش أي حاجة بتترفع على الإنترنت غير لما تعمل مشاركة بنفسك.';
 
   @override
   String get faq2q => 'كيف أعمل نسخة احتياطية؟';
 
   @override
   String get faq2a =>
-      'الإعدادات ← إعدادات النسخ الاحتياطي ← إنشاء نسخة. وفيه كمان نسخ تلقائي.';
+      'من المزيد ← الإعدادات ← النسخ الاحتياطي التلقائي شغّال يوميًا، وتقدر تعمل تصدير واستعادة يدوي في أي وقت.';
 
   @override
   String get faq3q => 'كيف أشارك كشف حساب مع عميل؟';
 
   @override
   String get faq3a =>
-      'افتح العميل ← زرار المشاركة هيبعت صورة الكشف + لينك فيه كل العمليات.';
+      'افتح العميل ← زرار المشاركة هيبعت صورة الكشف + لينك فيه كل العمليات وطرق الدفع.';
 
   @override
   String get faq4q => 'كيف أدفع الفواتير من التطبيق؟';
 
   @override
   String get faq4a =>
-      'المزيد ← خدمات الدفع الإلكتروني ← اختار نوع الفاتورة وادفع.';
+      'المزيد ← خدمات الدفع الإلكتروني ← دفع الفواتير والشحن ← اختار الخدمة واكتب الرقم والمبلغ.';
 
   @override
   String get devName => 'م. إسلام حمدي';
@@ -1123,4 +1123,41 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get gallery => 'معرض';
+
+  @override
+  String get rightsOwner =>
+      'جميع الحقوق محفوظة © إسلام الصولي (أبو حمزة المواد التغليف)';
+
+  @override
+  String get devLine => 'تم التطوير بواسطة المهندس إسلام حمدي';
+
+  @override
+  String get billsSub => 'كهرباء، غاز، مياه، تليفون، نت، شحن رصيد...';
+
+  @override
+  String get vodafone => 'فودافون كاش';
+
+  @override
+  String get fawry => 'فوري';
+
+  @override
+  String get bankCard => 'بطاقة بنكية';
+
+  @override
+  String get ewallet => 'محفظة إلكترونية';
+
+  @override
+  String get vodafoneHint => 'رقم فودافون كاش';
+
+  @override
+  String get instapayHint => 'عنوان انستا باي';
+
+  @override
+  String get fawryHint => 'رقم فوري';
+
+  @override
+  String get cardHint => 'رقم البطاقة';
+
+  @override
+  String get walletHint => 'رقم المحفظة';
 }

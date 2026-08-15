@@ -2243,7 +2243,7 @@ abstract class AppLocalizations {
   /// No description provided for @faq1a.
   ///
   /// In en, this message translates to:
-  /// **'Yes ✅ All your data is stored only on your device in an encrypted database, nothing is shared.'**
+  /// **'Yes ✅ All your data is stored only on your device in an encrypted database, and nothing is uploaded to the internet unless you share it yourself.'**
   String get faq1a;
 
   /// No description provided for @faq2q.
@@ -2255,7 +2255,7 @@ abstract class AppLocalizations {
   /// No description provided for @faq2a.
   ///
   /// In en, this message translates to:
-  /// **'Settings → Backup settings → Create backup. Auto backup is also available.'**
+  /// **'From More ← Settings ← Auto backup runs daily, and you can export & restore manually at any time.'**
   String get faq2a;
 
   /// No description provided for @faq3q.
@@ -2267,7 +2267,7 @@ abstract class AppLocalizations {
   /// No description provided for @faq3a.
   ///
   /// In en, this message translates to:
-  /// **'Open the client → share button sends the statement image + a link with all transactions.'**
+  /// **'Open the client ← the share button sends the statement image + a link with all transactions and payment methods.'**
   String get faq3a;
 
   /// No description provided for @faq4q.
@@ -2279,7 +2279,7 @@ abstract class AppLocalizations {
   /// No description provided for @faq4a.
   ///
   /// In en, this message translates to:
-  /// **'More → Electronic Payment Services → choose the bill type and pay.'**
+  /// **'More ← Electronic Payment Services ← Bill payments & top-ups ← choose the service and enter the number and amount.'**
   String get faq4a;
 
   /// No description provided for @devName.
@@ -2299,6 +2299,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Gallery'**
   String get gallery;
+
+  /// No description provided for @rightsOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'All rights reserved © Islam Elsouly (Abu Hamza Packaging)'**
+  String get rightsOwner;
+
+  /// No description provided for @devLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Developed by Eng. Islam Hamdy'**
+  String get devLine;
+
+  /// No description provided for @billsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity, gas, water, phone, internet, balance top-up...'**
+  String get billsSub;
+
+  /// No description provided for @vodafone.
+  ///
+  /// In en, this message translates to:
+  /// **'Vodafone Cash'**
+  String get vodafone;
+
+  /// No description provided for @fawry.
+  ///
+  /// In en, this message translates to:
+  /// **'Fawry'**
+  String get fawry;
+
+  /// No description provided for @bankCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank card'**
+  String get bankCard;
+
+  /// No description provided for @ewallet.
+  ///
+  /// In en, this message translates to:
+  /// **'E-wallet'**
+  String get ewallet;
+
+  /// No description provided for @vodafoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Vodafone Cash number'**
+  String get vodafoneHint;
+
+  /// No description provided for @instapayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'InstaPay address'**
+  String get instapayHint;
+
+  /// No description provided for @fawryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Fawry number'**
+  String get fawryHint;
+
+  /// No description provided for @cardHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Card number'**
+  String get cardHint;
+
+  /// No description provided for @walletHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet number'**
+  String get walletHint;
 }
 
 class _AppLocalizationsDelegate

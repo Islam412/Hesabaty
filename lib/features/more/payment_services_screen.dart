@@ -19,13 +19,14 @@ class PaymentServicesScreen extends StatefulWidget {
 }
 
 class _PaymentServicesScreenState extends State<PaymentServicesScreen> {
-  static const List<Map<String, String>> _methods = [
-    {'id': 'vodafone', 'label': 'فودافون كاش', 'icon': '🔴', 'hint': 'رقم فودافون كاش'},
-    {'id': 'instapay', 'label': 'انستا باي', 'icon': '⚡', 'hint': 'عنوان انستا باي'},
-    {'id': 'fawry', 'label': 'فوري', 'icon': '🟡', 'hint': 'رقم فوري'},
-    {'id': 'card', 'label': 'بطاقة بنكية', 'icon': '💳', 'hint': 'رقم البطاقة'},
-    {'id': 'wallet', 'label': 'محفظة إلكترونية', 'icon': '👛', 'hint': 'رقم المحفظة'},
+  List<Map<String, String>> _methods(AppLocalizations l10n) => [
+    {'id': 'vodafone', 'label': l10n.vodafone, 'icon': '🔴', 'hint': l10n.vodafoneHint},
+    {'id': 'instapay', 'label': l10n.instapay, 'icon': '⚡', 'hint': l10n.instapayHint},
+    {'id': 'fawry', 'label': l10n.fawry, 'icon': '🟡', 'hint': l10n.fawryHint},
+    {'id': 'card', 'label': l10n.bankCard, 'icon': '💳', 'hint': l10n.cardHint},
+    {'id': 'wallet', 'label': l10n.ewallet, 'icon': '👛', 'hint': l10n.walletHint},
   ];
+
 
   Map<String, bool> _enabled = {};
   Map<String, String> _accounts = {};
@@ -87,7 +88,7 @@ class _PaymentServicesScreenState extends State<PaymentServicesScreen> {
       bal += t.amount * (t.type == 'given' ? 1.0 : -1.0);
     }
 
-    final payMethods = _methods
+    final payMethods = _methods(l10n)
         .where((m) => _enabled[m['id']] == true)
         .map((m) => {'label': m['label']!, 'account': _accounts[m['id']] ?? ''})
         .toList();
@@ -120,15 +121,15 @@ class _PaymentServicesScreenState extends State<PaymentServicesScreen> {
                       ),
                       child: const Icon(Icons.receipt_long, color: AppTheme.primaryBlue),
                     ),
-                    title: const Text('دفع الفواتير والشحن', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                    subtitle: const Text('كهرباء، غاز، مياه، تليفون، نت، شحن رصيد...'),
+                    title: Text(l10n.billsTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    subtitle: Text(l10n.billsSub),
                     trailing: const Icon(Icons.chevron_left, color: AppTheme.primaryBlue, size: 28),
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BillsScreen())),
                   ),
                 ),
                 Text(l10n.paymentMethods, style: TextStyle(color: AppTheme.primaryBlue, fontSize: 17, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
-                ..._methods.map((m) {
+                ..._methods(l10n).map((m) {
                   final ctrl = TextEditingController(text: _accounts[m['id']] ?? '');
                   return Card(
                     margin: const EdgeInsets.only(bottom: 10),

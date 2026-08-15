@@ -335,9 +335,9 @@ class ContactUsScreen extends StatelessWidget {
                   text: TextSpan(
                     style: TextStyle(color: Colors.grey.shade700, fontSize: 13, height: 1.6),
                     children: [
-                      const TextSpan(text: 'تم التطوير بواسطة شركة '),
+                      TextSpan(text: '${l10n.rightsOwner} '),
                       TextSpan(text: l10n.devName, style: const TextStyle(color: Color(0xFF7C4DFF), fontWeight: FontWeight.bold, fontSize: 15)),
-                      const TextSpan(text: '\nبواسطة المهندس '),
+                      TextSpan(text: '\n${l10n.devLine} '),
                       TextSpan(text: l10n.devName, style: TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold, fontSize: 15)),
                     ],
                   ),
