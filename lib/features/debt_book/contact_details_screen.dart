@@ -1,4 +1,6 @@
 import '../../core/widgets/calculator_sheet.dart';
+import '../../core/widgets/statement_card.dart';
+import '../more/image_export_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -74,34 +76,15 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
   }
 
   Future<void> _shareContact() async {
-    final l10n = AppLocalizations.of(context)!;
-    final sRows = <StatementRow>[];
-    double givenTot = 0;
-    double takenTot = 0;
-    final sorted = List<DebtTransaction>.from(_txs)..sort((a, b) => a.date.compareTo(b.date));
-    for (final t in sorted) {
-      final isGiven = widget.contact.type == 'customer' ? t.type == 'given' : t.type == 'taken';
-      if (isGiven) { givenTot += t.amount; } else { takenTot += t.amount; }
-      sRows.add(StatementRow(
-        date: '${t.date.year}-${t.date.month.toString().padLeft(2, '0')}-${t.date.day.toString().padLeft(2, '0')}',
-        label: isGiven ? l10n.given : l10n.taken,
-        amount: t.amount,
-        isGiven: isGiven,
-      ));
-    }
-    final path = await ReceiptImageService.generateStatementImage(
-      businessName: 'حساباتي',
-      contactName: widget.contact.name,
-      contactPhone: widget.contact.phone ?? '',
-      rows: sRows,
-      totalGiven: givenTot,
-      totalTaken: takenTot,
-      balance: _balance,
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ImageExportScreen(
+          child: ContactStatementCard(contact: widget.contact),
+          fileName: 'statement_${widget.contact.name}',
+        ),
+      ),
     );
-    final link = await StatementLinkService.generateLink(widget.contact, _txs, _balance);
-    final text = await StatementLinkService.statementText(widget.contact, _txs, _balance);
-    if (!mounted) return;
-    await ShareService.shareReceiptImage(context, path, '$text\n${l10n.seeAllTransactions}\n$link');
   }
 
   Future<void> _exportPdf() async {
