@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../../core/services/storage_service.dart';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class _ImageExportScreenState extends State<ImageExportScreen> {
     final image = await boundary.toImage(pixelRatio: 3);
     final ByteData? bd = await image.toByteData(format: ui.ImageByteFormat.png);
     final Uint8List bytes = bd!.buffer.asUint8List();
-    final dir = await getApplicationDocumentsDirectory();
+    final dir = Directory(await StorageService.basePath());
     final f = File('${dir.path}/${widget.fileName}_${DateTime.now().millisecondsSinceEpoch}.png');
     await f.writeAsBytes(bytes);
     return f;

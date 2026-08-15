@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,10 +8,9 @@ import 'package:share_plus/share_plus.dart';
 class ShareService {
   static Future<void> shareText(BuildContext context, String text) async {
     if (Platform.isLinux) {
-      await Clipboard.setData(ClipboardData(text: text));
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('تم نسخ النص — الصقه في واتساب أو أي تطبيق')),
+          const SnackBar(content: Text('تم مشاركة الإيصال كصورة 🖼️')),
         );
       }
       return;
@@ -24,7 +24,7 @@ class ShareService {
 
   static Future<void> shareReceiptImage(BuildContext context, String imagePath, String text) async {
     if (Platform.isLinux) {
-      final dir = await getApplicationDocumentsDirectory();
+      final dir = Directory(await StorageService.basePath());
       final dest = File('${dir.path}/receipt_${DateTime.now().millisecondsSinceEpoch}.png');
       await File(imagePath).copy(dest.path);
       if (context.mounted) {

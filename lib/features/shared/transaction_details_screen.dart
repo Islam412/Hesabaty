@@ -1,10 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:debt_cash_app/l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
-import '../../core/services/share_service.dart';
 import '../../app/theme.dart';
-import '../../data/models/app_models.dart';
+import '../../core/widgets/receipt_card.dart';
+import '../more/image_export_screen.dart';
 
 class TransactionDetailsScreen extends StatelessWidget {
   final double amount;
@@ -30,119 +28,73 @@ class TransactionDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context).languageCode;
-    final dateFmt = DateFormat('yyyy-MM-dd  HH:mm', locale);
-    final hasImage = imagePath != null && imagePath!.isNotEmpty && File(imagePath!).existsSync();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.image_outlined),
+            tooltip: 'حفظ / مشاركة كصورة 🖼️',
+            onPressed: () => _openExport(context),
+          ),
           if (onEdit != null) IconButton(icon: const Icon(Icons.edit), onPressed: onEdit),
           if (onDelete != null)
-            IconButton(
-              icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
-              onPressed: onDelete,
-            ),
+            IconButton(icon: const Icon(Icons.delete_outline, color: Colors.redAccent), onPressed: onDelete),
         ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Center(
-            child: Text(
-              '${amount.toStringAsFixed(2)} ${Cur.v}',
-              style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold, color: color),
-            ),
+          // الإيصال كصورة أنيقة دايمًا
+          ReceiptCard(
+            title: title,
+            amount: amount,
+            currency: Cur.v,
+            date: date,
+            note: note,
+            color: color,
           ),
-          const SizedBox(height: 24),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.calendar_today, size: 20),
-                      const SizedBox(width: 10),
-                      Text(
-                        dateFmt.format(date),
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
-                  if (note != null && note!.isNotEmpty) ...[
-                    const Divider(height: 24),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(Icons.notes, size: 20),
-                        const SizedBox(width: 10),
-                        Expanded(child: Text(note!, style: const TextStyle(fontSize: 15))),
-                      ],
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-          if (hasImage) ...[
+          // لو فيه صورة مرفقة من العملية نفسها نعرضها كمان
+          if (imagePath != null && imagePath!.isNotEmpty && File(imagePath!).existsSync()) ...[
             const SizedBox(height: 16),
             Card(
               clipBehavior: Clip.antiAlias,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.image, size: 18),
-                        const SizedBox(width: 8),
-                        Text(l10n.note, style: const TextStyle(fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => Scaffold(
-                          appBar: AppBar(),
-                          backgroundColor: Colors.black,
-                          body: Center(
-                            child: InteractiveViewer(
-                              child: Image.file(File(imagePath!)),
-                            ),
-                          ),
-                        ),
-                      ));
-                    },
-                    child: Image.file(File(imagePath!), fit: BoxFit.cover, height: 280),
-                  ),
-                ],
+              child: InkWell(
+                onTap: () => _openExport(context),
+                child: Image.file(File(imagePath!), fit: BoxFit.cover),
               ),
             ),
           ],
           const SizedBox(height: 24),
-          OutlinedButton.icon(
-            icon: const Icon(Icons.share),
-            label: Text(l10n.share),
-            onPressed: () async {
-              final text = '$title\n${amount.toStringAsFixed(2)} ج.م\n${dateFmt.format(date)}\n${note ?? ''}';
-              if (hasImage) {
-                await ShareService.shareReceiptImage(context, imagePath!, text);
-              } else {
-                await ShareService.shareText(context, text);
-              }
-            },
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 14),
+          FilledButton.icon(
+            style: FilledButton.styleFrom(
+              backgroundColor: AppTheme.incomeGreen,
+              padding: const EdgeInsets.symmetric(vertical: 16),
             ),
+            onPressed: () => _openExport(context),
+            icon: const Icon(Icons.share),
+            label: const Text('حفظ / مشاركة الإيصال كصورة', style: TextStyle(fontSize: 16)),
           ),
         ],
+      ),
+    );
+  }
+
+  void _openExport(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ImageExportScreen(
+          child: ReceiptCard(
+            title: title,
+            amount: amount,
+            currency: Cur.v,
+            date: date,
+            note: note,
+            color: color,
+          ),
+          fileName: 'receipt',
+        ),
       ),
     );
   }
