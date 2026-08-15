@@ -149,9 +149,9 @@ class _CashBookScreenState extends State<CashBookScreen> {
                   children: [
                     Row(
                       children: [
-                        Expanded(child: FilledButton.tonalIcon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: true); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.camera_alt, size: 18), label: const Text('كاميرا'))),
+                        Expanded(child: FilledButton.tonalIcon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: true); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.camera_alt, size: 18), label: Text(AppLocalizations.of(context)!.camera))),
                         const SizedBox(width: 8),
-                        Expanded(child: FilledButton.tonalIcon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: false); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.photo_library, size: 18), label: const Text('معرض'))),
+                        Expanded(child: FilledButton.tonalIcon(onPressed: () async { final p = await ImagePickerService.pickAndSave(fromCamera: false); if (p != null) setS(() => _imgPath = p); }, icon: const Icon(Icons.photo_library, size: 18), label: Text(AppLocalizations.of(context)!.gallery))),
                       ],
                     ),
                     if (_imgPath != null) ...[

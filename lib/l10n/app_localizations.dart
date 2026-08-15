@@ -1025,7 +1025,7 @@ abstract class AppLocalizations {
   /// No description provided for @ownerName.
   ///
   /// In en, this message translates to:
-  /// **'Owner name'**
+  /// **'Islam Elsouly'**
   String get ownerName;
 
   /// No description provided for @activity.
@@ -2281,6 +2281,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More → Electronic Payment Services → choose the bill type and pay.'**
   String get faq4a;
+
+  /// No description provided for @devName.
+  ///
+  /// In en, this message translates to:
+  /// **'Eng. Islam Hamdy'**
+  String get devName;
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
+
+  /// No description provided for @gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get gallery;
 }
 
 class _AppLocalizationsDelegate

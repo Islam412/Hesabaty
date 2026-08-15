@@ -128,7 +128,7 @@ class AboutScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        const Text(ownerName, style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                        Text(l10n.ownerName, style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
                         Text(ownerCompany, style: const TextStyle(color: Color(0xFFFFF3E0), fontSize: 14)),
                         const SizedBox(height: 14),
@@ -177,7 +177,7 @@ class AboutScreen extends StatelessWidget {
                       children: [
                         CircleAvatar(radius: 40, backgroundColor: Colors.white.withOpacity(0.2), child: const Text('م', style: TextStyle(color: Colors.white, fontSize: 38, fontWeight: FontWeight.bold))),
                         const SizedBox(height: 10),
-                        const Text(devName, style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                        Text(l10n.devName, style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
                         Text(l10n.devSection, style: const TextStyle(color: Color(0xFFE1BEE7), fontSize: 14)),
                         const SizedBox(height: 14),

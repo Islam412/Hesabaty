@@ -484,7 +484,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessName => 'Business name';
 
   @override
-  String get ownerName => 'Owner name';
+  String get ownerName => 'Islam Elsouly';
 
   @override
   String get activity => 'Business type';
@@ -1117,4 +1117,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get faq4a =>
       'More → Electronic Payment Services → choose the bill type and pay.';
+
+  @override
+  String get devName => 'Eng. Islam Hamdy';
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get gallery => 'Gallery';
 }

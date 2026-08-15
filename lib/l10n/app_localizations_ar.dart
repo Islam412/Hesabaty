@@ -480,7 +480,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get businessName => 'اسم النشاط التجاري';
 
   @override
-  String get ownerName => 'اسم صاحب النشاط';
+  String get ownerName => 'أ. إسلام الصولي';
 
   @override
   String get activity => 'نوع النشاط';
@@ -1114,4 +1114,13 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get faq4a =>
       'المزيد ← خدمات الدفع الإلكتروني ← اختار نوع الفاتورة وادفع.';
+
+  @override
+  String get devName => 'م. إسلام حمدي';
+
+  @override
+  String get camera => 'كاميرا';
+
+  @override
+  String get gallery => 'معرض';
 }

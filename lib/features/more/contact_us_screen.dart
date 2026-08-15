@@ -5,17 +5,14 @@ import '../../app/theme.dart';
 import '../../core/services/share_service.dart';
 
 // ===== بيانات صاحب التطبيق =====
-const String kOwnerName = 'إسلام الصولي';
 const String kOwnerCompany = 'ابو حمزه المواد التغليف';
 const String kOwnerWhatsApp = '201155583620';
 const String kOwnerAddress = 'شارع صلاح سالم بجوار توكيل بچاچ الحوامدية';
 
 // ===== بيانات الشركة المطورة =====
-const String kDevCompany = 'م. إسلام حمدي';
 const String kDevPortfolio = '';
 
 // ===== بيانات المهندس المصمم =====
-const String kEngineerName = 'اسلام حمدي';
 const String kEngineerWhatsApp = '201127782279';
 const String kEngineerPortfolio = 'https://islam-portfolio-phi.vercel.app/';
 
@@ -204,7 +201,7 @@ class ContactUsScreen extends StatelessWidget {
           _personCard(
             context,
             role: l10n.appOwner,
-            name: kOwnerName,
+            name: l10n.ownerName,
             subtitle: kOwnerCompany,
             avatar: Icons.storefront,
             color: const Color(0xFFE5A83B),
@@ -240,7 +237,7 @@ class ContactUsScreen extends StatelessWidget {
           _personCard(
             context,
             role: l10n.appEngineer,
-            name: kEngineerName,
+            name: l10n.devName,
             subtitle: 'Flutter Developer',
             avatar: Icons.code_rounded,
             color: AppTheme.primaryBlue,
@@ -266,7 +263,7 @@ class ContactUsScreen extends StatelessWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
-                  onPressed: () => ShareService.shareText(context, '📒 تطبيق حساباتي — دفتر النقدية والديون والمحفظة في تطبيق واحد!\nصاحب التطبيق: $kOwnerName — $kOwnerCompany\nتطوير: $kDevCompany | تصميم: $kEngineerName\nبورتفوليو المهندس: $kEngineerPortfolio'),
+                  onPressed: () => ShareService.shareText(context, '📒 تطبيق حساباتي — دفتر النقدية والديون والمحفظة في تطبيق واحد!\nصاحب التطبيق: $l10n.ownerName — $kOwnerCompany\nتطوير: $l10n.devName | تصميم: $l10n.devName\nبورتفوليو المهندس: $kEngineerPortfolio'),
                   icon: const Icon(Icons.share_rounded, color: AppTheme.primaryBlue, size: 20),
                   label: Text(l10n.shareApp),
                 ),
@@ -339,9 +336,9 @@ class ContactUsScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.grey.shade700, fontSize: 13, height: 1.6),
                     children: [
                       const TextSpan(text: 'تم التطوير بواسطة شركة '),
-                      TextSpan(text: kDevCompany, style: const TextStyle(color: Color(0xFF7C4DFF), fontWeight: FontWeight.bold, fontSize: 15)),
+                      TextSpan(text: l10n.devName, style: const TextStyle(color: Color(0xFF7C4DFF), fontWeight: FontWeight.bold, fontSize: 15)),
                       const TextSpan(text: '\nبواسطة المهندس '),
-                      TextSpan(text: kEngineerName, style: TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold, fontSize: 15)),
+                      TextSpan(text: l10n.devName, style: TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold, fontSize: 15)),
                     ],
                   ),
                 ),

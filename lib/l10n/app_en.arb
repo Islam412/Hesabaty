@@ -154,7 +154,7 @@
   "linkReady": "Link ready — share it now",
   "paymentMethods": "Payment methods",
   "businessName": "Business name",
-  "ownerName": "Owner name",
+  "ownerName": "Islam Elsouly",
   "activity": "Business type",
   "cardSaved": "Card saved successfully",
   "shareAsImage": "Share as image",
@@ -363,5 +363,8 @@
   "faq3q": "How do I share a statement with a client?",
   "faq3a": "Open the client → share button sends the statement image + a link with all transactions.",
   "faq4q": "How do I pay bills from the app?",
-  "faq4a": "More → Electronic Payment Services → choose the bill type and pay."
+  "faq4a": "More → Electronic Payment Services → choose the bill type and pay.",
+  "devName": "Eng. Islam Hamdy",
+  "camera": "Camera",
+  "gallery": "Gallery"
 }
