@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'account_service.dart';
+import 'storage_service.dart';
 import 'package:realm/realm.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
 
 class BackupService {
   static Future<Directory> _backupDir() async {
-    final base = await getApplicationDocumentsDirectory();
+    final basePath = await StorageService.basePath();
     final phone = await AccountService.sessionPhone() ?? 'default';
-    final dir = Directory('${base.path}/HesabatyBackups/$phone');
+    final dir = Directory('${basePath}/HesabatyBackups/$phone');
     if (!await dir.exists()) await dir.create(recursive: true);
     return dir;
   }

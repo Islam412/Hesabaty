@@ -4,6 +4,7 @@ import 'package:debt_cash_app/l10n/app_localizations.dart';
 import '../../app/theme.dart';
 import '../../core/services/account_service.dart';
 import 'backup_settings_screen.dart';
+import 'storage_settings_screen.dart';
 import 'notifications_screen.dart';
 import '../../core/services/notification_service.dart';
 import 'dart:convert';
@@ -175,7 +176,7 @@ class SettingsScreen extends StatelessWidget {
           const Divider(),
           _row(Icons.lock_outline, l10n.appLock, const Color(0xFFE91E63), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SetupLockScreen()))),
           const Divider(),
-          _row(Icons.storage_outlined, l10n.storage, const Color(0xFF00BCD4)),
+          _row(Icons.storage_outlined, l10n.storage, const Color(0xFF00BCD4), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StorageSettingsScreen()))),
           const Divider(),
           _row(Icons.info_outline, l10n.aboutApp, AppTheme.incomeGreen),
         ],

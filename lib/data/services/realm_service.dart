@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:realm/realm.dart';
 import '../models/app_models.dart';
 import '../../core/services/account_service.dart';
+import '../../core/services/storage_service.dart';
 
 class RealmService {
   static Realm? _realm;
@@ -30,14 +31,14 @@ class RealmService {
   }
 
   static Future<String> _path() async {
-    final dir = await getApplicationDocumentsDirectory();
+    final base = await StorageService.basePath();
     final phone = await AccountService.sessionPhone();
-    if (phone == null || phone.isEmpty) return '${dir.path}/hesabaty.realm';
-    final per = File('${dir.path}/hesabaty_$phone.realm');
+    if (phone == null || phone.isEmpty) return '${base}/hesabaty.realm';
+    final per = File('${base}/hesabaty_$phone.realm');
     // أول حساب بس بينقل البيانات القديمة بتاعته لملفه الخاص مرة واحدة
     final first = await AccountService.firstPhone();
     if (first == phone && !per.existsSync()) {
-      final legacy = File('${dir.path}/hesabaty.realm');
+      final legacy = File('${base}/hesabaty.realm');
       if (legacy.existsSync()) {
         try {
           legacy.copySync(per.path);
