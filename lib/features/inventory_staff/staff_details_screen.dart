@@ -1,3 +1,4 @@
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:realm/realm.dart';
@@ -143,7 +144,33 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
               children: [
                 CircleAvatar(radius: 36, backgroundColor: Colors.white.withOpacity(0.2), child: Text(s.name.isNotEmpty ? s.name[0] : '?', style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold))),
                 const SizedBox(height: 8),
-                Text(s.name, style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                Row(
+                  children: [
+                    Expanded(child: Text(s.name, style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold))),
+                    if ((s.phone ?? '').isNotEmpty) ...[
+                      _contactAction(
+                        icon: Icons.chat_bubble,
+                        color: Colors.white,
+                        bgColor: Colors.white.withOpacity(0.2),
+                        onTap: () async {
+                          var phone = s.phone!.replaceAll(RegExp(r'\D'), '');
+                          if (phone.startsWith('0')) phone = '20' + phone.substring(1);
+                          await launchUrl(Uri.parse('https://wa.me/$phone'), mode: LaunchMode.externalApplication);
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      _contactAction(
+                        icon: Icons.phone,
+                        color: Colors.white,
+                        bgColor: Colors.white.withOpacity(0.2),
+                        onTap: () async {
+                          final phone = s.phone!.replaceAll(RegExp(r'\D'), '');
+                          await launchUrl(Uri.parse('tel:+$phone'), mode: LaunchMode.externalApplication);
+                        },
+                      ),
+                    ],
+                  ],
+                ),
                 Text(s.role, style: const TextStyle(color: Color(0xFFE1BEE7))),
                 const SizedBox(height: 12),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -252,4 +279,18 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
       ]),
     );
   }
+
+  Widget _contactAction({required IconData icon, required Color color, required Color bgColor, required VoidCallback onTap}) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(12),
+      onTap: onTap,
+      child: Container(
+        width: 42,
+        height: 42,
+        decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12)),
+        child: Icon(icon, color: color, size: 22),
+      ),
+    );
+  }
+
 }

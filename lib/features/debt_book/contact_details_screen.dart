@@ -1,3 +1,4 @@
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
@@ -324,6 +325,33 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
           ],
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.chat_bubble, color: Color(0xFF25D366)),
+            tooltip: 'واتساب',
+            onPressed: () async {
+              final phone = widget.contact.phone ?? '';
+              if (phone.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('لا يوجد رقم تليفون — عدّل بيانات العميل أولًا ✏️')));
+                return;
+              }
+              var d = phone.replaceAll(RegExp(r'\D'), '');
+              if (d.startsWith('0')) d = '20' + d.substring(1);
+              await launchUrl(Uri.parse('https://wa.me/$d'), mode: LaunchMode.externalApplication);
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.phone, color: Color(0xFF2E7CF6)),
+            tooltip: 'اتصال',
+            onPressed: () async {
+              final phone = widget.contact.phone ?? '';
+              if (phone.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('لا يوجد رقم تليفون — عدّل بيانات العميل أولًا ✏️')));
+                return;
+              }
+              final d = phone.replaceAll(RegExp(r'\D'), '');
+              await launchUrl(Uri.parse('tel:+$d'), mode: LaunchMode.externalApplication);
+            },
+          ),
           IconButton(icon: const Icon(Icons.share), onPressed: _shareContact),
           IconButton(icon: const Icon(Icons.picture_as_pdf_outlined), onPressed: _exportPdf),
           IconButton(icon: const Icon(Icons.notifications_active_outlined), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ScheduleReminderScreen(contact: widget.contact, currentBalance: _balance)))),
