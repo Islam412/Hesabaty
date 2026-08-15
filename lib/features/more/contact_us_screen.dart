@@ -233,7 +233,8 @@ class ContactUsScreen extends StatelessWidget {
             ],
           ),
 
-          // ===== الشركة المطورة =====l10n.appEngineer, AppTheme.primaryBlue),
+          // ===== المهندس المطور =====
+          _sectionTitle(context, Icons.code_rounded, l10n.appEngineer, AppTheme.primaryBlue),
           _personCard(
             context,
             role: l10n.appEngineer,
@@ -263,7 +264,7 @@ class ContactUsScreen extends StatelessWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
-                  onPressed: () => ShareService.shareText(context, '📒 تطبيق حساباتي — دفتر النقدية والديون والمحفظة في تطبيق واحد!\nصاحب التطبيق: $l10n.ownerName — $kOwnerCompany\nتطوير: $l10n.devName | تصميم: $l10n.devName\nبورتفوليو المهندس: $kEngineerPortfolio'),
+                  onPressed: () => ShareService.shareText(context, '📒 تطبيق حساباتي — دفتر النقدية والديون والمحفظة في تطبيق واحد!\nصاحب التطبيق: ${l10n.ownerName} — $kOwnerCompany\nتطوير: ${l10n.devName} | تصميم: ${l10n.devName}\nبورتفوليو المهندس: $kEngineerPortfolio'),
                   icon: const Icon(Icons.share_rounded, color: AppTheme.primaryBlue, size: 20),
                   label: Text(l10n.shareApp),
                 ),
@@ -274,10 +275,10 @@ class ContactUsScreen extends StatelessWidget {
           // ===== الأسئلة الشائعة =====
           _sectionTitle(context, Icons.quiz_rounded, l10n.faq, AppTheme.incomeGreen),
           ...[
-            {'q': l10n.faq1q, 'a': 'نعم ✅ كل بياناتك متخزنة على جهازك فقط في قاعدة بيانات مشفرة، ومفيش أي حاجة بترفع على الإنترنت غير لما تعمل مشاركة بنفسك.'},
-            {'q': l10n.faq2q, 'a': 'من المزيد ← الإعدادات ← النسخ الاحتياطي التلقائي شغال يوميًا، وتقدر تعمل تصدير واستعادة يدوي في أي وقت.'},
-            {'q': l10n.faq3q, 'a': 'افتح العميل ← زرار المشاركة هيبعت صورة الكشف + لينك فيه كل العمليات وطرق الدفع.'},
-            {'q': l10n.faq4q, 'a': 'المزيد ← خدمات الدفع الإلكتروني ← دفع الفواتير والشحن ← اختار الخدمة واكتب الرقم والمبلغ.'},
+            {'q': l10n.faq1q, 'a': l10n.faq1a},
+            {'q': l10n.faq2q, 'a': l10n.faq2a},
+            {'q': l10n.faq3q, 'a': l10n.faq3a},
+            {'q': l10n.faq4q, 'a': l10n.faq4a},
           ].map((f) => Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -286,7 +287,7 @@ class ContactUsScreen extends StatelessWidget {
                   child: ExpansionTile(
                     leading: CircleAvatar(backgroundColor: AppTheme.incomeGreen.withOpacity(0.12), radius: 16, child: Icon(Icons.help_outline, color: AppTheme.incomeGreen, size: 16)),
                     title: Text(f['q']!, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                    children: [Padding(padding: const EdgeInsets.fromLTRB(16, 0, 16, 12), child: Text(f['a']!, style: TextStyle(color: Colors.grey.shade600, height: 1.7, fontSize: 13)))],
+                    children: [Padding(padding: const EdgeInsets.all(14), child: Text(f['a'] ?? '', style: const TextStyle(fontSize: 13, height: 1.6)))],
                   ),
                 ),
               )),
@@ -335,10 +336,10 @@ class ContactUsScreen extends StatelessWidget {
                   text: TextSpan(
                     style: TextStyle(color: Colors.grey.shade700, fontSize: 13, height: 1.6),
                     children: [
-                      TextSpan(text: '${l10n.rightsOwner} '),
-                      TextSpan(text: l10n.devName, style: const TextStyle(color: Color(0xFF7C4DFF), fontWeight: FontWeight.bold, fontSize: 15)),
-                      TextSpan(text: '\n${l10n.devLine} '),
-                      TextSpan(text: l10n.devName, style: TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold, fontSize: 15)),
+                      TextSpan(text: ''),
+                      TextSpan(text: l10n.rightsOwner, style: const TextStyle(color: Color(0xFF7C4DFF), fontWeight: FontWeight.bold, fontSize: 15)),
+                      TextSpan(text: '\n'),
+                      TextSpan(text: l10n.devLine, style: TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold, fontSize: 15)),
                     ],
                   ),
                 ),
@@ -356,7 +357,7 @@ class ContactUsScreen extends StatelessWidget {
                       children: [
                         Icon(Icons.language, size: 14, color: AppTheme.primaryBlue),
                         const SizedBox(width: 4),
-                        Text('بورتفوليو المهندس', style: TextStyle(color: AppTheme.primaryBlue, fontSize: 11, fontWeight: FontWeight.w600)),
+                        Text(l10n.portfolio, style: TextStyle(color: AppTheme.primaryBlue, fontSize: 11, fontWeight: FontWeight.w600)),
                       ],
                     ),
                   ),
