@@ -172,7 +172,7 @@ class _CalculatorSheetState extends State<CalculatorSheet> {
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: () {
-            if (k == '✓') { Navigator.pop(context, _parse(_display)); }
+            if (k == '✓') { if (_op.isNotEmpty) _calc(); Navigator.pop(context, _parse(_display)); }
             else if (k == 'C') _clear();
             else if (k == '±') setState(() => _display = _display.startsWith('-') ? _display.substring(1) : '-$_display');
             else if (k == '%') setState(() => _display = _fmt(_parse(_display) / 100));

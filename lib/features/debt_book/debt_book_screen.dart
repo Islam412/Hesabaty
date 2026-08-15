@@ -58,8 +58,8 @@ class _DebtBookScreenState extends State<DebtBookScreen> with SingleTickerProvid
         b += t.amount * sign;
       }
       balances[cid] = b;
-      if ((c.isValid && (c.isValid && c.type == 'customer')) && b > 0) owedToMe += b;
-      if ((c.isValid && (c.isValid && c.type == 'supplier')) && b > 0) owedByMe += b;
+      if (c.isValid && c.type == 'customer') { if (b < 0) owedToMe += -b; else owedByMe += b; }
+      if (c.isValid && c.type == 'supplier') { if (b > 0) owedByMe += b; else owedToMe += -b; }
     }
     if (!mounted) return;
     setState(() {
@@ -140,6 +140,25 @@ class _DebtBookScreenState extends State<DebtBookScreen> with SingleTickerProvid
     );
   }
 
+
+  double _calcOwedToMe() {
+    double s = 0;
+    for (final c in [..._customers, ..._suppliers]) {
+      final b = _balances[c.id.toString()] ?? 0;
+      if (b < 0) s += -b;
+    }
+    return s;
+  }
+
+  double _calcOwedByMe() {
+    double s = 0;
+    for (final c in [..._customers, ..._suppliers]) {
+      final b = _balances[c.id.toString()] ?? 0;
+      if (b > 0) s += b;
+    }
+    return s;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -159,9 +178,9 @@ class _DebtBookScreenState extends State<DebtBookScreen> with SingleTickerProvid
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      Expanded(child: _summaryCard(l10n.owedToMe, _owedToMe, AppTheme.incomeGreen)),
+                      Expanded(child: _summaryCard(l10n.owedToMe, _calcOwedToMe(), AppTheme.incomeGreen)),
                       const SizedBox(width: 12),
-                      Expanded(child: _summaryCard(l10n.owedByMe, _owedByMe, AppTheme.expenseRed)),
+                      Expanded(child: _summaryCard(l10n.owedByMe, _calcOwedByMe(), AppTheme.expenseRed)),
                     ],
                   ),
                 ),

@@ -192,7 +192,9 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(controller: amountC, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: l10n.amount)),
+              TextField(controller: amountC,
+                      readOnly: true,
+                      onTap: () => _openCalc(amountC), keyboardType: TextInputType.number, decoration: InputDecoration(labelText: l10n.amount)),
               const SizedBox(height: 8),
               TextField(controller: noteC, decoration: InputDecoration(labelText: l10n.note)),
             ],
@@ -250,7 +252,9 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
           children: [
             Text(type == 'given' ? l10n.given : l10n.taken, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: type == 'given' ? AppTheme.expenseRed : AppTheme.incomeGreen)),
             const SizedBox(height: 12),
-            TextField(controller: amountC, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: l10n.amount, border: const OutlineInputBorder())),
+            TextField(controller: amountC,
+                      readOnly: true,
+                      onTap: () => _openCalc(amountC), keyboardType: TextInputType.number, decoration: InputDecoration(labelText: l10n.amount, border: const OutlineInputBorder())),
             const SizedBox(height: 12),
             TextField(controller: noteC, decoration: InputDecoration(labelText: l10n.note, border: const OutlineInputBorder())),
             const SizedBox(height: 12),
@@ -302,6 +306,21 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
         ),
       ),
     );
+  }
+
+
+  Future<void> _openCalc(TextEditingController ctrl) async {
+    final r = await CalculatorSheet.show(
+      context,
+      initial: double.tryParse(ctrl.text.replaceAll(',', '')) ?? 0,
+      title: 'المبلغ',
+      currency: Cur.v,
+    );
+    if (r != null) {
+      setState(() {
+        ctrl.text = r == r.roundToDouble() ? r.toStringAsFixed(0) : r.toStringAsFixed(2);
+      });
+    }
   }
 
   @override
