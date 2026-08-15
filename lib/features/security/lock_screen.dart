@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import '../../app/theme.dart';
 import 'lock_service.dart';
@@ -12,6 +13,7 @@ class LockScreen extends StatefulWidget {
 }
 
 class _LockScreenState extends State<LockScreen> {
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
   LockType _type = LockType.none;
   bool _biometric = false;
   bool _loading = true;
@@ -40,7 +42,7 @@ class _LockScreenState extends State<LockScreen> {
     if (ok) {
       widget.onUnlocked();
     } else {
-      setState(() { _error = true; _msg = 'فشل التحقق — حاول تاني'; });
+      setState(() { _error = true; _msg = l10n.wrongTryAgain; });
     }
   }
 
@@ -75,6 +77,7 @@ class _LockScreenState extends State<LockScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (_loading) return const Scaffold(body: Center(child: CircularProgressIndicator()));
     return Scaffold(
       body: Container(
@@ -92,7 +95,7 @@ class _LockScreenState extends State<LockScreen> {
                     child: const Icon(Icons.lock, color: Colors.white, size: 56),
                   ),
                   const SizedBox(height: 20),
-                  const Text('التطبيق مقفل 🔒', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                  Text(l10n.lockedTitle, style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 6),
                   Text(_titleFor(_type), style: TextStyle(color: Colors.white.withOpacity(0.85), fontSize: 14)),
                   const SizedBox(height: 30),
@@ -119,7 +122,7 @@ class _LockScreenState extends State<LockScreen> {
                       style: FilledButton.styleFrom(backgroundColor: Colors.white.withOpacity(0.2), foregroundColor: Colors.white, minimumSize: const Size(double.infinity, 54)),
                       onPressed: _tryBiometric,
                       icon: const Icon(Icons.fingerprint, size: 28),
-                      label: const Text('فتح بالبصمة / الوجه', style: TextStyle(fontSize: 15)),
+                      label: Text(l10n.bioOrFace, style: TextStyle(fontSize: 15)),
                     ),
                   ],
                 ],
@@ -133,9 +136,9 @@ class _LockScreenState extends State<LockScreen> {
 
   String _titleFor(LockType t) {
     switch (t) {
-      case LockType.pin: return 'ادخل الـ PIN';
-      case LockType.password: return 'ادخل كلمة السر';
-      case LockType.pattern: return 'ارسم النقش';
+      case LockType.pin: return l10n.enterPin;
+      case LockType.password: return l10n.enterPass;
+      case LockType.pattern: return l10n.drawPattern;
       default: return '';
     }
   }
@@ -217,7 +220,7 @@ class _LockScreenState extends State<LockScreen> {
           ),
         ),
         const SizedBox(height: 14),
-        const Text('المس البصمة للفتح 👆', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
+        Text(l10n.touchBio, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
       ],
     );
   }

@@ -52,13 +52,13 @@ class _AddCardScreenState extends State<AddCardScreen> {
     final num = _numCtrl.text.replaceAll(RegExp(r'\D'), '');
     String? err;
     if (!WalletService.luhnCheck(num)) {
-      err = 'رقم البطاقة غير صحيح — تحقق من الأرقام';
+      err = l10n.cardNumberInvalid;
     } else if (_nameCtrl.text.trim().isEmpty) {
-      err = 'اكتب اسم حامل البطاقة';
+      err = l10n.cardHolderRequired;
     } else if (!WalletService.validExpiry(_expCtrl.text.trim())) {
-      err = 'تاريخ الانتهاء بصيغة MM/YY ولازم يكون في المستقبل';
+      err = l10n.expiryInvalid;
     } else if (_cvvCtrl.text.trim().length < 3) {
-      err = 'CVV غير صحيح (3-4 أرقام)';
+      err = l10n.cvvInvalid;
     }
     if (err != null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err), backgroundColor: AppTheme.expenseRed));

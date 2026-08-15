@@ -74,7 +74,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoBackup => 'Auto backup';
 
   @override
-  String get contactUs => 'تواصل معنا';
+  String get contactUs => 'Contact us';
 
   @override
   String get aboutApp => 'About the App';
@@ -553,7 +553,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openMap => 'Open in maps';
 
   @override
-  String get whatsapp => 'واتساب';
+  String get whatsapp => 'WhatsApp';
 
   @override
   String get call => 'Call';
@@ -623,7 +623,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backupLocation => 'Backup location';
 
   @override
-  String get openFolder => 'Open folder';
+  String get openFolder => 'Open folder in file manager';
 
   @override
   String get saturday => 'Saturday';
@@ -827,7 +827,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get developerName => 'م. إسلام حمدي';
 
   @override
-  String get company => 'Corvix';
+  String get company => 'م. إسلام حمدي';
 
   @override
   String get telegram => 'تليجرام';
@@ -840,4 +840,281 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get copyright => 'جميع الحقوق محفوظة';
+
+  @override
+  String get storageTitle => 'Storage';
+
+  @override
+  String get totalUsed => 'Total used space';
+
+  @override
+  String get customPath => 'Custom location';
+
+  @override
+  String get defaultPath => 'Default location';
+
+  @override
+  String get dbLabel => 'Databases';
+
+  @override
+  String get backupsLabel => 'Backups';
+
+  @override
+  String get currentPath => 'Current storage location';
+
+  @override
+  String get changePath => 'Change storage location';
+
+  @override
+  String get resetDefault => 'Reset to default location';
+
+  @override
+  String get transferring => 'Transferring data...';
+
+  @override
+  String get exportTitle => 'Export as image';
+
+  @override
+  String get saveImage => 'Save image';
+
+  @override
+  String get shareImage => 'Share image';
+
+  @override
+  String get lockTitle => 'App Lock';
+
+  @override
+  String get protectTitle => 'App Protection';
+
+  @override
+  String get chooseLock => 'Choose the unlock method that suits you';
+
+  @override
+  String get unlockMethod => 'Unlock method';
+
+  @override
+  String get noLock => 'No lock';
+
+  @override
+  String get bioLock => 'Fingerprint / Face';
+
+  @override
+  String get pinLock => 'PIN code';
+
+  @override
+  String get digits46 => '4-6 digits';
+
+  @override
+  String get passLock => 'Password';
+
+  @override
+  String get patternLock => 'Pattern';
+
+  @override
+  String get bioAvailable => 'Available on your device';
+
+  @override
+  String get bioUnavailable => 'Not available on this device';
+
+  @override
+  String get bioSection => 'Biometric authentication';
+
+  @override
+  String get faceOpen => 'Open with face';
+
+  @override
+  String get fingerOpen => 'Open with fingerprint';
+
+  @override
+  String get bioExtra => 'As an addition to the main method';
+
+  @override
+  String get lockedTitle => 'App locked';
+
+  @override
+  String get enterPin => 'Enter PIN';
+
+  @override
+  String get enterPass => 'Enter password';
+
+  @override
+  String get drawPattern => 'Draw the pattern';
+
+  @override
+  String get openBtn => 'Open';
+
+  @override
+  String get touchBio => 'Touch to unlock';
+
+  @override
+  String get bioOrFace => 'Open with fingerprint / face';
+
+  @override
+  String get wrongTryAgain => 'Verification failed — try again';
+
+  @override
+  String get cvvInvalid => 'CVV is invalid (3-4 digits)';
+
+  @override
+  String get cardNumberInvalid => 'Card number is invalid — check the digits';
+
+  @override
+  String get cardHolderRequired => 'Enter the card holder name';
+
+  @override
+  String get expiryInvalid => 'Expiry must be MM/YY and in the future';
+
+  @override
+  String get payBill => 'Pay bill';
+
+  @override
+  String get openInMaps => 'Open in maps';
+
+  @override
+  String get billsTitle => 'Bill Payments & Top-ups';
+
+  @override
+  String get mobileTopup => 'Mobile top-up';
+
+  @override
+  String get internet => 'Internet';
+
+  @override
+  String get electricity => 'Electricity';
+
+  @override
+  String get gas => 'Gas';
+
+  @override
+  String get water => 'Water';
+
+  @override
+  String get landline => 'Landline';
+
+  @override
+  String get tv => 'Television';
+
+  @override
+  String get donations => 'Donations';
+
+  @override
+  String get govServices => 'Government services';
+
+  @override
+  String get servicesAvailable => 'services available';
+
+  @override
+  String get unread => 'unread';
+
+  @override
+  String get appDeveloper => 'App developer';
+
+  @override
+  String get aboutFeatures => 'App features';
+
+  @override
+  String get ownerSection => 'App owner';
+
+  @override
+  String get devSection => 'App developer';
+
+  @override
+  String get contactOwner => 'Contact the owner';
+
+  @override
+  String get emailBtn => 'Email';
+
+  @override
+  String get telegramBtn => 'Telegram';
+
+  @override
+  String get websiteBtn => 'Website';
+
+  @override
+  String get rights => 'All rights reserved';
+
+  @override
+  String get shareAppMerchants => 'Share the app with merchants';
+
+  @override
+  String get faqTitle => 'FAQ';
+
+  @override
+  String get ownerRole => 'App owner & developer';
+
+  @override
+  String get featCash => 'Cash Book';
+
+  @override
+  String get featDebt => 'Debt Book';
+
+  @override
+  String get featWallet => 'Commercial Wallet';
+
+  @override
+  String get featBills => 'E-Payment Services';
+
+  @override
+  String get featInventory => 'Inventory Management';
+
+  @override
+  String get featStaff => 'Staff Management';
+
+  @override
+  String get featNotif => 'Instant Notifications';
+
+  @override
+  String get featBackup => 'Backup';
+
+  @override
+  String get featLock => 'Fingerprint Lock';
+
+  @override
+  String get featCard => 'Digital Business Card';
+
+  @override
+  String get featPdf => 'PDF Statements';
+
+  @override
+  String get featAccounts => 'Multiple Accounts';
+
+  @override
+  String get featDark => 'Dark Mode';
+
+  @override
+  String get featLang => 'Arabic / English';
+
+  @override
+  String get appTagline => 'Cash book, debts & wallet in one app';
+
+  @override
+  String get devBy => 'Developed by';
+
+  @override
+  String get faq1q => 'Is my data safe?';
+
+  @override
+  String get faq1a =>
+      'Yes ✅ All your data is stored only on your device in an encrypted database, nothing is shared.';
+
+  @override
+  String get faq2q => 'How do I make a backup?';
+
+  @override
+  String get faq2a =>
+      'Settings → Backup settings → Create backup. Auto backup is also available.';
+
+  @override
+  String get faq3q => 'How do I share a statement with a client?';
+
+  @override
+  String get faq3a =>
+      'Open the client → share button sends the statement image + a link with all transactions.';
+
+  @override
+  String get faq4q => 'How do I pay bills from the app?';
+
+  @override
+  String get faq4a =>
+      'More → Electronic Payment Services → choose the bill type and pay.';
 }

@@ -619,7 +619,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get backupLocation => 'موقع النسخ';
 
   @override
-  String get openFolder => 'فتح المجلد';
+  String get openFolder => 'فتح المجلد في مدير الملفات';
 
   @override
   String get saturday => 'السبت';
@@ -823,7 +823,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get developerName => 'م. إسلام حمدي';
 
   @override
-  String get company => 'Corvix';
+  String get company => 'م. إسلام حمدي';
 
   @override
   String get telegram => 'تليجرام';
@@ -836,4 +836,282 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get copyright => 'جميع الحقوق محفوظة';
+
+  @override
+  String get storageTitle => 'التخزين';
+
+  @override
+  String get totalUsed => 'إجمالي المساحة المستخدمة';
+
+  @override
+  String get customPath => 'مكان مخصص';
+
+  @override
+  String get defaultPath => 'المكان الافتراضي';
+
+  @override
+  String get dbLabel => 'قواعد البيانات';
+
+  @override
+  String get backupsLabel => 'النسخ الاحتياطية';
+
+  @override
+  String get currentPath => 'مكان التخزين الحالي';
+
+  @override
+  String get changePath => 'تغيير مكان التخزين';
+
+  @override
+  String get resetDefault => 'الرجوع للمكان الافتراضي';
+
+  @override
+  String get transferring => 'جارٍ نقل البيانات...';
+
+  @override
+  String get exportTitle => 'تصدير كصورة';
+
+  @override
+  String get saveImage => 'حفظ الصورة';
+
+  @override
+  String get shareImage => 'مشاركة الصورة';
+
+  @override
+  String get lockTitle => 'قفل التطبيق';
+
+  @override
+  String get protectTitle => 'حماية التطبيق';
+
+  @override
+  String get chooseLock => 'اختر طريقة الفتح المناسبة ليك';
+
+  @override
+  String get unlockMethod => 'طريقة الفتح';
+
+  @override
+  String get noLock => 'بدون قفل';
+
+  @override
+  String get bioLock => 'بصمة الإصبع / الوجه';
+
+  @override
+  String get pinLock => 'رقم PIN';
+
+  @override
+  String get digits46 => '4-6 أرقام';
+
+  @override
+  String get passLock => 'كلمة سر';
+
+  @override
+  String get patternLock => 'نقش';
+
+  @override
+  String get bioAvailable => 'متاح على جهازك';
+
+  @override
+  String get bioUnavailable => 'غير متاح على هذا الجهاز';
+
+  @override
+  String get bioSection => 'المصادقة البيومترية';
+
+  @override
+  String get faceOpen => 'فتح بالوجه';
+
+  @override
+  String get fingerOpen => 'فتح بالبصمة';
+
+  @override
+  String get bioExtra => 'كإضافة للطريقة الأساسية';
+
+  @override
+  String get lockedTitle => 'التطبيق مقفل';
+
+  @override
+  String get enterPin => 'ادخل الـ PIN';
+
+  @override
+  String get enterPass => 'ادخل كلمة السر';
+
+  @override
+  String get drawPattern => 'ارسم النقش';
+
+  @override
+  String get openBtn => 'فتح';
+
+  @override
+  String get touchBio => 'المس البصمة للفتح';
+
+  @override
+  String get bioOrFace => 'فتح بالبصمة / الوجه';
+
+  @override
+  String get wrongTryAgain => 'فشل التحقق — حاول تاني';
+
+  @override
+  String get cvvInvalid => 'CVV غير صحيح (3-4 أرقام)';
+
+  @override
+  String get cardNumberInvalid => 'رقم البطاقة غير صحيح — تحقق من الأرقام';
+
+  @override
+  String get cardHolderRequired => 'اكتب اسم حامل البطاقة';
+
+  @override
+  String get expiryInvalid =>
+      'تاريخ الانتهاء بصيغة MM/YY ولازم يكون في المستقبل';
+
+  @override
+  String get payBill => 'دفع فاتورة';
+
+  @override
+  String get openInMaps => 'افتح في الخرائط';
+
+  @override
+  String get billsTitle => 'دفع الفواتير والشحن';
+
+  @override
+  String get mobileTopup => 'شحن الموبايل';
+
+  @override
+  String get internet => 'الإنترنت';
+
+  @override
+  String get electricity => 'الكهرباء';
+
+  @override
+  String get gas => 'الغاز';
+
+  @override
+  String get water => 'المياه';
+
+  @override
+  String get landline => 'التليفون الأرضي';
+
+  @override
+  String get tv => 'التلفزيون';
+
+  @override
+  String get donations => 'التبرعات';
+
+  @override
+  String get govServices => 'خدمات حكومية';
+
+  @override
+  String get servicesAvailable => 'خدمة متاحة';
+
+  @override
+  String get unread => 'غير مقروء';
+
+  @override
+  String get appDeveloper => 'مطور التطبيق';
+
+  @override
+  String get aboutFeatures => 'مميزات التطبيق';
+
+  @override
+  String get ownerSection => 'مالك التطبيق';
+
+  @override
+  String get devSection => 'مطور التطبيق';
+
+  @override
+  String get contactOwner => 'تواصل مع المالك';
+
+  @override
+  String get emailBtn => 'البريد الإلكتروني';
+
+  @override
+  String get telegramBtn => 'تليجرام';
+
+  @override
+  String get websiteBtn => 'الموقع';
+
+  @override
+  String get rights => 'جميع الحقوق محفوظة';
+
+  @override
+  String get shareAppMerchants => 'شارك التطبيق مع التجار';
+
+  @override
+  String get faqTitle => 'الأسئلة الشائعة';
+
+  @override
+  String get ownerRole => 'مالك التطبيق ومطوره';
+
+  @override
+  String get featCash => 'دفتر النقدية';
+
+  @override
+  String get featDebt => 'دفتر الديون';
+
+  @override
+  String get featWallet => 'المحفظة التجارية';
+
+  @override
+  String get featBills => 'خدمات الدفع الإلكتروني';
+
+  @override
+  String get featInventory => 'إدارة المخزون';
+
+  @override
+  String get featStaff => 'إدارة الموظفين';
+
+  @override
+  String get featNotif => 'إشعارات فورية';
+
+  @override
+  String get featBackup => 'نسخ احتياطي';
+
+  @override
+  String get featLock => 'قفل بالبصمة';
+
+  @override
+  String get featCard => 'بطاقة عمل رقمية';
+
+  @override
+  String get featPdf => 'كشوف PDF';
+
+  @override
+  String get featAccounts => 'تعدد الحسابات';
+
+  @override
+  String get featDark => 'الوضع الليلي';
+
+  @override
+  String get featLang => 'عربي / إنجليزي';
+
+  @override
+  String get appTagline => 'دفتر النقدية والديون والمحفظة في تطبيق واحد';
+
+  @override
+  String get devBy => 'تطوير';
+
+  @override
+  String get faq1q => 'هل بياناتي آمنة؟';
+
+  @override
+  String get faq1a =>
+      'نعم ✅ كل بياناتك متخزنة على جهازك فقط في قاعدة بيانات مشفرة، ومفيش أي حاجة بتشارك.';
+
+  @override
+  String get faq2q => 'كيف أعمل نسخة احتياطية؟';
+
+  @override
+  String get faq2a =>
+      'الإعدادات ← إعدادات النسخ الاحتياطي ← إنشاء نسخة. وفيه كمان نسخ تلقائي.';
+
+  @override
+  String get faq3q => 'كيف أشارك كشف حساب مع عميل؟';
+
+  @override
+  String get faq3a =>
+      'افتح العميل ← زرار المشاركة هيبعت صورة الكشف + لينك فيه كل العمليات.';
+
+  @override
+  String get faq4q => 'كيف أدفع الفواتير من التطبيق؟';
+
+  @override
+  String get faq4a =>
+      'المزيد ← خدمات الدفع الإلكتروني ← اختار نوع الفاتورة وادفع.';
 }

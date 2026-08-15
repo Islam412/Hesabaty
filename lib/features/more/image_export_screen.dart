@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:debt_cash_app/l10n/app_localizations.dart';
 import '../../core/services/storage_service.dart';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -17,6 +18,7 @@ class ImageExportScreen extends StatefulWidget {
 }
 
 class _ImageExportScreenState extends State<ImageExportScreen> {
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
   final GlobalKey _bk = GlobalKey();
   bool _busy = false;
 
@@ -62,8 +64,9 @@ class _ImageExportScreenState extends State<ImageExportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('تصدير كصورة 🖼️')),
+      appBar: AppBar(title: Text(l10n.exportTitle)),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -80,7 +83,7 @@ class _ImageExportScreenState extends State<ImageExportScreen> {
                   style: FilledButton.styleFrom(backgroundColor: AppTheme.primaryBlue, padding: const EdgeInsets.symmetric(vertical: 16)),
                   onPressed: _busy ? null : _save,
                   icon: const Icon(Icons.save_alt),
-                  label: const Text('حفظ الصورة'),
+                  label: Text(l10n.saveImage),
                 ),
               ),
               const SizedBox(width: 10),
@@ -89,7 +92,7 @@ class _ImageExportScreenState extends State<ImageExportScreen> {
                   style: FilledButton.styleFrom(backgroundColor: AppTheme.incomeGreen, padding: const EdgeInsets.symmetric(vertical: 16)),
                   onPressed: _busy ? null : _share,
                   icon: const Icon(Icons.share),
-                  label: const Text('مشاركة الصورة'),
+                  label: Text(l10n.shareImage),
                 ),
               ),
             ],

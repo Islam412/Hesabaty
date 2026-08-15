@@ -15,6 +15,7 @@ class BillsScreen extends StatefulWidget {
 }
 
 class _BillsScreenState extends State<BillsScreen> {
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
   List<LinkedCard> _cards = [];
 
   @override
@@ -29,9 +30,9 @@ class _BillsScreenState extends State<BillsScreen> {
     setState(() => _cards = cards);
   }
 
-  static const List<Map<String, dynamic>> _categories = [
+  List<Map<String, dynamic>> _cats(AppLocalizations l10n) => [
     {
-      'id': 'mobile', 'label': 'شحن الموبايل', 'icon': Icons.phone_android,
+      'id': 'mobile', 'label': l10n.mobileTopup, 'icon': Icons.phone_android,
       'color': Color(0xFF2E7CF6),
       'providers': [
         {'id': 'vodafone', 'label': 'فودافون', 'icon': '🔴'},
@@ -41,7 +42,7 @@ class _BillsScreenState extends State<BillsScreen> {
       ],
     },
     {
-      'id': 'internet', 'label': 'الإنترنت', 'icon': Icons.wifi,
+      'id': 'internet', 'label': l10n.internet, 'icon': Icons.wifi,
       'color': Color(0xFF00BCD4),
       'providers': [
         {'id': 'we', 'label': 'WE', 'icon': '🟣'},
@@ -51,7 +52,7 @@ class _BillsScreenState extends State<BillsScreen> {
       ],
     },
     {
-      'id': 'electricity', 'label': 'الكهرباء', 'icon': Icons.bolt,
+      'id': 'electricity', 'label': l10n.electricity, 'icon': Icons.bolt,
       'color': Color(0xFFFFC107),
       'providers': [
         {'id': 'cairo', 'label': 'القاهرة الكبرى', 'icon': '⚡'},
@@ -64,7 +65,7 @@ class _BillsScreenState extends State<BillsScreen> {
       ],
     },
     {
-      'id': 'gas', 'label': 'الغاز', 'icon': Icons.local_fire_department,
+      'id': 'gas', 'label': l10n.gas, 'icon': Icons.local_fire_department,
       'color': Color(0xFFFF5722),
       'providers': [
         {'id': 'towngas', 'label': 'تاون جاس', 'icon': '🔥'},
@@ -74,7 +75,7 @@ class _BillsScreenState extends State<BillsScreen> {
       ],
     },
     {
-      'id': 'water', 'label': 'المياه', 'icon': Icons.water_drop,
+      'id': 'water', 'label': l10n.water, 'icon': Icons.water_drop,
       'color': Color(0xFF0288D1),
       'providers': [
         {'id': 'cairo', 'label': 'مياه القاهرة', 'icon': '💧'},
@@ -84,14 +85,14 @@ class _BillsScreenState extends State<BillsScreen> {
       ],
     },
     {
-      'id': 'landline', 'label': 'التليفون الأرضي', 'icon': Icons.phone,
+      'id': 'landline', 'label': l10n.landline, 'icon': Icons.phone,
       'color': Color(0xFF795548),
       'providers': [
         {'id': 'we', 'label': 'WE', 'icon': '🟣'},
       ],
     },
     {
-      'id': 'tv', 'label': 'التلفزيون', 'icon': Icons.tv,
+      'id': 'tv', 'label': l10n.tv, 'icon': Icons.tv,
       'color': Color(0xFF9C27B0),
       'providers': [
         {'id': 'dstv', 'label': 'بي إن سبورت', 'icon': '📺'},
@@ -99,7 +100,7 @@ class _BillsScreenState extends State<BillsScreen> {
       ],
     },
     {
-      'id': 'donations', 'label': 'التبرعات', 'icon': Icons.volunteer_activism,
+      'id': 'donations', 'label': l10n.donations, 'icon': Icons.volunteer_activism,
       'color': Color(0xFFE91E63),
       'providers': [
         {'id': '57357', 'label': 'مستشفى 57357', 'icon': '❤️'},
@@ -108,7 +109,7 @@ class _BillsScreenState extends State<BillsScreen> {
       ],
     },
     {
-      'id': 'government', 'label': 'خدمات حكومية', 'icon': Icons.account_balance,
+      'id': 'government', 'label': l10n.govServices, 'icon': Icons.account_balance,
       'color': Color(0xFF607D8B),
       'providers': [
         {'id': 'traffic', 'label': 'مخالفات المرور', 'icon': '🚗'},
@@ -227,12 +228,12 @@ class _BillsScreenState extends State<BillsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('دفع الفواتير والشحن')),
+      appBar: AppBar(title: Text(l10n.billsTitle)),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: _categories.length,
+        itemCount: _cats(l10n).length,
         itemBuilder: (ctx, i) {
-          final c = _categories[i];
+          final c = _cats(l10n)[i];
           final color = c['color'] as Color;
           return Card(
             margin: const EdgeInsets.only(bottom: 12),
@@ -246,7 +247,7 @@ class _BillsScreenState extends State<BillsScreen> {
                   child: Icon(c['icon'] as IconData, color: color, size: 28),
                 ),
                 title: Text(c['label'] as String, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                subtitle: Text('${(c['providers'] as List).length} خدمة متاحة'),
+                subtitle: Text('${(c['providers'] as List).length} ${l10n.servicesAvailable}'),
                 children: [
                   Wrap(
                     spacing: 8,

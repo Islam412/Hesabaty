@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class StorageSettingsScreen extends StatefulWidget {
 }
 
 class _StorageSettingsScreenState extends State<StorageSettingsScreen> {
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
   String _path = '';
   bool _custom = false;
   Map<String, dynamic> _stats = {};
@@ -107,7 +109,7 @@ class _StorageSettingsScreenState extends State<StorageSettingsScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('تغيير مكان التخزين'),
+        title: Text(l10n.changePath),
         content: Text('هننقل كل البيانات (قواعد البيانات + النسخ الاحتياطية) إلى:\n\n$dir'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('إلغاء')),
@@ -158,10 +160,11 @@ class _StorageSettingsScreenState extends State<StorageSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('التخزين')),
+      appBar: AppBar(title: Text(l10n.storageTitle)),
       body: _busy
-          ? const Center(child: Column(mainAxisSize: MainAxisSize.min, children: [CircularProgressIndicator(), SizedBox(height: 12), Text('جارٍ نقل البيانات...')]))
+          ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [CircularProgressIndicator(), SizedBox(height: 12), Text(l10n.transferring)]))
           : ListView(
               padding: const EdgeInsets.all(16),
               children: [
@@ -176,7 +179,7 @@ class _StorageSettingsScreenState extends State<StorageSettingsScreen> {
                       const Icon(Icons.storage, color: Colors.white, size: 48),
                       const SizedBox(height: 10),
                       Text(StorageService.fmt((_stats['total'] as double?) ?? 0), style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
-                      const Text('إجمالي المساحة المستخدمة', style: TextStyle(color: Color(0xFFE0F7FA), fontSize: 13)),
+                      Text(l10n.totalUsed, style: TextStyle(color: Color(0xFFE0F7FA), fontSize: 13)),
                       const SizedBox(height: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -189,9 +192,9 @@ class _StorageSettingsScreenState extends State<StorageSettingsScreen> {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    _statCard('قواعد البيانات', StorageService.fmt((_stats['db'] as double?) ?? 0), '${_stats['dbFiles'] ?? 0} ملف', AppTheme.primaryBlue, Icons.dns),
+                    _statCard(l10n.dbLabel, StorageService.fmt((_stats['db'] as double?) ?? 0), '${_stats['dbFiles'] ?? 0} ملف', AppTheme.primaryBlue, Icons.dns),
                     const SizedBox(width: 10),
-                    _statCard('النسخ الاحتياطية', StorageService.fmt((_stats['backups'] as double?) ?? 0), '${_stats['backupFiles'] ?? 0} ملف', const Color(0xFFE5A83B), Icons.backup),
+                    _statCard(l10n.backupsLabel, StorageService.fmt((_stats['backups'] as double?) ?? 0), '${_stats['backupFiles'] ?? 0} ملف', const Color(0xFFE5A83B), Icons.backup),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -201,7 +204,7 @@ class _StorageSettingsScreenState extends State<StorageSettingsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('مكان التخزين الحالي', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                        Text(l10n.currentPath, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                         const SizedBox(height: 6),
                         Text(_path, style: TextStyle(color: Colors.grey.shade600, fontSize: 12), textDirection: TextDirection.ltr),
                       ],
@@ -213,21 +216,21 @@ class _StorageSettingsScreenState extends State<StorageSettingsScreen> {
                   style: FilledButton.styleFrom(backgroundColor: const Color(0xFF00BCD4), padding: const EdgeInsets.symmetric(vertical: 16)),
                   onPressed: _change,
                   icon: const Icon(Icons.folder_open),
-                  label: const Text('تغيير مكان التخزين', style: TextStyle(fontSize: 16)),
+                  label: Text(l10n.changePath, style: TextStyle(fontSize: 16)),
                 ),
                 const SizedBox(height: 10),
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
                   onPressed: () => launchUrl(Uri.parse('file://$_path'), mode: LaunchMode.externalApplication),
                   icon: const Icon(Icons.launch),
-                  label: const Text('فتح المجلد في مدير الملفات'),
+                  label: Text(l10n.openFolder),
                 ),
                 if (_custom) ...[
                   const SizedBox(height: 10),
                   TextButton.icon(
                     onPressed: _resetDefault,
                     icon: const Icon(Icons.settings_backup_restore, color: AppTheme.expenseRed),
-                    label: const Text('الرجوع للمكان الافتراضي', style: TextStyle(color: AppTheme.expenseRed)),
+                    label: Text(l10n.resetDefault, style: TextStyle(color: AppTheme.expenseRed)),
                   ),
                 ],
               ],

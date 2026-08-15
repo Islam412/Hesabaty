@@ -29,11 +29,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _load() async {
     final p = await SharedPreferences.getInstance();
     setState(() {
-      _name = p.getString('profile_name') ?? 'حساباتي';
-      _owner = p.getString('profile_owner') ?? '';
-      _phone = p.getString('profile_phone') ?? p.getString('user_phone') ?? '';
-      _address = p.getString('profile_address') ?? '';
-      _currency = p.getString('profile_currency') ?? Cur.v;
+      _name = p.get('profile_name')?.toString() ?? 'حساباتي';
+      _owner = p.get('profile_owner')?.toString() ?? '';
+      _phone = p.get('profile_phone')?.toString() ?? p.get('user_phone')?.toString() ?? '';
+      _address = p.get('profile_address')?.toString() ?? '';
+      _currency = p.get('profile_currency')?.toString() ?? Cur.v;
     });
   }
 

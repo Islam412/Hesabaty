@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 left: 0,
                 right: 0,
                 bottom: 16,
-                child: FadeTransition(opacity: _fade, child: Center(child: Text('تطوير Corvix — تصميم م. اسلام حمدي', style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12)))),
+                child: FadeTransition(opacity: _fade, child: Center(child: Text('تطوير م. إسلام حمدي — تصميم م. اسلام حمدي', style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12)))),
               ),
             ],
           ),

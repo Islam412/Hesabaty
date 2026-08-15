@@ -81,7 +81,7 @@ class AboutScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // ===== مميزات التطبيق =====
-                  _sectionTitle('مميزات التطبيق', Icons.star),
+                  _sectionTitle(l10n.aboutFeatures, Icons.star),
                   const SizedBox(height: 12),
                   GridView.count(
                     crossAxisCount: 2,
@@ -91,26 +91,26 @@ class AboutScreen extends StatelessWidget {
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
                     children: [
-                      _feature(Icons.account_balance_wallet, const Color(0xFF16A34A), 'دفتر النقدية'),
-                      _feature(Icons.book, const Color(0xFF2E7CF6), 'دفتر الديون'),
-                      _feature(Icons.account_balance, const Color(0xFF7C4DFF), 'المحفظة التجارية'),
-                      _feature(Icons.receipt_long, const Color(0xFFFF7043), 'خدمات الدفع الإلكتروني'),
-                      _feature(Icons.inventory_2, const Color(0xFFE5A83B), 'إدارة المخزون'),
-                      _feature(Icons.groups, const Color(0xFFE91E63), 'إدارة الموظفين'),
-                      _feature(Icons.notifications_active, const Color(0xFFDC2626), 'إشعارات فورية'),
-                      _feature(Icons.backup, const Color(0xFF00BCD4), 'نسخ احتياطي'),
-                      _feature(Icons.fingerprint, const Color(0xFF5E35B1), 'قفل بالبصمة'),
-                      _feature(Icons.contact_page, const Color(0xFF009688), 'بطاقة عمل رقمية'),
-                      _feature(Icons.picture_as_pdf, const Color(0xFFD84315), 'كشوف PDF'),
-                      _feature(Icons.people, const Color(0xFF3F51B5), 'تعدد الحسابات'),
-                      _feature(Icons.dark_mode, const Color(0xFF607D8B), 'الوضع الليلي'),
-                      _feature(Icons.language, const Color(0xFF795548), 'عربي / إنجليزي'),
+                      _feature(Icons.account_balance_wallet, const Color(0xFF16A34A), l10n.featCash),
+                      _feature(Icons.book, const Color(0xFF2E7CF6), l10n.featDebt),
+                      _feature(Icons.account_balance, const Color(0xFF7C4DFF), l10n.featWallet),
+                      _feature(Icons.receipt_long, const Color(0xFFFF7043), l10n.featBills),
+                      _feature(Icons.inventory_2, const Color(0xFFE5A83B), l10n.featInventory),
+                      _feature(Icons.groups, const Color(0xFFE91E63), l10n.featStaff),
+                      _feature(Icons.notifications_active, const Color(0xFFDC2626), l10n.featNotif),
+                      _feature(Icons.backup, const Color(0xFF00BCD4), l10n.featBackup),
+                      _feature(Icons.fingerprint, const Color(0xFF5E35B1), l10n.featLock),
+                      _feature(Icons.contact_page, const Color(0xFF009688), l10n.featCard),
+                      _feature(Icons.picture_as_pdf, const Color(0xFFD84315), l10n.featPdf),
+                      _feature(Icons.people, const Color(0xFF3F51B5), l10n.featAccounts),
+                      _feature(Icons.dark_mode, const Color(0xFF607D8B), l10n.featDark),
+                      _feature(Icons.language, const Color(0xFF795548), l10n.featLang),
                     ],
                   ),
                   const SizedBox(height: 24),
 
                   // ===== مالك التطبيق =====
-                  _sectionTitle('مالك التطبيق', Icons.workspace_premium),
+                  _sectionTitle(l10n.ownerSection, Icons.workspace_premium),
                   const SizedBox(height: 12),
                   Container(
                     width: double.infinity,
@@ -135,9 +135,9 @@ class AboutScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _actionBtn(Icons.chat_bubble, const Color(0xFF25D366), 'واتساب', () => _open('https://wa.me/$ownerWhatsapp')),
+                            _actionBtn(Icons.chat_bubble, const Color(0xFF25D366), l10n.whatsapp, () => _open('https://wa.me/$ownerWhatsapp')),
                             const SizedBox(width: 12),
-                            _actionBtn(Icons.phone, Colors.white, 'اتصال', () => _open('tel:$ownerPhoneRaw')),
+                            _actionBtn(Icons.phone, Colors.white, l10n.call, () => _open('tel:$ownerPhoneRaw')),
                             const SizedBox(width: 12),
                             _actionBtn(Icons.map, const Color(0xFFD84315), 'الخريطة', () => _open('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(ownerAddress)}')),
                           ],
@@ -164,7 +164,7 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   // ===== مطور التطبيق =====
-                  _sectionTitle('مطور التطبيق', Icons.code),
+                  _sectionTitle(l10n.devSection, Icons.code),
                   const SizedBox(height: 12),
                   Container(
                     width: double.infinity,
@@ -179,14 +179,14 @@ class AboutScreen extends StatelessWidget {
                         const SizedBox(height: 10),
                         const Text(devName, style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
-                        Text(devTitle, style: const TextStyle(color: Color(0xFFE1BEE7), fontSize: 14)),
+                        Text(l10n.devSection, style: const TextStyle(color: Color(0xFFE1BEE7), fontSize: 14)),
                         const SizedBox(height: 14),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _actionBtn(Icons.chat_bubble, const Color(0xFF25D366), 'واتساب', () => _open('https://wa.me/$devWhatsapp')),
+                            _actionBtn(Icons.chat_bubble, const Color(0xFF25D366), l10n.whatsapp, () => _open('https://wa.me/$devWhatsapp')),
                             const SizedBox(width: 12),
-                            _actionBtn(Icons.phone, Colors.white, 'اتصال', () => _open('tel:$devPhoneRaw')),
+                            _actionBtn(Icons.phone, Colors.white, l10n.call, () => _open('tel:$devPhoneRaw')),
                             const SizedBox(width: 12),
                             _actionBtn(Icons.work, const Color(0xFFE5A83B), 'البورتفوليو', () => _open(devPortfolio)),
                           ],
@@ -209,9 +209,9 @@ class AboutScreen extends StatelessWidget {
                   Center(
                     child: Column(
                       children: [
-                        Text('جميع الحقوق محفوظة © ${DateTime.now().year}', style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+                        Text('${l10n.rights} © ${DateTime.now().year}', style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
                         const SizedBox(height: 2),
-                        Text('$ownerCompany — تطوير $devName', style: TextStyle(color: Colors.grey.shade400, fontSize: 11)),
+                        Text('$ownerCompany — ${l10n.devBy} $devName', style: TextStyle(color: Colors.grey.shade400, fontSize: 11)),
                       ],
                     ),
                   ),

@@ -221,7 +221,7 @@ abstract class AppLocalizations {
   /// No description provided for @contactUs.
   ///
   /// In en, this message translates to:
-  /// **'تواصل معنا'**
+  /// **'Contact us'**
   String get contactUs;
 
   /// No description provided for @aboutApp.
@@ -1163,7 +1163,7 @@ abstract class AppLocalizations {
   /// No description provided for @whatsapp.
   ///
   /// In en, this message translates to:
-  /// **'واتساب'**
+  /// **'WhatsApp'**
   String get whatsapp;
 
   /// No description provided for @call.
@@ -1301,7 +1301,7 @@ abstract class AppLocalizations {
   /// No description provided for @openFolder.
   ///
   /// In en, this message translates to:
-  /// **'Open folder'**
+  /// **'Open folder in file manager'**
   String get openFolder;
 
   /// No description provided for @saturday.
@@ -1709,7 +1709,7 @@ abstract class AppLocalizations {
   /// No description provided for @company.
   ///
   /// In en, this message translates to:
-  /// **'Corvix'**
+  /// **'م. إسلام حمدي'**
   String get company;
 
   /// No description provided for @telegram.
@@ -1735,6 +1735,552 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'جميع الحقوق محفوظة'**
   String get copyright;
+
+  /// No description provided for @storageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get storageTitle;
+
+  /// No description provided for @totalUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Total used space'**
+  String get totalUsed;
+
+  /// No description provided for @customPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom location'**
+  String get customPath;
+
+  /// No description provided for @defaultPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Default location'**
+  String get defaultPath;
+
+  /// No description provided for @dbLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Databases'**
+  String get dbLabel;
+
+  /// No description provided for @backupsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Backups'**
+  String get backupsLabel;
+
+  /// No description provided for @currentPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Current storage location'**
+  String get currentPath;
+
+  /// No description provided for @changePath.
+  ///
+  /// In en, this message translates to:
+  /// **'Change storage location'**
+  String get changePath;
+
+  /// No description provided for @resetDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to default location'**
+  String get resetDefault;
+
+  /// No description provided for @transferring.
+  ///
+  /// In en, this message translates to:
+  /// **'Transferring data...'**
+  String get transferring;
+
+  /// No description provided for @exportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export as image'**
+  String get exportTitle;
+
+  /// No description provided for @saveImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Save image'**
+  String get saveImage;
+
+  /// No description provided for @shareImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Share image'**
+  String get shareImage;
+
+  /// No description provided for @lockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App Lock'**
+  String get lockTitle;
+
+  /// No description provided for @protectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App Protection'**
+  String get protectTitle;
+
+  /// No description provided for @chooseLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the unlock method that suits you'**
+  String get chooseLock;
+
+  /// No description provided for @unlockMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock method'**
+  String get unlockMethod;
+
+  /// No description provided for @noLock.
+  ///
+  /// In en, this message translates to:
+  /// **'No lock'**
+  String get noLock;
+
+  /// No description provided for @bioLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Fingerprint / Face'**
+  String get bioLock;
+
+  /// No description provided for @pinLock.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN code'**
+  String get pinLock;
+
+  /// No description provided for @digits46.
+  ///
+  /// In en, this message translates to:
+  /// **'4-6 digits'**
+  String get digits46;
+
+  /// No description provided for @passLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passLock;
+
+  /// No description provided for @patternLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Pattern'**
+  String get patternLock;
+
+  /// No description provided for @bioAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available on your device'**
+  String get bioAvailable;
+
+  /// No description provided for @bioUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available on this device'**
+  String get bioUnavailable;
+
+  /// No description provided for @bioSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric authentication'**
+  String get bioSection;
+
+  /// No description provided for @faceOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open with face'**
+  String get faceOpen;
+
+  /// No description provided for @fingerOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open with fingerprint'**
+  String get fingerOpen;
+
+  /// No description provided for @bioExtra.
+  ///
+  /// In en, this message translates to:
+  /// **'As an addition to the main method'**
+  String get bioExtra;
+
+  /// No description provided for @lockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App locked'**
+  String get lockedTitle;
+
+  /// No description provided for @enterPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter PIN'**
+  String get enterPin;
+
+  /// No description provided for @enterPass.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter password'**
+  String get enterPass;
+
+  /// No description provided for @drawPattern.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw the pattern'**
+  String get drawPattern;
+
+  /// No description provided for @openBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get openBtn;
+
+  /// No description provided for @touchBio.
+  ///
+  /// In en, this message translates to:
+  /// **'Touch to unlock'**
+  String get touchBio;
+
+  /// No description provided for @bioOrFace.
+  ///
+  /// In en, this message translates to:
+  /// **'Open with fingerprint / face'**
+  String get bioOrFace;
+
+  /// No description provided for @wrongTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification failed — try again'**
+  String get wrongTryAgain;
+
+  /// No description provided for @cvvInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'CVV is invalid (3-4 digits)'**
+  String get cvvInvalid;
+
+  /// No description provided for @cardNumberInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Card number is invalid — check the digits'**
+  String get cardNumberInvalid;
+
+  /// No description provided for @cardHolderRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the card holder name'**
+  String get cardHolderRequired;
+
+  /// No description provided for @expiryInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry must be MM/YY and in the future'**
+  String get expiryInvalid;
+
+  /// No description provided for @payBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay bill'**
+  String get payBill;
+
+  /// No description provided for @openInMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in maps'**
+  String get openInMaps;
+
+  /// No description provided for @billsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill Payments & Top-ups'**
+  String get billsTitle;
+
+  /// No description provided for @mobileTopup.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile top-up'**
+  String get mobileTopup;
+
+  /// No description provided for @internet.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet'**
+  String get internet;
+
+  /// No description provided for @electricity.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity'**
+  String get electricity;
+
+  /// No description provided for @gas.
+  ///
+  /// In en, this message translates to:
+  /// **'Gas'**
+  String get gas;
+
+  /// No description provided for @water.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get water;
+
+  /// No description provided for @landline.
+  ///
+  /// In en, this message translates to:
+  /// **'Landline'**
+  String get landline;
+
+  /// No description provided for @tv.
+  ///
+  /// In en, this message translates to:
+  /// **'Television'**
+  String get tv;
+
+  /// No description provided for @donations.
+  ///
+  /// In en, this message translates to:
+  /// **'Donations'**
+  String get donations;
+
+  /// No description provided for @govServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Government services'**
+  String get govServices;
+
+  /// No description provided for @servicesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'services available'**
+  String get servicesAvailable;
+
+  /// No description provided for @unread.
+  ///
+  /// In en, this message translates to:
+  /// **'unread'**
+  String get unread;
+
+  /// No description provided for @appDeveloper.
+  ///
+  /// In en, this message translates to:
+  /// **'App developer'**
+  String get appDeveloper;
+
+  /// No description provided for @aboutFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'App features'**
+  String get aboutFeatures;
+
+  /// No description provided for @ownerSection.
+  ///
+  /// In en, this message translates to:
+  /// **'App owner'**
+  String get ownerSection;
+
+  /// No description provided for @devSection.
+  ///
+  /// In en, this message translates to:
+  /// **'App developer'**
+  String get devSection;
+
+  /// No description provided for @contactOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact the owner'**
+  String get contactOwner;
+
+  /// No description provided for @emailBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailBtn;
+
+  /// No description provided for @telegramBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Telegram'**
+  String get telegramBtn;
+
+  /// No description provided for @websiteBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get websiteBtn;
+
+  /// No description provided for @rights.
+  ///
+  /// In en, this message translates to:
+  /// **'All rights reserved'**
+  String get rights;
+
+  /// No description provided for @shareAppMerchants.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the app with merchants'**
+  String get shareAppMerchants;
+
+  /// No description provided for @faqTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ'**
+  String get faqTitle;
+
+  /// No description provided for @ownerRole.
+  ///
+  /// In en, this message translates to:
+  /// **'App owner & developer'**
+  String get ownerRole;
+
+  /// No description provided for @featCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash Book'**
+  String get featCash;
+
+  /// No description provided for @featDebt.
+  ///
+  /// In en, this message translates to:
+  /// **'Debt Book'**
+  String get featDebt;
+
+  /// No description provided for @featWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Commercial Wallet'**
+  String get featWallet;
+
+  /// No description provided for @featBills.
+  ///
+  /// In en, this message translates to:
+  /// **'E-Payment Services'**
+  String get featBills;
+
+  /// No description provided for @featInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory Management'**
+  String get featInventory;
+
+  /// No description provided for @featStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff Management'**
+  String get featStaff;
+
+  /// No description provided for @featNotif.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Notifications'**
+  String get featNotif;
+
+  /// No description provided for @featBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get featBackup;
+
+  /// No description provided for @featLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Fingerprint Lock'**
+  String get featLock;
+
+  /// No description provided for @featCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital Business Card'**
+  String get featCard;
+
+  /// No description provided for @featPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF Statements'**
+  String get featPdf;
+
+  /// No description provided for @featAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple Accounts'**
+  String get featAccounts;
+
+  /// No description provided for @featDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get featDark;
+
+  /// No description provided for @featLang.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic / English'**
+  String get featLang;
+
+  /// No description provided for @appTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash book, debts & wallet in one app'**
+  String get appTagline;
+
+  /// No description provided for @devBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Developed by'**
+  String get devBy;
+
+  /// No description provided for @faq1q.
+  ///
+  /// In en, this message translates to:
+  /// **'Is my data safe?'**
+  String get faq1q;
+
+  /// No description provided for @faq1a.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes ✅ All your data is stored only on your device in an encrypted database, nothing is shared.'**
+  String get faq1a;
+
+  /// No description provided for @faq2q.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I make a backup?'**
+  String get faq2q;
+
+  /// No description provided for @faq2a.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings → Backup settings → Create backup. Auto backup is also available.'**
+  String get faq2a;
+
+  /// No description provided for @faq3q.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I share a statement with a client?'**
+  String get faq3q;
+
+  /// No description provided for @faq3a.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the client → share button sends the statement image + a link with all transactions.'**
+  String get faq3a;
+
+  /// No description provided for @faq4q.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I pay bills from the app?'**
+  String get faq4q;
+
+  /// No description provided for @faq4a.
+  ///
+  /// In en, this message translates to:
+  /// **'More → Electronic Payment Services → choose the bill type and pay.'**
+  String get faq4a;
 }
 
 class _AppLocalizationsDelegate

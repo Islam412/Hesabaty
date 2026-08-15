@@ -11,7 +11,7 @@ const String kOwnerWhatsApp = '201155583620';
 const String kOwnerAddress = 'شارع صلاح سالم بجوار توكيل بچاچ الحوامدية';
 
 // ===== بيانات الشركة المطورة =====
-const String kDevCompany = 'Corvix';
+const String kDevCompany = 'م. إسلام حمدي';
 const String kDevPortfolio = '';
 
 // ===== بيانات المهندس المصمم =====
@@ -186,7 +186,7 @@ class ContactUsScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     const Text('حساباتي', style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 4),
-                    Text('دفتر النقدية والديون والمحفظة في تطبيق واحد', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13)),
+                    Text(l10n.appTagline, style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13)),
                     const SizedBox(height: 12),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
@@ -236,37 +236,7 @@ class ContactUsScreen extends StatelessWidget {
             ],
           ),
 
-          // ===== الشركة المطورة =====
-          _sectionTitle(context, Icons.business_rounded, l10n.devCompany, const Color(0xFF7C4DFF)),
-          _personCard(
-            context,
-            role: l10n.devCompany,
-            name: kDevCompany,
-            subtitle: 'Software Solutions',
-            avatar: Icons.hub,
-            color: const Color(0xFF7C4DFF),
-            actions: kDevPortfolio.isNotEmpty
-                ? [
-                    _circleAction(context, Icons.language, l10n.portfolio, const Color(0xFF7C4DFF), () => _open(context, kDevPortfolio)),
-                    _circleAction(context, Icons.mail_outline, l10n.supportEmail, AppTheme.primaryBlue, () => _open(context, 'mailto:info@corvix.dev')),
-                  ]
-                : [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [const Color(0xFF7C4DFF).withOpacity(0.15), const Color(0xFF7C4DFF).withOpacity(0.05)]),
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: const Color(0xFF7C4DFF).withOpacity(0.3)),
-                        ),
-                        child: Center(child: Text('corvix © ${DateTime.now().year}', style: const TextStyle(color: Color(0xFF7C4DFF), fontWeight: FontWeight.bold, fontSize: 15, letterSpacing: 1))),
-                      ),
-                    ),
-                  ],
-          ),
-
-          // ===== المهندس المصمم =====
-          _sectionTitle(context, Icons.engineering_rounded, l10n.appEngineer, AppTheme.primaryBlue),
+          // ===== الشركة المطورة =====l10n.appEngineer, AppTheme.primaryBlue),
           _personCard(
             context,
             role: l10n.appEngineer,
@@ -307,10 +277,10 @@ class ContactUsScreen extends StatelessWidget {
           // ===== الأسئلة الشائعة =====
           _sectionTitle(context, Icons.quiz_rounded, l10n.faq, AppTheme.incomeGreen),
           ...[
-            {'q': 'هل بياناتي آمنة؟', 'a': 'نعم ✅ كل بياناتك متخزنة على جهازك فقط في قاعدة بيانات مشفرة، ومفيش أي حاجة بترفع على الإنترنت غير لما تعمل مشاركة بنفسك.'},
-            {'q': 'كيف أعمل نسخة احتياطية؟', 'a': 'من المزيد ← الإعدادات ← النسخ الاحتياطي التلقائي شغال يوميًا، وتقدر تعمل تصدير واستعادة يدوي في أي وقت.'},
-            {'q': 'كيف أشارك كشف حساب مع عميل؟', 'a': 'افتح العميل ← زرار المشاركة هيبعت صورة الكشف + لينك فيه كل العمليات وطرق الدفع.'},
-            {'q': 'كيف أدفع الفواتير من التطبيق؟', 'a': 'المزيد ← خدمات الدفع الإلكتروني ← دفع الفواتير والشحن ← اختار الخدمة واكتب الرقم والمبلغ.'},
+            {'q': l10n.faq1q, 'a': 'نعم ✅ كل بياناتك متخزنة على جهازك فقط في قاعدة بيانات مشفرة، ومفيش أي حاجة بترفع على الإنترنت غير لما تعمل مشاركة بنفسك.'},
+            {'q': l10n.faq2q, 'a': 'من المزيد ← الإعدادات ← النسخ الاحتياطي التلقائي شغال يوميًا، وتقدر تعمل تصدير واستعادة يدوي في أي وقت.'},
+            {'q': l10n.faq3q, 'a': 'افتح العميل ← زرار المشاركة هيبعت صورة الكشف + لينك فيه كل العمليات وطرق الدفع.'},
+            {'q': l10n.faq4q, 'a': 'المزيد ← خدمات الدفع الإلكتروني ← دفع الفواتير والشحن ← اختار الخدمة واكتب الرقم والمبلغ.'},
           ].map((f) => Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),

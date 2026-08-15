@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
@@ -34,6 +35,7 @@ class _BusinessCardScreenState extends State<BusinessCardScreen> {
   }
 
   Future<void> _load() async {
+    try {
     final prefs = await AccPrefs.scoped();
     _biz.text = prefs.getString('bc_biz') ?? '';
     _owner.text = prefs.getString('bc_owner') ?? '';
@@ -45,6 +47,10 @@ class _BusinessCardScreenState extends State<BusinessCardScreen> {
       c.addListener(() => setState(() {}));
     }
     setState(() => _loaded = true);
+    } catch (e) {
+      debugPrint('⚠️ business card load error: $e');
+      setState(() => _loaded = true);
+    }
   }
 
   List<CardTemplate> get _templates => [

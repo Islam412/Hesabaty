@@ -65,12 +65,12 @@ class ReceiptScreen extends StatelessWidget {
                         onPressed: () async {
                           final path = await ReceiptImageService.generateReceiptImage(
                             businessName: 'حساباتي',
-                            title: type == 'send' ? l10n.sent : (type == 'bill' ? 'دفع فاتورة' : l10n.toppedUp),
+                            title: type == 'send' ? l10n.sent : (type == 'bill' ? l10n.payBill : l10n.toppedUp),
                             amount: amount,
                             amountColor: type == 'send' ? AppTheme.expenseRed : AppTheme.incomeGreen,
                           );
                           if (context.mounted) {
-                            await ShareService.shareReceiptImage(context, path, '${l10n.sent}: ${amount.toStringAsFixed(2)} ج.م\nإلى: $destination\nمرجع: $reference');
+                            await ShareService.shareReceiptImage(context, path, '${l10n.sent}: ${amount.toStringAsFixed(2)} ${Cur.v}\nإلى: $destination\nمرجع: $reference');
                           }
                         },
                         icon: const Icon(Icons.share),

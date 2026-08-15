@@ -19,13 +19,13 @@ class SettingsScreen extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(14),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.symmetric(vertical: 10),
         child: Row(
           children: [
             CircleAvatar(backgroundColor: color.withOpacity(0.12), child: Icon(icon, color: color)),
-            const SizedBox(width: 12),
-            Expanded(child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
-            if (extra != null) ...[extra, const SizedBox(width: 8)],
+            SizedBox(width: 12),
+            Expanded(child: Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
+            if (extra != null) ...[extra, SizedBox(width: 8)],
             Icon(Icons.chevron_left, color: color, size: 26),
           ],
         ),
@@ -42,16 +42,16 @@ class SettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [AppTheme.primaryBlue, const Color(0xFF1E5BB8)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+              gradient: LinearGradient(colors: [AppTheme.primaryBlue, Color(0xFF1E5BB8)], begin: Alignment.topLeft, end: Alignment.bottomRight),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Row(
+            child: Row(
               children: [
                 Icon(Icons.settings, color: Colors.white, size: 40),
                 SizedBox(width: 12),
-                Text('الإعدادات', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                Text(l10n.settings, style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -161,7 +161,7 @@ class SettingsScreen extends StatelessWidget {
                   child: ListTile(
                     leading: CircleAvatar(backgroundColor: const Color(0xFFFF7043).withOpacity(0.12), child: const Icon(Icons.notifications_outlined, color: Color(0xFFFF7043))),
                     title: Text(l10n.notifications, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    subtitle: Text(unread > 0 ? '$unread إشعار غير مقروء' : 'كل الإشعارات مقروءة', style: const TextStyle(fontSize: 12)),
+                    subtitle: Text(unread > 0 ? '$unread إشعار ${l10n.unread}' : 'كل الإشعارات مقروءة', style: const TextStyle(fontSize: 12)),
                     trailing: unread > 0
                         ? CircleAvatar(radius: 11, backgroundColor: AppTheme.expenseRed, child: Text('$unread', style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)))
                         : const Icon(Icons.chevron_left, color: Color(0xFFFF7043)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 import '../../app/theme.dart';
@@ -12,6 +13,7 @@ class SetupLockScreen extends StatefulWidget {
 }
 
 class _SetupLockScreenState extends State<SetupLockScreen> {
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
   LockType _type = LockType.none;
   bool _biometric = false;
   bool _bioAvailable = false;
@@ -169,35 +171,36 @@ class _SetupLockScreenState extends State<SetupLockScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('قفل التطبيق')),
+      appBar: AppBar(title: Text(l10n.lockTitle)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(gradient: const LinearGradient(colors: [Color(0xFFE91E63), Color(0xFF9C27B0)]), borderRadius: BorderRadius.circular(20)),
-            child: const Row(children: [
+            child: Row(children: [
               Icon(Icons.lock_outline, color: Colors.white, size: 42),
               SizedBox(width: 14),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('حماية التطبيق', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                Text(l10n.protectTitle, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                 SizedBox(height: 4),
-                Text('اختر طريقة الفتح المناسبة ليك', style: TextStyle(color: Color(0xFFFCE4EC), fontSize: 13)),
+                Text(l10n.chooseLock, style: TextStyle(color: Color(0xFFFCE4EC), fontSize: 13)),
               ])),
             ]),
           ),
           const SizedBox(height: 20),
-          const Text('طريقة الفتح', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey)),
+          Text(l10n.unlockMethod, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey)),
           const SizedBox(height: 10),
-          _typeTile(LockType.biometric, 'بصمة الإصبع / الوجه', Icons.fingerprint, AppTheme.incomeGreen, onTap: _chooseBiometric, subtitle: _bioAvailable ? '✅ متاح على جهازك' : '❌ غير متاح على هذا الجهاز'),
-          _typeTile(LockType.none, 'بدون قفل', Icons.lock_open, const Color(0xFF9E9E9E), onTap: () async { await LockService.disable(); _load(); }),
-          _typeTile(LockType.pin, 'رقم PIN', Icons.dialpad, AppTheme.primaryBlue, onTap: _choosePin, subtitle: '4-6 أرقام'),
-          _typeTile(LockType.password, 'كلمة سر', Icons.password, const Color(0xFF7C4DFF), onTap: _choosePassword),
-          _typeTile(LockType.pattern, 'نقش', Icons.grid_3x3, const Color(0xFFE5A83B), onTap: _choosePattern),
+          _typeTile(LockType.biometric, l10n.bioLock, Icons.fingerprint, AppTheme.incomeGreen, onTap: _chooseBiometric, subtitle: _bioAvailable ? '✅ متاح على جهازك' : '❌ غير متاح على هذا الجهاز'),
+          _typeTile(LockType.none, l10n.noLock, Icons.lock_open, const Color(0xFF9E9E9E), onTap: () async { await LockService.disable(); _load(); }),
+          _typeTile(LockType.pin, l10n.pinLock, Icons.dialpad, AppTheme.primaryBlue, onTap: _choosePin, subtitle: l10n.digits46),
+          _typeTile(LockType.password, l10n.passLock, Icons.password, const Color(0xFF7C4DFF), onTap: _choosePassword),
+          _typeTile(LockType.pattern, l10n.patternLock, Icons.grid_3x3, const Color(0xFFE5A83B), onTap: _choosePattern),
           const SizedBox(height: 20),
           if (_bioAvailable) ...[
-            const Text('المصادقة البيومترية', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey)),
+            Text(l10n.bioSection, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey)),
             const SizedBox(height: 10),
             Card(
               child: SwitchListTile(
@@ -206,7 +209,7 @@ class _SetupLockScreenState extends State<SetupLockScreen> {
                   color: AppTheme.incomeGreen,
                 )),
                 title: Text(_bioTypes.contains(BiometricType.face) ? 'فتح بالوجه 👤' : 'فتح بالبصمة 👆', style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: const Text('كإضافة للطريقة الأساسية'),
+                subtitle: Text(l10n.bioExtra),
                 value: _biometric,
                 onChanged: (v) async {
                   if (v) {
