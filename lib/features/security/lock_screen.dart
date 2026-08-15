@@ -30,7 +30,7 @@ class _LockScreenState extends State<LockScreen> {
     _type = await LockService.getType();
     _biometric = await LockService.getBiometricEnabled();
     if (mounted) setState(() => _loading = false);
-    if (_biometric && await LockService.isBiometricAvailable()) {
+    if (_type == LockType.biometric || (_biometric && await LockService.isBiometricAvailable())) {
       await _tryBiometric();
     }
   }
@@ -39,6 +39,8 @@ class _LockScreenState extends State<LockScreen> {
     final ok = await LockService.authenticateBiometric();
     if (ok) {
       widget.onUnlocked();
+    } else {
+      setState(() { _error = true; _msg = 'فشل التحقق — حاول تاني'; });
     }
   }
 
@@ -103,7 +105,9 @@ class _LockScreenState extends State<LockScreen> {
                             ? _buildPassword()
                             : _type == LockType.pattern
                                 ? _buildPattern()
-                                : const SizedBox.shrink(),
+                                : _type == LockType.biometric
+                                    ? _buildBiometric()
+                                    : const SizedBox.shrink(),
                   ),
                   if (_msg.isNotEmpty) ...[
                     const SizedBox(height: 12),
@@ -191,6 +195,29 @@ class _LockScreenState extends State<LockScreen> {
           onPressed: _verifyPassword,
           child: const Text('فتح', style: TextStyle(fontSize: 16)),
         ),
+      ],
+    );
+  }
+
+  Widget _buildBiometric() {
+    return Column(
+      children: [
+        InkWell(
+          onTap: _tryBiometric,
+          borderRadius: BorderRadius.circular(60),
+          child: Container(
+            width: 110,
+            height: 110,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [AppTheme.incomeGreen.withOpacity(0.25), AppTheme.incomeGreen.withOpacity(0.05)]),
+              shape: BoxShape.circle,
+              border: Border.all(color: AppTheme.incomeGreen.withOpacity(0.6), width: 2),
+            ),
+            child: const Icon(Icons.fingerprint, size: 64, color: AppTheme.incomeGreen),
+          ),
+        ),
+        const SizedBox(height: 14),
+        const Text('المس البصمة للفتح 👆', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
       ],
     );
   }

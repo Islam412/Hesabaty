@@ -81,6 +81,12 @@ class LockService {
     await p.setBool(_kBiometric, v);
   }
 
+  static Future<void> setBiometric() async {
+    final p = await SharedPreferences.getInstance();
+    await p.setString(_kType, LockType.biometric.name);
+    await p.remove(_kHash);
+  }
+
   static Future<void> disable() async {
     final p = await SharedPreferences.getInstance();
     await p.setString(_kType, LockType.none.name);

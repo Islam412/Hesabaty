@@ -31,6 +31,23 @@ class _SetupLockScreenState extends State<SetupLockScreen> {
     setState(() {});
   }
 
+  Future<void> _chooseBiometric() async {
+    if (!await LockService.isBiometricAvailable()) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('البصمة غير متاحة على هذا الجهاز — جرّب على موبايل بيدعم بصمة'), backgroundColor: AppTheme.expenseRed));
+      return;
+    }
+    final types = await LockService.availableBiometrics();
+    final label = types.contains(BiometricType.face) ? 'الوجه' : 'الإصبع';
+    final ok = await LockService.authenticateBiometric();
+    if (!ok) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('فشل التحقق من بصمة $label'), backgroundColor: AppTheme.expenseRed));
+      return;
+    }
+    await LockService.setBiometric();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('✅ تم تفعيل الفتح ببصمة $label'), backgroundColor: AppTheme.incomeGreen));
+    _load();
+  }
+
   Future<void> _choosePin() async {
     final c1 = TextEditingController();
     final c2 = TextEditingController();
@@ -173,6 +190,7 @@ class _SetupLockScreenState extends State<SetupLockScreen> {
           const SizedBox(height: 20),
           const Text('طريقة الفتح', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey)),
           const SizedBox(height: 10),
+          _typeTile(LockType.biometric, 'بصمة الإصبع / الوجه', Icons.fingerprint, AppTheme.incomeGreen, onTap: _chooseBiometric, subtitle: _bioAvailable ? '✅ متاح على جهازك' : '❌ غير متاح على هذا الجهاز'),
           _typeTile(LockType.none, 'بدون قفل', Icons.lock_open, const Color(0xFF9E9E9E), onTap: () async { await LockService.disable(); _load(); }),
           _typeTile(LockType.pin, 'رقم PIN', Icons.dialpad, AppTheme.primaryBlue, onTap: _choosePin, subtitle: '4-6 أرقام'),
           _typeTile(LockType.password, 'كلمة سر', Icons.password, const Color(0xFF7C4DFF), onTap: _choosePassword),
