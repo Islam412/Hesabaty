@@ -7,12 +7,22 @@ class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
   static const String _version = '1.0.0';
-  static const String _developerName = 'م. إسلام حمدي';
-  static const String _company = 'Corvix';
-  static const String _whatsapp = '201155583620';
-  static const String _telegram = 'corvix_dev';
-  static const String _email = 'islam@corvix.dev';
-  static const String _github = 'https://github.com/Islam412/Hesabaty';
+
+  // ===== بيانات مالك التطبيق =====
+  static const String ownerName = 'أ. إسلام الصولي';
+  static const String ownerCompany = 'أبو حمزة المواد التغليف';
+  static const String ownerPhoneDisplay = '01155583620';
+  static const String ownerWhatsapp = '201155583620';
+  static const String ownerPhoneRaw = '+201155583620';
+  static const String ownerAddress = 'شارع صلاح سالم بجوار توكيل بجاج — الحوامدية، الجيزة';
+
+  // ===== بيانات مطور التطبيق =====
+  static const String devName = 'م. إسلام حمدي';
+  static const String devTitle = 'مطور التطبيق';
+  static const String devPhoneDisplay = '01127782279';
+  static const String devWhatsapp = '201127782279';
+  static const String devPhoneRaw = '+201127782279';
+  static const String devPortfolio = 'https://islam-portfolio-phi.vercel.app/';
 
   Future<void> _open(String url) async {
     try {
@@ -27,16 +37,12 @@ class AboutScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 260,
+            expandedHeight: 240,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF2E7CF6), Color(0xFF1E5BB8), Color(0xFF5E35B1)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  gradient: LinearGradient(colors: [Color(0xFF2E7CF6), Color(0xFF1E5BB8), Color(0xFF5E35B1)], begin: Alignment.topLeft, end: Alignment.bottomRight),
                 ),
                 child: Stack(
                   children: [
@@ -48,17 +54,13 @@ class AboutScreen extends StatelessWidget {
                         children: [
                           const SizedBox(height: 30),
                           Container(
-                            padding: const EdgeInsets.all(26),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.18),
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white.withOpacity(0.4), width: 2),
-                            ),
-                            child: const Icon(Icons.account_balance_wallet, color: Colors.white, size: 72),
+                            padding: const EdgeInsets.all(22),
+                            decoration: BoxDecoration(color: Colors.white.withOpacity(0.18), shape: BoxShape.circle, border: Border.all(color: Colors.white.withOpacity(0.4), width: 2)),
+                            child: const Icon(Icons.account_balance_wallet, color: Colors.white, size: 62),
                           ),
-                          const SizedBox(height: 16),
-                          const Text('حساباتي', style: TextStyle(color: Colors.white, fontSize: 34, fontWeight: FontWeight.w800, letterSpacing: 1)),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 12),
+                          const Text('حساباتي', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w800)),
+                          const SizedBox(height: 6),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                             decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(12)),
@@ -78,103 +80,138 @@ class AboutScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 8),
+                  // ===== مميزات التطبيق =====
+                  _sectionTitle('مميزات التطبيق', Icons.star),
+                  const SizedBox(height: 12),
+                  GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    childAspectRatio: 3.1,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    children: [
+                      _feature(Icons.account_balance_wallet, const Color(0xFF16A34A), 'دفتر النقدية'),
+                      _feature(Icons.book, const Color(0xFF2E7CF6), 'دفتر الديون'),
+                      _feature(Icons.account_balance, const Color(0xFF7C4DFF), 'المحفظة التجارية'),
+                      _feature(Icons.receipt_long, const Color(0xFFFF7043), 'خدمات الدفع الإلكتروني'),
+                      _feature(Icons.inventory_2, const Color(0xFFE5A83B), 'إدارة المخزون'),
+                      _feature(Icons.groups, const Color(0xFFE91E63), 'إدارة الموظفين'),
+                      _feature(Icons.notifications_active, const Color(0xFFDC2626), 'إشعارات فورية'),
+                      _feature(Icons.backup, const Color(0xFF00BCD4), 'نسخ احتياطي'),
+                      _feature(Icons.fingerprint, const Color(0xFF5E35B1), 'قفل بالبصمة'),
+                      _feature(Icons.contact_page, const Color(0xFF009688), 'بطاقة عمل رقمية'),
+                      _feature(Icons.picture_as_pdf, const Color(0xFFD84315), 'كشوف PDF'),
+                      _feature(Icons.people, const Color(0xFF3F51B5), 'تعدد الحسابات'),
+                      _feature(Icons.dark_mode, const Color(0xFF607D8B), 'الوضع الليلي'),
+                      _feature(Icons.language, const Color(0xFF795548), 'عربي / إنجليزي'),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+
+                  // ===== مالك التطبيق =====
+                  _sectionTitle('مالك التطبيق', Icons.workspace_premium),
+                  const SizedBox(height: 12),
                   Container(
-                    padding: const EdgeInsets.all(18),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppTheme.primaryBlue.withOpacity(0.06),
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: AppTheme.primaryBlue.withOpacity(0.15)),
+                      gradient: const LinearGradient(colors: [Color(0xFFE5A83B), Color(0xFFC77800)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
                       children: [
-                        const Icon(Icons.info_outline, color: AppTheme.primaryBlue, size: 32),
-                        const SizedBox(height: 8),
-                        Text(l10n.aboutDesc, style: const TextStyle(fontSize: 15, height: 1.6), textAlign: TextAlign.center),
-                        const SizedBox(height: 12),
-                        Wrap(
-                          spacing: 8, runSpacing: 8,
-                          children: const [
-                            _Chip('دفتر النقدية', Color(0xFF2E7CF6)),
-                            _Chip('دفتر الديون', Color(0xFF16A34A)),
-                            _Chip('المحفظة', Color(0xFF7C4DFF)),
-                            _Chip('المخزون', Color(0xFFE5A83B)),
-                            _Chip('الموظفون', Color(0xFFE91E63)),
-                            _Chip('النسخ الاحتياطي', Color(0xFF00BCD4)),
+                        Stack(
+                          children: [
+                            CircleAvatar(radius: 40, backgroundColor: Colors.white.withOpacity(0.25), child: const Text('إ', style: TextStyle(color: Colors.white, fontSize: 38, fontWeight: FontWeight.bold))),
+                            Positioned(right: 0, bottom: 0, child: Container(padding: const EdgeInsets.all(4), decoration: BoxDecoration(color: const Color(0xFF16A34A), shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)), child: const Icon(Icons.verified, color: Colors.white, size: 16))),
                           ],
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(ownerName, style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 4),
+                        Text(ownerCompany, style: const TextStyle(color: Color(0xFFFFF3E0), fontSize: 14)),
+                        const SizedBox(height: 14),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _actionBtn(Icons.chat_bubble, const Color(0xFF25D366), 'واتساب', () => _open('https://wa.me/$ownerWhatsapp')),
+                            const SizedBox(width: 12),
+                            _actionBtn(Icons.phone, Colors.white, 'اتصال', () => _open('tel:$ownerPhoneRaw')),
+                            const SizedBox(width: 12),
+                            _actionBtn(Icons.map, const Color(0xFFD84315), 'الخريطة', () => _open('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(ownerAddress)}')),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        InkWell(
+                          onTap: () => _open('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(ownerAddress)}'),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(12)),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Icon(Icons.location_on, color: Colors.white, size: 16),
+                                SizedBox(width: 6),
+                                Flexible(child: Text(ownerAddress, style: TextStyle(color: Colors.white, fontSize: 12), textAlign: TextAlign.center)),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  _sectionTitle(l10n.developer, Icons.person_outline),
-                  const SizedBox(height: 10),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 60, height: 60,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(colors: [Color(0xFF5E35B1), Color(0xFF2E7CF6)]),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: const Icon(Icons.code, color: Colors.white, size: 30),
+                  const SizedBox(height: 24),
+
+                  // ===== مطور التطبيق =====
+                  _sectionTitle('مطور التطبيق', Icons.code),
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(colors: [Color(0xFF5E35B1), Color(0xFF2E7CF6)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        CircleAvatar(radius: 40, backgroundColor: Colors.white.withOpacity(0.2), child: const Text('م', style: TextStyle(color: Colors.white, fontSize: 38, fontWeight: FontWeight.bold))),
+                        const SizedBox(height: 10),
+                        const Text(devName, style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 4),
+                        Text(devTitle, style: const TextStyle(color: Color(0xFFE1BEE7), fontSize: 14)),
+                        const SizedBox(height: 14),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _actionBtn(Icons.chat_bubble, const Color(0xFF25D366), 'واتساب', () => _open('https://wa.me/$devWhatsapp')),
+                            const SizedBox(width: 12),
+                            _actionBtn(Icons.phone, Colors.white, 'اتصال', () => _open('tel:$devPhoneRaw')),
+                            const SizedBox(width: 12),
+                            _actionBtn(Icons.work, const Color(0xFFE5A83B), 'البورتفوليو', () => _open(devPortfolio)),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        InkWell(
+                          onTap: () => _open(devPortfolio),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(12)),
+                            child: const Text('🌐 islam-portfolio-phi.vercel.app', style: TextStyle(color: Colors.white, fontSize: 12), textDirection: TextDirection.ltr),
                           ),
-                          const SizedBox(width: 14),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(_developerName, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 2),
-                                Text(_company, style: TextStyle(color: Colors.grey.shade600, fontSize: 13)),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  _sectionTitle(l10n.contactUs, Icons.contact_mail_outlined),
-                  const SizedBox(height: 10),
-                  _contactTile(
-                    icon: Icons.chat_bubble,
-                    color: const Color(0xFF25D366),
-                    title: l10n.whatsapp,
-                    subtitle: '+$_whatsapp',
-                    onTap: () => _open('https://wa.me/$_whatsapp'),
-                  ),
-                  _contactTile(
-                    icon: Icons.telegram,
-                    color: const Color(0xFF229ED9),
-                    title: l10n.telegram,
-                    subtitle: '@$_telegram',
-                    onTap: () => _open('https://t.me/$_telegram'),
-                  ),
-                  _contactTile(
-                    icon: Icons.mail_outline,
-                    color: const Color(0xFFEA4335),
-                    title: l10n.email,
-                    subtitle: _email,
-                    onTap: () => _open('mailto:$_email'),
-                  ),
-                  _contactTile(
-                    icon: Icons.code,
-                    color: Colors.black87,
-                    title: l10n.github,
-                    subtitle: 'Islam412/Hesabaty',
-                    onTap: () => _open(_github),
-                  ),
                   const SizedBox(height: 24),
+
+                  // ===== التذييل =====
                   Center(
                     child: Column(
                       children: [
-                        Text('${l10n.copyright} © ${DateTime.now().year}', style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+                        Text('جميع الحقوق محفوظة © ${DateTime.now().year}', style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
                         const SizedBox(height: 2),
-                        Text('$_company — All Rights Reserved', style: TextStyle(color: Colors.grey.shade400, fontSize: 11)),
+                        Text('$ownerCompany — تطوير $devName', style: TextStyle(color: Colors.grey.shade400, fontSize: 11)),
                       ],
                     ),
                   ),
@@ -191,41 +228,40 @@ class AboutScreen extends StatelessWidget {
   Widget _sectionTitle(String title, IconData icon) {
     return Row(
       children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(color: AppTheme.primaryBlue.withOpacity(0.12), borderRadius: BorderRadius.circular(10)),
-          child: Icon(icon, color: AppTheme.primaryBlue, size: 20),
-        ),
+        Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: AppTheme.primaryBlue.withOpacity(0.12), borderRadius: BorderRadius.circular(10)), child: Icon(icon, color: AppTheme.primaryBlue, size: 20)),
         const SizedBox(width: 10),
         Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.primaryBlue)),
       ],
     );
   }
 
-  Widget _contactTile({required IconData icon, required Color color, required String title, required String subtitle, required VoidCallback onTap}) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        leading: CircleAvatar(backgroundColor: color.withOpacity(0.12), child: Icon(icon, color: color)),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle, style: const TextStyle(fontSize: 12)),
-        trailing: const Icon(Icons.open_in_new, size: 18),
-        onTap: onTap,
+  Widget _feature(IconData icon, Color color, String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(color: color.withOpacity(0.08), borderRadius: BorderRadius.circular(14), border: Border.all(color: color.withOpacity(0.15))),
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 20),
+          const SizedBox(width: 8),
+          Expanded(child: Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700))),
+        ],
       ),
     );
   }
-}
 
-class _Chip extends StatelessWidget {
-  final String label;
-  final Color color;
-  const _Chip(this.label, this.color);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(color: color.withOpacity(0.15), borderRadius: BorderRadius.circular(12)),
-      child: Text(label, style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.bold)),
+  Widget _actionBtn(IconData icon, Color color, String tooltip, VoidCallback onTap) {
+    return Tooltip(
+      message: tooltip,
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onTap,
+        child: Container(
+          width: 52,
+          height: 52,
+          decoration: BoxDecoration(color: color.withOpacity(0.25), shape: BoxShape.circle, border: Border.all(color: Colors.white.withOpacity(0.5))),
+          child: Icon(icon, color: Colors.white, size: 24),
+        ),
+      ),
     );
   }
 }
