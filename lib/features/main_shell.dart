@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'more/notifications_screen.dart';
+import '../core/services/notification_service.dart';
 import '../core/services/watcher_service.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'cash_book/cash_book_screen.dart';
