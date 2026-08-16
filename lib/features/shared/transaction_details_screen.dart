@@ -13,6 +13,9 @@ class TransactionDetailsScreen extends StatelessWidget {
   final String title;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
+  final String? recipientName;
+  final String? recipientPhone;
+  final String? contactId;
 
   const TransactionDetailsScreen({
     super.key,
@@ -24,6 +27,9 @@ class TransactionDetailsScreen extends StatelessWidget {
     required this.title,
     this.onEdit,
     this.onDelete,
+    this.recipientName,
+    this.recipientPhone,
+    this.contactId,
   });
 
   @override
@@ -53,6 +59,10 @@ class TransactionDetailsScreen extends StatelessWidget {
             date: date,
             note: note,
             color: color,
+            recipientName: recipientName,
+            imagePath: imagePath,
+            contactId: contactId,
+            recipientPhone: recipientPhone,
           ),
           // لو فيه صورة مرفقة من العملية نفسها نعرضها كمان
           if (imagePath != null && imagePath!.isNotEmpty && File(imagePath!).existsSync()) ...[
@@ -92,6 +102,10 @@ class TransactionDetailsScreen extends StatelessWidget {
             date: date,
             note: note,
             color: color,
+            recipientName: recipientName,
+            imagePath: imagePath,
+            contactId: contactId,
+            recipientPhone: recipientPhone,
           ),
           fileName: 'receipt',
         ),

@@ -414,6 +414,9 @@ class _ContactDetailsScreenState extends State<ContactDetailsScreen> {
                         margin: const EdgeInsets.only(bottom: 8),
                         child: ListTile(
                           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TransactionDetailsScreen(
+                            recipientName: widget.contact.name,
+                            recipientPhone: widget.contact.phone,
+                            contactId: widget.contact.id.toString(),
                             amount: t.amount,
                             date: t.date,
                             note: t.note,

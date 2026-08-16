@@ -356,6 +356,8 @@ class _CashBookScreenState extends State<CashBookScreen> {
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TransactionDetailsScreen(
+                      recipientName: 'حسابي النقدي',
+                      recipientPhone: null,
                         amount: t.amount,
                         date: t.date,
                         note: t.note,
@@ -386,7 +388,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
       appBar: AppBar(
         title: Text(l10n.cashBook),
         actions: [
-          IconButton(icon: const Icon(Icons.image_outlined), tooltip: 'تصدير الكل كصورة', onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ImageExportScreen(child: CashAllCard(), fileName: 'cash_book_all')))),
+          IconButton(icon: const Icon(Icons.image_outlined), tooltip: 'تصدير الكل كصورة', onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ImageExportScreen(child: CashAllCard(), fileName: 'cash_book_all')))),
           IconButton(
             icon: Icon(_hide ? Icons.visibility_off : Icons.visibility),
             onPressed: () => setState(() => _hide = !_hide),
