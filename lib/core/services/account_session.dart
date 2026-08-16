@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../../data/services/realm_service.dart';
+import 'notification_service.dart';
 import 'account_service.dart';
 
 /// نقطة مركزية لإدارة الحساب الحالي وإعادة بناء UI عند التغيير
@@ -28,6 +29,9 @@ class AccountSession {
     if (oldPhone == newPhone) return;
     _currentPhone = newPhone;
     debugPrint('🔄 AccountSession: $oldPhone → $newPhone');
+
+    // 0) حدّث cache الإشعارات للحساب الجديد
+    await NotificationService.onAccountChanged();
 
     // 1) أغلق Realm عشان يفتح الملف الجديد
     try { await RealmService.reset(); } catch (_) {}

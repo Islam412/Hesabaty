@@ -24,12 +24,9 @@ class RealmService {
         StaffAttendance.schema,
       ];
 
-  /// يُغلق Realm الحالي (يُنادى عند تغيير الحساب أو logout)
   static Future<void> reset() async {
     try {
-      if (_realm != null && !_realm!.isClosed) {
-        _realm!.close();
-      }
+      if (_realm != null && !_realm!.isClosed) _realm!.close();
     } catch (e) {
       debugPrint('⚠️ Realm close error: $e');
     }
@@ -43,7 +40,7 @@ class RealmService {
     final phone = await AccountService.sessionPhone();
     if (phone == null || phone.isEmpty) return '$base/hesabaty.realm';
     final per = File('$base/hesabaty_$phone.realm');
-    // أول حساب بس: ننقل بياناته من الملف القديم (اللي اسمه كان فيه $phone حرفيًا)
+    // أول حساب فقط: ينقل بياناته من الملفات القديمة مرة واحدة
     if (!per.existsSync()) {
       final first = await AccountService.firstPhone();
       if (first == phone) {
@@ -64,29 +61,34 @@ class RealmService {
 
   static Future<Realm> get realm async {
     final path = await _path();
-    // لو Realm مفتوح على path تاني، اغلقه وافتح الجديد
+    // لو مفتوح على ملف تاني → اغلقه
     if (_realm != null && _openPath != path) {
-      debugPrint('🔀 Realm path changed: $_openPath → $path');
+      debugPrint('🔀 Path changed: $_openPath → $path');
       await reset();
     }
     if (_realm != null && !_realm!.isClosed) return _realm!;
+
     try {
       _realm = Realm(Configuration.local(_schemas, path: path));
       _openPath = path;
       debugPrint('✅ Realm opened: $path');
-    } catch (_) {
+    } catch (e) {
+      // ❗ مستحيل نحذف البيانات — بنحفظ الملف القديم كـ .bak ونفتح جديد
+      debugPrint('❌ Realm open FAILED: $e');
+      debugPrint('🛡️ Preserving old data as .bak ...');
       for (final suffix in ['', '.lock', '.note']) {
         try {
           final f = File(path + suffix);
-          if (f.existsSync()) f.deleteSync();
+          if (f.existsSync()) f.renameSync('$path$suffix.corrupt.bak');
         } catch (_) {}
       }
       try {
-        final m = Directory('\$path.management');
-        if (m.existsSync()) m.deleteSync(recursive: true);
+        final m = Directory('$path.management');
+        if (m.existsSync()) m.renameSync('$path.management.corrupt.bak');
       } catch (_) {}
       _realm = Realm(Configuration.local(_schemas, path: path));
       _openPath = path;
+      debugPrint('✅ Realm recreated (old data preserved in .bak): $path');
     }
     return _realm!;
   }

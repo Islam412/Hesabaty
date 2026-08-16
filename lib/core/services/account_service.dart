@@ -102,7 +102,7 @@ class AccPrefs {
   static Future<_ScopedPrefs> scoped() async {
     final p = await SharedPreferences.getInstance();
     final phone = p.getString('session_phone') ?? 'global';
-    return _ScopedPrefs(p, 'acc_\${phone}_');
+    return _ScopedPrefs(p, 'acc_${phone}_');
   }
 }
 

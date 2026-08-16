@@ -6,10 +6,17 @@ import 'package:timezone/timezone.dart' as tz;
 import 'account_service.dart';
 import '../../data/models/notification_item.dart';
 
-/// خدمة الإشعارات — كل حساب له إشعاراته الخاصة المعزولة
+/// خدمة الإشعارات — كل حساب معزول + ValueNotifier للتحديث اللحظي بدون polling
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
   static bool _initialized = false;
+
+  /// ValueNotifier — widgets تستمع هنا مباشرة (بدون Timer.periodic)
+  static final ValueNotifier<int> unreadCountNotifier = ValueNotifier<int>(0);
+
+  /// In-memory cache — بدل ما نقرأ من SharedPreferences كل مرة
+  static List<NotificationItem> _cache = [];
+  static String? _cachedPhone;
 
   static Future<void> init() async {
     if (_initialized) return;
@@ -26,98 +33,136 @@ class NotificationService {
     }
   }
 
-  /// مفتاح SharedPreferences معزول لكل حساب
   static Future<String> _storeKey() async {
     final phone = await AccountService.sessionPhone() ?? 'global';
     return 'notif_${phone}_items';
   }
 
-  /// يُرسل إشعار + يحفظه للحساب الحالي فقط
-  static Future<void> notify(String title, String body, {String icon = '🔔', bool important = true, String? link}) async {
-    debugPrint('📨 Notification [$title] for account: ${await AccountService.sessionPhone() ?? 'global'}');
-    final phone = await AccountService.sessionPhone() ?? 'global';
-
-    // 1) منع التكرار خلال 3 ثواني
+  /// يُحمّل الإشعارات في الـ cache + يحدث الـ ValueNotifier
+  static Future<void> refreshCache() async {
     try {
-      final list = await getAll();
-      if (list.isNotEmpty && list.first.title == title && list.first.body == body) {
-        if (DateTime.now().difference(list.first.time).inSeconds < 3) return;
+      final phone = await AccountService.sessionPhone() ?? 'global';
+      debugPrint('🔍 refreshCache for phone: $phone (cached: $_cachedPhone)');
+      if (_cachedPhone != phone) {
+        _cache = [];
+        _cachedPhone = phone;
       }
-    } catch (_) {}
-
-    // 2) إشعار نظام
-    try {
-      await init();
-      const details = NotificationDetails(
-        android: AndroidNotificationDetails('hesabaty_main', 'حساباتي', channelDescription: 'إشعارات التطبيق', importance: Importance.high, priority: Priority.high),
-        linux: LinuxNotificationDetails(),
-      );
-      await _plugin.show(DateTime.now().millisecondsSinceEpoch % 1000000, '$icon $title', body, details);
-      debugPrint('✅ System notification sent');
-    } catch (e) {
-      debugPrint('⚠️ System notification failed: $e');
-    }
-
-    // 3) حفظ للحساب الحالي فقط (معزول)
-    if (important) {
-      try {
-        final list = await getAll();
-        final item = NotificationItem(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          title: title,
-          body: body,
-          icon: icon,
-          time: DateTime.now(),
-          read: false,
-          link: link,
-        );
-        list.insert(0, item);
-        if (list.length > 200) list.removeRange(200, list.length);
-        final key = await _storeKey();
-        final p = await AccPrefs.scoped();
-        await p.setString(key, jsonEncode(list.map((e) => e.toJson()).toList()));
-        debugPrint('💾 Saved to account [$phone] (total: ${list.length})');
-      } catch (e) {
-        debugPrint('❌ Failed to save: $e');
-      }
-    }
-  }
-
-  /// كل الإشعارات للحساب الحالي فقط
-  static Future<List<NotificationItem>> getAll() async {
-    try {
       final key = await _storeKey();
       final p = await AccPrefs.scoped();
       final raw = p.getString(key);
-      if (raw == null || raw.isEmpty) return [];
-      final decoded = jsonDecode(raw);
-      if (decoded is List) {
-        return decoded.map((e) => NotificationItem.fromJson(Map<String, dynamic>.from(e as Map))).toList();
+      debugPrint('🔍 raw from prefs: ${raw?.substring(0, raw.length.clamp(0, 80)) ?? "null"}');
+      if (raw == null || raw.isEmpty) {
+        _cache = [];
+      } else {
+        final decoded = jsonDecode(raw);
+        if (decoded is List) {
+          _cache = decoded.map((e) => NotificationItem.fromJson(Map<String, dynamic>.from(e as Map))).toList();
+        }
       }
-    } catch (_) {}
-    return [];
+      final unread = _cache.where((i) => !i.read).length;
+      if (unreadCountNotifier.value != unread) {
+        unreadCountNotifier.value = unread;
+      }
+      debugPrint('✅ refreshCache done: ${_cache.length} items, $unread unread');
+    } catch (e, st) {
+      debugPrint('❌ refreshCache error: $e');
+      debugPrint('Stack: $st');
+      _cache = [];
+    }
   }
 
-  /// عدد غير المقروء للحساب الحالي فقط
+  /// يُرسل إشعار + يحفظه + يُحدّث الـ cache والـ notifier فورًا
+  static Future<void> notify(String title, String body, {String icon = '🔔', bool important = true, String? link}) async {
+    try {
+      final phone = await AccountService.sessionPhone() ?? 'global';
+      debugPrint('📨 notify called: [$title] for $phone');
+      
+      // منع التكرار خلال 3 ثواني (من الـ cache)
+      if (_cache.isNotEmpty && _cache.first.title == title && _cache.first.body == body) {
+        if (DateTime.now().difference(_cache.first.time).inSeconds < 3) {
+          debugPrint('⏭️  Skipped (duplicate within 3s)');
+          return;
+        }
+      }
+
+      // إشعار نظام
+      try {
+        await init();
+        const details = NotificationDetails(
+          android: AndroidNotificationDetails('hesabaty_main', 'حساباتي', channelDescription: 'إشعارات التطبيق', importance: Importance.high, priority: Priority.high),
+          linux: LinuxNotificationDetails(),
+        );
+        await _plugin.show(DateTime.now().millisecondsSinceEpoch % 1000000, '$icon $title', body, details);
+        debugPrint('✅ System notification sent');
+      } catch (e) {
+        debugPrint('⚠️ System notification failed: $e');
+      }
+
+      // حفظ في cache + SharedPreferences + ValueNotifier
+      if (important) {
+        try {
+          final item = NotificationItem(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            title: title,
+            body: body,
+            icon: icon,
+            time: DateTime.now(),
+            read: false,
+            link: link,
+          );
+          _cache.insert(0, item);
+          if (_cache.length > 200) _cache.removeRange(200, _cache.length);
+          final key = await _storeKey();
+          final p = await AccPrefs.scoped();
+          await p.setString(key, jsonEncode(_cache.map((e) => e.toJson()).toList()));
+          // تحديث فوري للـ ValueNotifier
+          unreadCountNotifier.value = _cache.where((i) => !i.read).length;
+          debugPrint('💾 Saved [$phone] (total: ${_cache.length})');
+        } catch (e) {
+          debugPrint('❌ Failed to save: $e');
+        }
+      }
+    } catch (e, st) {
+      debugPrint('❌ notify FATAL error: $e');
+      debugPrint('Stack: $st');
+    }
+  }
+
+  /// كل الإشعارات من الـ cache (سريع جدًا — مفيش I/O)
+  static Future<List<NotificationItem>> getAll() async {
+    final phone = await AccountService.sessionPhone() ?? 'global';
+    if (_cachedPhone != phone) await refreshCache();
+    return List.from(_cache);
+  }
+
   static Future<int> unreadCount() async {
-    final list = await getAll();
-    return list.where((i) => !i.read).length;
+    final phone = await AccountService.sessionPhone() ?? 'global';
+    if (_cachedPhone != phone) await refreshCache();
+    return _cache.where((i) => !i.read).length;
   }
 
-  /// علم كل إشعارات الحساب الحالي كمقروءة
   static Future<void> markAllRead() async {
-    final list = await getAll();
-    for (final i in list) i.read = true;
+    for (final i in _cache) i.read = true;
     final key = await _storeKey();
     final p = await AccPrefs.scoped();
-    await p.setString(key, jsonEncode(list.map((e) => e.toJson()).toList()));
+    await p.setString(key, jsonEncode(_cache.map((e) => e.toJson()).toList()));
+    unreadCountNotifier.value = 0;
   }
 
-  /// امسح إشعارات الحساب الحالي فقط
   static Future<void> clearAll() async {
+    _cache = [];
     final key = await _storeKey();
     final p = await AccPrefs.scoped();
     await p.setString(key, '[]');
+    unreadCountNotifier.value = 0;
+  }
+
+  /// يُنادى عند تغيير الحساب — يمسح الـ cache ويعيد تحميل
+  static Future<void> onAccountChanged() async {
+    debugPrint('🔄 NotificationService.onAccountChanged: clearing cache');
+    _cachedPhone = null;
+    _cache = [];
+    await refreshCache();
   }
 
   static Future<void> schedule(int id, DateTime when, String title, String body) async {

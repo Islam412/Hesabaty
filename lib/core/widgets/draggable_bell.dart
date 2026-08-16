@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/services/account_service.dart';
-import 'dart:async';
 import '../../features/more/notifications_screen.dart';
 import '../services/notification_service.dart';
+import '../services/account_service.dart';
 
 class BellOverlay {
   static OverlayEntry? _entry;
@@ -23,44 +22,27 @@ class DraggableBell extends StatefulWidget {
 class _DraggableBellState extends State<DraggableBell> {
   double? _x;
   double? _y;
-  int _unread = 0;
-  Timer? _pollTimer;
   bool _dragging = false;
 
   @override
   void initState() {
     super.initState();
-    _load();
-    _pollTimer = Timer.periodic(const Duration(seconds: 2), (_) => _refreshCount());
+    _loadPos();
   }
 
-  Future<void> _load() async {
-    final p = await AccPrefs.scoped();
-    final u = await NotificationService.unreadCount();
+  Future<void> _loadPos() async {
+    final p = await SharedPreferences.getInstance();
     if (!mounted) return;
     setState(() {
       _x = p.getDouble('bell_x');
       _y = p.getDouble('bell_y');
-      _unread = u;
     });
   }
 
-  Future<void> _refreshCount() async {
-    final u = await NotificationService.unreadCount();
-    if (!mounted) return;
-    if (u != _unread) setState(() => _unread = u);
-  }
-
   Future<void> _savePos() async {
-    final p = await AccPrefs.scoped();
+    final p = await SharedPreferences.getInstance();
     if (_x != null) await p.setDouble('bell_x', _x!);
     if (_y != null) await p.setDouble('bell_y', _y!);
-  }
-
-  @override
-  void dispose() {
-    _pollTimer?.cancel();
-    super.dispose();
   }
 
   @override
@@ -89,7 +71,7 @@ class _DraggableBellState extends State<DraggableBell> {
         },
         onTap: () async {
           await Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen()));
-          await _refreshCount();
+          await NotificationService.refreshCache();
         },
         child: AnimatedScale(
           scale: _dragging ? 1.15 : 1.0,
@@ -110,25 +92,30 @@ class _DraggableBellState extends State<DraggableBell> {
               child: Stack(
                 children: [
                   const Center(child: Icon(Icons.notifications_active, color: Colors.white, size: 24)),
-                  if (_unread > 0)
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFDC2626),
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 1.5),
+                  ValueListenableBuilder<int>(
+                    valueListenable: NotificationService.unreadCountNotifier,
+                    builder: (ctx, unread, _) {
+                      if (unread == 0) return const SizedBox.shrink();
+                      return Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFDC2626),
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 1.5),
+                          ),
+                          constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                          child: Text(
+                            unread > 99 ? '99+' : '$unread',
+                            style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                        constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
-                        child: Text(
-                          _unread > 99 ? '99+' : '$_unread',
-                          style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

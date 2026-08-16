@@ -24,6 +24,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   Future<void> _load() async {
+    await NotificationService.refreshCache();
     final list = await NotificationService.getAll();
     if (mounted) setState(() { _items = list; _loading = false; });
   }

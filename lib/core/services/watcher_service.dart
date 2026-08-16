@@ -1,27 +1,75 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:realm/realm.dart';
 import '../../app/theme.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
+import 'account_session.dart';
 import 'notification_service.dart';
 
 class WatcherService {
   static bool _started = false;
+  static final List<StreamSubscription> _subs = [];
+  static Realm? _watchedRealm;
+  static bool _listeningToAccount = false;
 
-  static String _dt(DateTime d) {
-    return DateFormat('yyyy/MM/dd  HH:mm').format(d);
+  static String _dt(DateTime d) => DateFormat('yyyy/MM/dd  HH:mm').format(d);
+
+  /// يوقف كل الاشتراكات
+  static void _stop() {
+    final n = _subs.length;
+    for (final sub in _subs) {
+      try { sub.cancel(); } catch (_) {}
+    }
+    _subs.clear();
+    _watchedRealm = null;
+    _started = false;
+    debugPrint('🛑 Watcher stopped ($n subs cleared)');
   }
 
+  /// يُنادى تلقائيًا عند أي تغيير في الحساب
+  static Future<void> _onAccountChanged(String? _) async {
+    debugPrint('🔄 Watcher reacting to account change...');
+    _stop();
+    // ننتظر شوية عشان RealmService يفتح الملف الجديد
+    await Future.delayed(const Duration(milliseconds: 100));
+    await start();
+  }
+
+  /// واجهة قديمة — تحافظ على التوافق
+  static Future<void> restart() => _onAccountChanged(null);
+
   static Future<void> start() async {
-    if (_started) return;
-    _started = true;
+    // سجل listener للحساب مرة واحدة
+    if (!_listeningToAccount) {
+      AccountSession.addListener(_onAccountChanged);
+      _listeningToAccount = true;
+      debugPrint('👂 Watcher listening to account changes');
+    }
+
+    if (_started) {
+      // تحقق: لو الـ Realm اتغير (حساب جديد) → أعد الاشتراك
+      try {
+        final current = await RealmService.realm;
+        if (identical(_watchedRealm, current)) return;
+        debugPrint('🔀 Realm instance changed — re-subscribing');
+        _stop();
+      } catch (e) {
+        debugPrint('⚠️ Could not get realm in start(): $e');
+        return;
+      }
+    }
+
     try {
       final realm = await RealmService.realm;
+      _started = true;
+      _watchedRealm = realm;
+      debugPrint('👁️ Watcher subscribing to realm at: ${realm.config.path}');
 
-      // ===== دفتر الديون (قبض/دفع) =====
+      // ===== دفتر الديون =====
       final debt = realm.all<DebtTransaction>();
-      debt.changes.listen((ch) async {
+      _subs.add(debt.changes.listen((ch) async {
         for (final i in ch.inserted) {
           try {
             final t = debt[i];
@@ -36,13 +84,13 @@ class WatcherService {
             final title = received ? 'تم القبض من $contactName' : 'تم الدفع إلى $contactName';
             final body = 'المبلغ: ${t.amount.toStringAsFixed(2)} ${Cur.v}\nالتاريخ: ${_dt(t.date)}${(t.note ?? '').isNotEmpty ? '\nملاحظة: ${t.note}' : ''}';
             await NotificationService.notify(title, body, icon: icon);
-          } catch (_) {}
+          } catch (e) { debugPrint('⚠️ debt err: $e'); }
         }
-      });
+      }));
 
-      // ===== دفتر النقدية (دخل/مصروف) =====
+      // ===== دفتر النقدية =====
       final cash = realm.all<CashTransaction>();
-      cash.changes.listen((ch) async {
+      _subs.add(cash.changes.listen((ch) async {
         for (final i in ch.inserted) {
           try {
             final t = cash[i];
@@ -52,144 +100,106 @@ class WatcherService {
             final title = isIn ? 'دخل نقدي جديد' : 'مصروف نقدي جديد';
             final body = 'المبلغ: ${t.amount.toStringAsFixed(2)} ${Cur.v}\nالنوع: ${isIn ? "دخل" : "مصروف"}\nالتاريخ: ${_dt(t.date)}${(t.note ?? '').isNotEmpty ? '\nملاحظة: ${t.note}' : ''}';
             await NotificationService.notify(title, body, icon: icon);
-          } catch (_) {}
+          } catch (e) { debugPrint('⚠️ cash err: $e'); }
         }
-      });
+      }));
 
-      // ===== المحفظة التجارية (شحن/إرسال/دفع فاتورة) =====
+      // ===== المحفظة =====
       final wtx = realm.all<WalletTransaction>();
-      wtx.changes.listen((ch) async {
+      _subs.add(wtx.changes.listen((ch) async {
         for (final i in ch.inserted) {
           try {
             final t = wtx[i];
             if (t.status != 'success') continue;
-            String title;
-            String icon;
-            String body;
-            if (t.type == 'topup') {
-              title = 'تم شحن المحفظة';
-              icon = '👛';
-              body = 'المبلغ: ${t.amount.toStringAsFixed(2)} ${Cur.v}\nالتاريخ: ${_dt(t.date)}${(t.note ?? '').isNotEmpty ? '\nملاحظة: ${t.note}' : ''}';
-            } else if (t.type == 'bill') {
-              title = 'تم دفع فاتورة';
-              icon = '🧾';
-              body = 'المبلغ: ${t.amount.toStringAsFixed(2)} ${Cur.v}\nالتاريخ: ${_dt(t.date)}${(t.note ?? '').isNotEmpty ? '\nالفاتورة: ${t.note}' : ''}';
-            } else {
-              title = 'تم تحويل مبلغ';
-              icon = '💸';
-              body = 'المبلغ: ${t.amount.toStringAsFixed(2)} ${Cur.v}\nالتاريخ: ${_dt(t.date)}${(t.note ?? '').isNotEmpty ? '\nالجهة: ${t.note}' : ''}';
-            }
+            String title, icon, body;
+            if (t.type == 'topup') { title = 'تم شحن المحفظة'; icon = '👛'; body = 'المبلغ: ${t.amount.toStringAsFixed(2)} ${Cur.v}'; }
+            else if (t.type == 'bill') { title = 'تم دفع فاتورة'; icon = '🧾'; body = 'المبلغ: ${t.amount.toStringAsFixed(2)} ${Cur.v}'; }
+            else { title = 'تم تحويل مبلغ'; icon = '💸'; body = 'المبلغ: ${t.amount.toStringAsFixed(2)} ${Cur.v}'; }
             await NotificationService.notify(title, body, icon: icon);
-          } catch (_) {}
+          } catch (e) { debugPrint('⚠️ wallet err: $e'); }
         }
-      });
+      }));
 
-      // ===== ربط بطاقة فيزا/ماستركارد =====
+      // ===== البطاقات =====
       final cards = realm.all<LinkedCard>();
-      cards.changes.listen((ch) async {
+      _subs.add(cards.changes.listen((ch) async {
         for (final i in ch.inserted) {
           try {
             final c = cards[i];
-            await NotificationService.notify(
-              'تم إضافة بطاقة جديدة 💳',
-              'البنك: ${c.bank ?? 'غير محدد'}\nالعلامة: ${c.brand}\nالرقم: •••• ${c.last4}\nانتهاء: ${c.expiry}',
-              icon: '💳',
-            );
-          } catch (_) {}
+            await NotificationService.notify('تم إضافة بطاقة جديدة 💳', 'البنك: ${c.bank ?? 'غير محدد'}\nالرقم: •••• ${c.last4}', icon: '💳');
+          } catch (e) { debugPrint('⚠️ card err: $e'); }
         }
-      });
+      }));
 
-      // ===== المخزون (منتج جديد/حركة مخزون) =====
+      // ===== المنتجات =====
       final products = realm.all<Product>();
-      products.changes.listen((ch) async {
+      _subs.add(products.changes.listen((ch) async {
         for (final i in ch.inserted) {
           try {
             final p = products[i];
-            await NotificationService.notify(
-              'منتج جديد في المخزون 📦',
-              'الاسم: ${p.name}\nالكود: ${p.sku}\nالفئة: ${p.category}\nالمخزون: ${p.stock.toStringAsFixed(0)} ${p.unit ?? "قطعة"}\nالسعر: ${p.price.toStringAsFixed(2)} ${Cur.v}',
-              icon: '📦',
-            );
-          } catch (_) {}
+            await NotificationService.notify('منتج جديد 📦', '${p.name} — ${p.sku}', icon: '📦');
+          } catch (e) { debugPrint('⚠️ product err: $e'); }
         }
-      });
+      }));
 
+      // ===== حركات المخزون =====
       final moves = realm.all<StockMovement>();
-      moves.changes.listen((ch) async {
+      _subs.add(moves.changes.listen((ch) async {
         for (final i in ch.inserted) {
           try {
             final m = moves[i];
             String pname = 'منتج';
-            try {
-              final p = realm.query<Product>('id == \$0', [ObjectId.fromHexString(m.productId)]).first;
-              pname = p?.name ?? 'منتج';
-            } catch (_) {}
+            try { final p = realm.query<Product>('id == \$0', [ObjectId.fromHexString(m.productId)]).first; pname = p?.name ?? 'منتج'; } catch (_) {}
             final isIn = m.type == 'in';
-            final title = isIn ? 'إضافة إلى مخزون $pname' : 'سحب من مخزون $pname';
-            final body = 'الكمية: ${isIn ? "+" : "-"}${m.quantity.toStringAsFixed(0)}\nالتاريخ: ${_dt(m.date)}${(m.note ?? '').isNotEmpty ? '\nملاحظة: ${m.note}' : ''}';
-            await NotificationService.notify(title, body, icon: '📦');
-          } catch (_) {}
+            await NotificationService.notify(isIn ? 'إضافة لمخزون $pname' : 'سحب من مخزون $pname', 'الكمية: ${m.quantity.toStringAsFixed(0)}', icon: '📦');
+          } catch (e) { debugPrint('⚠️ move err: $e'); }
         }
-      });
+      }));
 
-      // ===== الموظفون (موظف جديد/صرف راتب/حضور) =====
+      // ===== الموظفون =====
       final staff = realm.all<Staff>();
-      staff.changes.listen((ch) async {
+      _subs.add(staff.changes.listen((ch) async {
         for (final i in ch.inserted) {
           try {
             final s = staff[i];
-            await NotificationService.notify(
-              'موظف جديد 👥',
-              'الاسم: ${s.name}\nالوظيفة: ${s.role}\nالراتب: ${s.salary.toStringAsFixed(2)} ${Cur.v} (${s.salaryType == "monthly" ? "شهري" : (s.salaryType == "weekly" ? "أسبوعي" : "يومي")})\nتاريخ التعيين: ${_dt(s.joinDate)}',
-              icon: '👥',
-            );
-          } catch (_) {}
+            await NotificationService.notify('موظف جديد 👥', '${s.name} — ${s.role}', icon: '👥');
+          } catch (e) { debugPrint('⚠️ staff err: $e'); }
         }
-      });
+      }));
 
+      // ===== رواتب =====
       final pays = realm.all<StaffPayment>();
-      pays.changes.listen((ch) async {
+      _subs.add(pays.changes.listen((ch) async {
         for (final i in ch.inserted) {
           try {
             final p = pays[i];
             String name = 'موظف';
-            try {
-              final s = realm.query<Staff>('id == \$0', [ObjectId.fromHexString(p.staffId)]).first;
-              name = s?.name ?? 'موظف';
-            } catch (_) {}
-            await NotificationService.notify(
-              'تم صرف راتب لـ $name 💰',
-              'المبلغ: ${p.amount.toStringAsFixed(2)} ${Cur.v}\nالتاريخ: ${_dt(p.date)}${(p.note ?? '').isNotEmpty ? '\nملاحظة: ${p.note}' : ''}',
-              icon: '💰',
-            );
-          } catch (_) {}
+            try { final s = realm.query<Staff>('id == \$0', [ObjectId.fromHexString(p.staffId)]).first; name = s?.name ?? 'موظف'; } catch (_) {}
+            await NotificationService.notify('صرف راتب لـ $name 💰', '${p.amount.toStringAsFixed(2)} ${Cur.v}', icon: '💰');
+          } catch (e) { debugPrint('⚠️ pay err: $e'); }
         }
-      });
+      }));
 
+      // ===== حضور =====
       final att = realm.all<StaffAttendance>();
-      att.changes.listen((ch) async {
+      _subs.add(att.changes.listen((ch) async {
         for (final i in ch.inserted) {
           try {
             final a = att[i];
             String name = 'موظف';
-            try {
-              final s = realm.query<Staff>('id == \$0', [ObjectId.fromHexString(a.staffId)]).first;
-              name = s?.name ?? 'موظف';
-            } catch (_) {}
+            try { final s = realm.query<Staff>('id == \$0', [ObjectId.fromHexString(a.staffId)]).first; name = s?.name ?? 'موظف'; } catch (_) {}
             final label = a.status == 'present' ? 'حضور' : (a.status == 'absent' ? 'غياب' : 'إجازة');
             final icon = a.status == 'present' ? '✅' : (a.status == 'absent' ? '🚨' : '🏖️');
-            await NotificationService.notify(
-              '$label موظف: $name',
-              'الحالة: $label\nالتاريخ: ${_dt(a.date)}${(a.note ?? '').isNotEmpty ? '\nملاحظة: ${a.note}' : ''}',
-              icon: icon,
-            );
-          } catch (_) {}
+            await NotificationService.notify('$label: $name', _dt(a.date), icon: icon);
+          } catch (e) { debugPrint('⚠️ att err: $e'); }
         }
-      });
+      }));
 
-      debugPrint('👁️ WatcherService started — monitoring ALL operations with full details');
-    } catch (e) {
-      debugPrint('⚠️ WatcherService failed: $e');
+      debugPrint('✅ Watcher active — ${_subs.length} streams on ${realm.config.path}');
+    } catch (e, st) {
+      debugPrint('❌ Watcher failed: $e');
+      debugPrint('Stack: $st');
+      _started = false;
     }
   }
 }
