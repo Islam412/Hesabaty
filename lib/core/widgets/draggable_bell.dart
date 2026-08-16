@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 import '../../features/more/notifications_screen.dart';
 import '../services/notification_service.dart';
 
@@ -22,12 +23,14 @@ class _DraggableBellState extends State<DraggableBell> {
   double? _x;
   double? _y;
   int _unread = 0;
+  Timer? _pollTimer;
   bool _dragging = false;
 
   @override
   void initState() {
     super.initState();
     _load();
+    _pollTimer = Timer.periodic(const Duration(seconds: 2), (_) => _refreshCount());
   }
 
   Future<void> _load() async {
@@ -41,10 +44,22 @@ class _DraggableBellState extends State<DraggableBell> {
     });
   }
 
+  Future<void> _refreshCount() async {
+    final u = await NotificationService.unreadCount();
+    if (!mounted) return;
+    if (u != _unread) setState(() => _unread = u);
+  }
+
   Future<void> _savePos() async {
     final p = await SharedPreferences.getInstance();
     if (_x != null) await p.setDouble('bell_x', _x!);
     if (_y != null) await p.setDouble('bell_y', _y!);
+  }
+
+  @override
+  void dispose() {
+    _pollTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -73,7 +88,7 @@ class _DraggableBellState extends State<DraggableBell> {
         },
         onTap: () async {
           await Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen()));
-          _load();
+          await _refreshCount();
         },
         child: AnimatedScale(
           scale: _dragging ? 1.15 : 1.0,

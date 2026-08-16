@@ -41,6 +41,8 @@ class AccountService {
     await _saveAll(all);
     final p = await SharedPreferences.getInstance();
     if (p.getString(_kFirst) == null) await p.setString(_kFirst, phone);
+    // 🎯 مهم جدًا: تسجيل الدخول تلقائيًا بعد التسجيل عشان العدّاد وقاعدة البيانات يتحولوا فورًا
+    await login(phone);
   }
 
   static Future<void> update(String phone, Map<String, dynamic> data) async {
@@ -52,6 +54,11 @@ class AccountService {
   }
 
   static Future<void> login(String phone) async {
+    // 🎯 اغلق Realm الحالي قبل تغيير الحساب عشان يفتح الملف الجديد
+    try {
+      // استدعاء RealmService.reset بدون circular import
+      await _onAccountChange?.call();
+    } catch (_) {}
     final p = await SharedPreferences.getInstance();
     final acc = (await _all())[phone];
     await p.setBool(_kLoggedIn, true);
@@ -66,6 +73,7 @@ class AccountService {
   }
 
   static Future<void> logout() async {
+    try { await _onAccountChange?.call(); } catch (_) {}
     final p = await SharedPreferences.getInstance();
     await p.setBool(_kLoggedIn, false);
     await p.remove(_kSession);
@@ -75,13 +83,17 @@ class AccountService {
     final p = await SharedPreferences.getInstance();
     return p.getString(_kSession);
   }
+
+  /// callback يُنفذ عند تغيير الحساب (يُضبط من main.dart)
+  static Future<void> Function()? _onAccountChange;
+  static void onAccountChange(Future<void> Function() cb) => _onAccountChange = cb;
 }
 
 class AccPrefs {
   static Future<_ScopedPrefs> scoped() async {
     final p = await SharedPreferences.getInstance();
     final phone = p.getString('session_phone') ?? 'global';
-    return _ScopedPrefs(p, 'acc_${phone}_');
+    return _ScopedPrefs(p, 'acc_\${phone}_');
   }
 }
 

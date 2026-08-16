@@ -9,14 +9,31 @@ class StorageService {
   static Future<String> basePath() async {
     final p = await SharedPreferences.getInstance();
     final saved = p.getString(_kBase);
-    if (saved != null && saved.isNotEmpty) return saved;
-    final dir = await getApplicationDocumentsDirectory();
-    return dir.path;
+    // لو فيه مسار محفوظ وموجود فعليًا، نستخدمه
+    if (saved != null && saved.isNotEmpty) {
+      final d = Directory(saved);
+      if (await d.exists()) return saved;
+      // المسار المحفوظ اتحذف — نرجع للـ default
+      await p.remove(_kBase);
+    }
+    // استخدام support directory — أدوم من documents directory ولا ينحذف تلقائيًا
+    try {
+      final dir = await getApplicationSupportDirectory();
+      return dir.path;
+    } catch (_) {
+      final dir = await getApplicationDocumentsDirectory();
+      return dir.path;
+    }
   }
 
   static Future<String> defaultPath() async {
-    final dir = await getApplicationDocumentsDirectory();
-    return dir.path;
+    try {
+      final dir = await getApplicationSupportDirectory();
+      return dir.path;
+    } catch (_) {
+      final dir = await getApplicationDocumentsDirectory();
+      return dir.path;
+    }
   }
 
   static Future<bool> isCustom() async {
