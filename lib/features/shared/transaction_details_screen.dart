@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../shared/public_statement_screen.dart';
 import 'package:flutter/material.dart';
 import '../../app/theme.dart';
 import '../../core/widgets/receipt_card.dart';
@@ -62,6 +63,8 @@ class TransactionDetailsScreen extends StatelessWidget {
             recipientName: recipientName,
             imagePath: imagePath,
             contactId: contactId,
+            interactive: true,
+            onOpenStatement: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PublicStatementScreen(contactId: contactId, header: recipientName ?? title))),
             recipientPhone: recipientPhone,
           ),
           // لو فيه صورة مرفقة من العملية نفسها نعرضها كمان
@@ -105,6 +108,8 @@ class TransactionDetailsScreen extends StatelessWidget {
             recipientName: recipientName,
             imagePath: imagePath,
             contactId: contactId,
+            interactive: true,
+            onOpenStatement: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PublicStatementScreen(contactId: contactId, header: recipientName ?? title))),
             recipientPhone: recipientPhone,
           ),
           fileName: 'receipt',

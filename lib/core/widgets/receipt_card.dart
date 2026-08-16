@@ -21,6 +21,8 @@ class ReceiptCard extends StatefulWidget {
   final String? token;
   final String? imagePath;
   final String? contactId;
+  final bool interactive;
+  final VoidCallback? onOpenStatement;
   const ReceiptCard({
     super.key,
     required this.title, required this.amount, required this.currency,
@@ -28,6 +30,8 @@ class ReceiptCard extends StatefulWidget {
     this.recipientName, this.recipientPhone, this.token,
     this.imagePath,
     this.contactId,
+    this.interactive = false,
+    this.onOpenStatement,
   });
   @override
   State<ReceiptCard> createState() => _ReceiptCardState();
@@ -127,7 +131,10 @@ class _ReceiptCardState extends State<ReceiptCard> {
             ClipRRect(borderRadius: BorderRadius.circular(12), child: Image.file(File(widget.imagePath!), height: 160, width: double.infinity, fit: BoxFit.cover)),
           ],
           const SizedBox(height: 20),
-          Row(
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: (widget.interactive && widget.onOpenStatement != null) ? widget.onOpenStatement : null,
+            child: Row(
             children: [
               QrBadge(data: _shareUrl, size: 90),
               const SizedBox(width: 14),
@@ -140,6 +147,7 @@ class _ReceiptCardState extends State<ReceiptCard> {
                 const Text('امسح الكود أو افتح الرابط لرؤية الرصيد وسجل العمليات كاملاً', style: TextStyle(color: Color(0xFF8AA0B2), fontSize: 10)),
               ])),
             ],
+          ),
           ),
           const SizedBox(height: 20),
           const Text('حساباتي', style: TextStyle(color: Color(0xFF2E7CF6), fontSize: 20, fontWeight: FontWeight.bold)),
