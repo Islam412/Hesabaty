@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/services/account_service.dart';
+import '../../core/services/account_service.dart';
 import '../../data/services/realm_service.dart';
 import 'login_screen.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
@@ -128,7 +129,7 @@ class MoreScreen extends StatelessWidget {
                     ),
                   );
                   if (ok != true) return;
-                  final prefs = await SharedPreferences.getInstance();
+                  final prefs = await AccPrefs.scoped();
                   await AccountService.logout();
                   RealmService.reset();
                   if (!context.mounted) return;

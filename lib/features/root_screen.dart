@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../app/app.dart';
 import '../core/services/settings_service.dart';
 import 'main_shell.dart';
 import 'onboarding/language_select_screen.dart';
 import 'onboarding/onboarding_screen.dart';
 import 'onboarding/phone_screen.dart';
+
+final localeProvider = StateProvider<Locale>((ref) => const Locale('ar'));
 
 class RootScreen extends ConsumerStatefulWidget {
   const RootScreen({super.key});

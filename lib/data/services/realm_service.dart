@@ -42,13 +42,21 @@ class RealmService {
     final base = await StorageService.basePath();
     final phone = await AccountService.sessionPhone();
     if (phone == null || phone.isEmpty) return '$base/hesabaty.realm';
-    final per = File('$base/hesabaty_\$phone.realm');
-    // أول حساب بس بينقل البيانات القديمة بتاعته لملفه الخاص مرة واحدة
-    final first = await AccountService.firstPhone();
-    if (first == phone && !per.existsSync()) {
-      final legacy = File('$base/hesabaty.realm');
-      if (legacy.existsSync()) {
-        try { legacy.copySync(per.path); } catch (_) {}
+    final per = File('$base/hesabaty_$phone.realm');
+    // أول حساب بس: ننقل بياناته من الملف القديم (اللي اسمه كان فيه $phone حرفيًا)
+    if (!per.existsSync()) {
+      final first = await AccountService.firstPhone();
+      if (first == phone) {
+        for (final oldName in ['hesabaty_\$phone.realm', 'hesabaty.realm']) {
+          final old = File('$base/$oldName');
+          if (old.existsSync()) {
+            try {
+              old.copySync(per.path);
+              debugPrint('📦 Migrated $oldName → ${per.path}');
+            } catch (_) {}
+            break;
+          }
+        }
       }
     }
     return per.path;

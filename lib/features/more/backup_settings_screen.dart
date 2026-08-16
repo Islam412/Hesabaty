@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/account_service.dart';
 import '../../core/services/flash_service.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -86,7 +87,7 @@ class _BackupSettingsScreenState extends State<BackupSettingsScreen> {
       await BackupService.createBackup();
       if (_deleteOld) await BackupService.cleanupOldBackups(keep: 5);
       if (_enabled) {
-        final p = await SharedPreferences.getInstance();
+        final p = await AccPrefs.scoped();
         await p.setString('ab_last_run', DateTime.now().toIso8601String());
       }
       await _load();

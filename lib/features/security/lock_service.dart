@@ -3,6 +3,7 @@ import 'package:crypto/crypto.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/services/account_service.dart';
+import '../../core/services/account_service.dart';
 
 enum LockType { none, biometric, pin, password, pattern }
 
@@ -39,7 +40,7 @@ class LockService {
   }
 
   static Future<LockType> getType() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     final s = p.getString(await _kType()) ?? 'none';
     return LockType.values.firstWhere((e) => e.name == s, orElse: () => LockType.none);
   }
@@ -50,46 +51,46 @@ class LockService {
   }
 
   static Future<String?> getHash() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getString(await _kHash());
   }
 
   static Future<bool> getBiometricEnabled() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getBool(await _kBiometric()) ?? false;
   }
 
   static Future<void> setPin(String pin) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setString(await _kType(), LockType.pin.name);
     await p.setString(await _kHash(), _hash(pin));
   }
 
   static Future<void> setPassword(String pw) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setString(await _kType(), LockType.password.name);
     await p.setString(await _kHash(), _hash(pw));
   }
 
   static Future<void> setPattern(List<int> points) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setString(await _kType(), LockType.pattern.name);
     await p.setString(await _kHash(), _hash(points.join(',')));
   }
 
   static Future<void> enableBiometric(bool v) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setBool(await _kBiometric(), v);
   }
 
   static Future<void> setBiometric() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setString(await _kType(), LockType.biometric.name);
     await p.remove(await _kHash());
   }
 
   static Future<void> disable() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setString(await _kType(), LockType.none.name);
     await p.remove(await _kHash());
     await p.setBool(await _kBiometric(), false);

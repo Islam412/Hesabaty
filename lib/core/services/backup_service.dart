@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'notification_service.dart';
 import 'account_service.dart';
+import 'notification_service.dart';
 import 'storage_service.dart';
 import '../../data/models/app_models.dart';
 import '../../data/services/realm_service.dart';
@@ -55,7 +55,7 @@ class BackupService {
       'business': realm.all<Business>().map(_businessToMap).toList(),
     };
 
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     final prefs = <String, dynamic>{};
     for (final k in _sharedKeys) {
       final v = p.get(k);
@@ -193,7 +193,7 @@ class BackupService {
     });
 
     final prefs = (data['prefs'] as Map?) ?? {};
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     for (final e in prefs.entries) {
       try {
         final v = e.value.toString();

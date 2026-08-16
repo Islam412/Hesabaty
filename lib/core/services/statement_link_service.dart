@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'account_service.dart';
 import 'package:uuid/uuid.dart';
 import '../../data/models/app_models.dart';
 
@@ -8,7 +9,7 @@ class StatementLinkService {
   static const String baseUrl = 'https://cash-rest.vercel.app/';
 
   static Future<String> generateLink(Contact contact, List<DebtTransaction> txs, double balance, {List<Map<String, String>> payMethods = const []}) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await AccPrefs.scoped();
     final sp = (prefs.getString('profile_phone') ?? prefs.getString('user_phone')) ?? '';
     final isCustomer = contact.type == 'customer';
     double given = 0;
@@ -43,7 +44,7 @@ class StatementLinkService {
   }
 
   static Future<String> statementText(Contact contact, List<DebtTransaction> txs, double balance) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await AccPrefs.scoped();
     final sp = (prefs.getString('profile_phone') ?? prefs.getString('user_phone')) ?? '';
     final sb = StringBuffer();
     sb.writeln('كشف حساب: ${contact.name}${(contact.phone ?? '').isNotEmpty ? ' (${contact.phone})' : ''}');

@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'account_service.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
+import 'account_service.dart';
+import '../../data/models/notification_item.dart';
 
+/// خدمة الإشعارات — كل حساب له إشعاراته الخاصة المعزولة
 class NotificationService {
-  static Future<String> _storeKey() async {
-    final phone = await AccountService.sessionPhone();
-    return 'notif_${phone ?? 'global'}_center';
-  }
-
   static final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
   static bool _initialized = false;
 
@@ -19,33 +15,37 @@ class NotificationService {
     if (_initialized) return;
     try {
       tzdata.initializeTimeZones();
-      try {
-        final loc = tz.getLocation('Africa/Cairo');
-        tz.setLocalLocation(loc);
-      } catch (_) {}
+      try { tz.setLocalLocation(tz.getLocation('Africa/Cairo')); } catch (_) {}
       const android = AndroidInitializationSettings('@mipmap/ic_launcher');
       const linux = LinuxInitializationSettings(defaultActionName: 'فتح');
-      const settings = InitializationSettings(android: android, linux: linux);
-      await _plugin.initialize(settings);
+      await _plugin.initialize(const InitializationSettings(android: android, linux: linux));
       _initialized = true;
-      debugPrint('🔔 NotificationService initialized successfully');
+      debugPrint('🔔 NotificationService initialized');
     } catch (e) {
       debugPrint('❌ NotificationService init failed: $e');
     }
   }
 
-  static Future<void> notify(String title, String body, {String icon = '🔔', bool important = true}) async {
-    debugPrint('📨 Notification: $title — $body');
-    // منع التكرار خلال 3 ثواني
+  /// مفتاح SharedPreferences معزول لكل حساب
+  static Future<String> _storeKey() async {
+    final phone = await AccountService.sessionPhone() ?? 'global';
+    return 'notif_${phone}_items';
+  }
+
+  /// يُرسل إشعار + يحفظه للحساب الحالي فقط
+  static Future<void> notify(String title, String body, {String icon = '🔔', bool important = true, String? link}) async {
+    debugPrint('📨 Notification [$title] for account: ${await AccountService.sessionPhone() ?? 'global'}');
+    final phone = await AccountService.sessionPhone() ?? 'global';
+
+    // 1) منع التكرار خلال 3 ثواني
     try {
-      final p0 = await SharedPreferences.getInstance();
-      final l0 = List<Map<String, dynamic>>.from(jsonDecode(p0.getString(await _storeKey()) ?? '[]'));
-      if (l0.isNotEmpty && l0[0]['title'] == title && l0[0]['body'] == body) {
-        final t0 = DateTime.tryParse(l0[0]['time'] ?? '');
-        if (t0 != null && DateTime.now().difference(t0).inSeconds < 3) return;
+      final list = await getAll();
+      if (list.isNotEmpty && list.first.title == title && list.first.body == body) {
+        if (DateTime.now().difference(list.first.time).inSeconds < 3) return;
       }
     } catch (_) {}
-    // 1) محاولة إرسال إشعار للنظام
+
+    // 2) إشعار نظام
     try {
       await init();
       const details = NotificationDetails(
@@ -55,58 +55,69 @@ class NotificationService {
       await _plugin.show(DateTime.now().millisecondsSinceEpoch % 1000000, '$icon $title', body, details);
       debugPrint('✅ System notification sent');
     } catch (e) {
-      debugPrint('⚠️ System notification failed (will save to center): $e');
+      debugPrint('⚠️ System notification failed: $e');
     }
-    // 2) حفظ في مركز الإشعارات (دائمًا)
+
+    // 3) حفظ للحساب الحالي فقط (معزول)
     if (important) {
       try {
-        final p = await SharedPreferences.getInstance();
-        final raw = p.getString(await _storeKey()) ?? '[]';
-        final decoded = jsonDecode(raw);
-        final list = decoded is List ? List<Map<String, dynamic>>.from(decoded) : <Map<String, dynamic>>[];
-        list.insert(0, {
-          'title': title,
-          'body': body,
-          'icon': icon,
-          'time': DateTime.now().toIso8601String(),
-          'read': false,
-        });
+        final list = await getAll();
+        final item = NotificationItem(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          title: title,
+          body: body,
+          icon: icon,
+          time: DateTime.now(),
+          read: false,
+          link: link,
+        );
+        list.insert(0, item);
         if (list.length > 200) list.removeRange(200, list.length);
-        await p.setString(await _storeKey(), jsonEncode(list));
-        debugPrint('💾 Saved to notif_center (total: ${list.length})');
+        final key = await _storeKey();
+        final p = await AccPrefs.scoped();
+        await p.setString(key, jsonEncode(list.map((e) => e.toJson()).toList()));
+        debugPrint('💾 Saved to account [$phone] (total: ${list.length})');
       } catch (e) {
-        debugPrint('❌ Failed to save to center: $e');
+        debugPrint('❌ Failed to save: $e');
       }
     }
   }
 
-  static Future<List<Map<String, dynamic>>> getAll() async {
-    final p = await SharedPreferences.getInstance();
-    final raw = p.getString(await _storeKey()) ?? '[]';
+  /// كل الإشعارات للحساب الحالي فقط
+  static Future<List<NotificationItem>> getAll() async {
     try {
+      final key = await _storeKey();
+      final p = await AccPrefs.scoped();
+      final raw = p.getString(key);
+      if (raw == null || raw.isEmpty) return [];
       final decoded = jsonDecode(raw);
-      if (decoded is List) return List<Map<String, dynamic>>.from(decoded);
+      if (decoded is List) {
+        return decoded.map((e) => NotificationItem.fromJson(Map<String, dynamic>.from(e as Map))).toList();
+      }
     } catch (_) {}
     return [];
   }
 
+  /// عدد غير المقروء للحساب الحالي فقط
   static Future<int> unreadCount() async {
     final list = await getAll();
-    return list.where((i) => i['read'] == false).length;
+    return list.where((i) => !i.read).length;
   }
 
+  /// علم كل إشعارات الحساب الحالي كمقروءة
   static Future<void> markAllRead() async {
     final list = await getAll();
-    for (final i in list) {
-      i['read'] = true;
-    }
-    final p = await SharedPreferences.getInstance();
-    await p.setString(await _storeKey(), jsonEncode(list));
+    for (final i in list) i.read = true;
+    final key = await _storeKey();
+    final p = await AccPrefs.scoped();
+    await p.setString(key, jsonEncode(list.map((e) => e.toJson()).toList()));
   }
 
+  /// امسح إشعارات الحساب الحالي فقط
   static Future<void> clearAll() async {
-    final p = await SharedPreferences.getInstance();
-    await p.setString(await _storeKey(), '[]');
+    final key = await _storeKey();
+    final p = await AccPrefs.scoped();
+    await p.setString(key, '[]');
   }
 
   static Future<void> schedule(int id, DateTime when, String title, String body) async {
@@ -117,16 +128,14 @@ class NotificationService {
         linux: LinuxNotificationDetails(),
       );
       await _plugin.zonedSchedule(
-        id,
-        title,
-        body,
+        id, title, body,
         tz.TZDateTime.from(when, tz.local),
         details,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       );
     } catch (e) {
-      debugPrint('⚠️ schedule failed, sending immediate: $e');
+      debugPrint('⚠️ schedule failed: $e');
       await notify(title, body, icon: '⏰');
     }
   }

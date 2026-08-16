@@ -31,7 +31,7 @@ dependencies:
   local_auth: any
   flutter_secure_storage: any
   go_router: any
-  file_picker: ^3.0.4
+  file_picker: ^8.1.2
   url_launcher: ^6.3.2
   arabic_reshaper: ^0.0.1
   bidi: ^2.0.13

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/account_service.dart';
 import 'dart:async';
 import '../../features/more/notifications_screen.dart';
 import '../services/notification_service.dart';
@@ -34,7 +35,7 @@ class _DraggableBellState extends State<DraggableBell> {
   }
 
   Future<void> _load() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     final u = await NotificationService.unreadCount();
     if (!mounted) return;
     setState(() {
@@ -51,7 +52,7 @@ class _DraggableBellState extends State<DraggableBell> {
   }
 
   Future<void> _savePos() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     if (_x != null) await p.setDouble('bell_x', _x!);
     if (_y != null) await p.setDouble('bell_y', _y!);
   }

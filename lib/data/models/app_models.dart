@@ -182,4 +182,3 @@ class _Staff {
   late String? notes;
   late DateTime createdAt;
 }
-

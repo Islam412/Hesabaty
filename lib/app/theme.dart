@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/account_service.dart';
 import '../core/services/account_service.dart';
 
 class AppTheme {
@@ -127,11 +128,11 @@ class ThemeNotifier {
     return 'theme_dark_${ph ?? 'global'}';
   }
   static Future<bool> isDark() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getBool(await _themeKey()) ?? false;
   }
   static Future<void> toggle() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     final dark = p.getBool(await _themeKey()) ?? false;
     await p.setBool(await _themeKey(), !dark);
     listener?.call();
@@ -145,11 +146,11 @@ class LocaleNotifier {
     return 'locale_code_${ph ?? 'global'}';
   }
   static Future<String> getCode() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getString(await _localeKey()) ?? 'ar';
   }
   static Future<void> setCode(String code) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setString(await _localeKey(), code);
     localeListener?.call();
   }
@@ -158,7 +159,7 @@ class LocaleNotifier {
 class Cur {
   static String v = 'ج.م';
   static Future<void> load() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     v = p.getString('profile_currency') ?? 'ج.م';
   }
 }
@@ -177,11 +178,11 @@ const List<Map<String, String>> kCurrencies = [
 class CurrencyNotifier {
   static VoidCallback? listener;
   static Future<String> getSymbol() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     return p.getString('profile_currency') ?? 'ج.م';
   }
   static Future<void> setSymbol(String sym) async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await p.setString('profile_currency', sym);
     Cur.v = sym;
     listener?.call();

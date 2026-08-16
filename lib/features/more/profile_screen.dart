@@ -3,6 +3,7 @@ import '../../core/services/flash_service.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/services/account_service.dart';
+import '../../core/services/account_service.dart';
 import '../../data/services/realm_service.dart';
 import '../../app/theme.dart';
 import 'login_screen.dart';
@@ -27,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _load() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     setState(() {
       _name = p.get('profile_name')?.toString() ?? 'حساباتي';
       _owner = p.get('profile_owner')?.toString() ?? '';
@@ -68,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel)),
           FilledButton(
             onPressed: () async {
-              final p = await SharedPreferences.getInstance();
+              final p = await AccPrefs.scoped();
               await p.setString('profile_name', name.text.trim());
               await p.setString('profile_owner', owner.text.trim());
               await p.setString('profile_phone', phone.text.trim());
@@ -103,7 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
     if (ok != true) return;
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     await AccountService.logout();
     RealmService.reset();
     if (!mounted) return;

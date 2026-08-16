@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/account_service.dart';
 import 'package:flutter/material.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import '../../app/theme.dart';
 import '../../core/services/notification_service.dart';
+import '../../data/models/notification_item.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -12,7 +14,7 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  List<Map<String, dynamic>> _items = [];
+  List<NotificationItem> _items = [];
   bool _loading = true;
 
   @override
@@ -51,7 +53,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final unread = _items.where((i) => i['read'] == false).length;
+    final unread = _items.where((i) => i.read == false).length;
     return Scaffold(
       appBar: AppBar(
         title: Text('${l10n.notifications}${unread > 0 ? ' ($unread)' : ''}'),
@@ -104,10 +106,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     itemCount: _items.length,
                     itemBuilder: (ctx, i) {
                       final n = _items[i];
-                      final isRead = n['read'] == true;
-                      final c = _colorFor(n['icon']);
+                      final isRead = n.read == true;
+                      final c = _colorFor(n.icon);
                       return Dismissible(
-                        key: ValueKey('${n['time']}_$i'),
+                        key: ValueKey('${n.time}_$i'),
                         direction: DismissDirection.endToStart,
                         background: Container(
                           alignment: Alignment.centerRight,
@@ -118,7 +120,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         ),
                         onDismissed: (_) async {
                           _items.removeAt(i);
-                          final p = await SharedPreferences.getInstance();
+                          final p = await AccPrefs.scoped();
                           await p.setString('notif_center', jsonEncode(_items));
                           if (mounted) setState(() {});
                         },
@@ -130,8 +132,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             borderRadius: BorderRadius.circular(14),
                             onTap: () async {
                               if (!isRead) {
-                                _items[i]['read'] = true;
-                                final p = await SharedPreferences.getInstance();
+                                _items[i].read = true;
+                                final p = await AccPrefs.scoped();
                                 await p.setString('notif_center', jsonEncode(_items));
                                 setState(() {});
                               }
@@ -146,7 +148,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       Container(
                                         width: 48, height: 48,
                                         decoration: BoxDecoration(color: c.withOpacity(0.15), borderRadius: BorderRadius.circular(12)),
-                                        child: Center(child: Text(n['icon'] ?? '🔔', style: const TextStyle(fontSize: 22))),
+                                        child: Center(child: Text(n.icon, style: const TextStyle(fontSize: 22))),
                                       ),
                                       if (!isRead)
                                         Positioned(
@@ -160,11 +162,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(n['title'] ?? '', style: TextStyle(fontWeight: isRead ? FontWeight.w500 : FontWeight.w800, fontSize: 14)),
+                                        Text(n.title, style: TextStyle(fontWeight: isRead ? FontWeight.w500 : FontWeight.w800, fontSize: 14)),
                                         const SizedBox(height: 3),
-                                        Text(n['body'] ?? '', style: TextStyle(color: Colors.grey.shade700, fontSize: 12, height: 1.4)),
+                                        Text(n.body, style: TextStyle(color: Colors.grey.shade700, fontSize: 12, height: 1.4)),
                                         const SizedBox(height: 4),
-                                        Text(_time(n['time'] ?? ''), style: TextStyle(color: Colors.grey.shade500, fontSize: 11)),
+                                        Text(_time(n.time.toIso8601String()), style: TextStyle(color: Colors.grey.shade500, fontSize: 11)),
                                       ],
                                     ),
                                   ),

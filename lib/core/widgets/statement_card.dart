@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/account_service.dart';
 import '../../app/theme.dart';
 import '../../core/services/account_service.dart';
 import '../../data/models/app_models.dart';
@@ -148,7 +149,7 @@ class ContactStatementCard extends StatelessWidget {
   }
 
   Future<String> _ownerLine() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     final name = p.getString('profile_name') ?? '';
     final phone = await AccountService.sessionPhone() ?? '';
     if (name.isNotEmpty) return phone.isNotEmpty ? '$name — $phone' : name;

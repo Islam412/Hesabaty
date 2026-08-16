@@ -4,6 +4,8 @@ import '../core/widgets/draggable_bell.dart';
 import 'more/notifications_screen.dart';
 import '../core/services/notification_service.dart';
 import '../core/services/watcher_service.dart';
+import '../core/services/account_session.dart';
+import '../core/services/account_service.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'cash_book/cash_book_screen.dart';
 import 'debt_book/debt_book_screen.dart';
@@ -20,12 +22,16 @@ class _MainShellState extends State<MainShell> {
   void initState() {
     super.initState();
     WatcherService.start();
+    AccountSession.init();
+    AccountService.sessionPhone().then((ph) { if (mounted) setState(() => _accKey = ph); });
+    AccountSession.addListener((ph) { if (mounted) setState(() => _accKey = ph); });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) BellOverlay.show(context);
     });
   }
 
   int _index = 1;
+  String? _accKey;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +39,10 @@ class _MainShellState extends State<MainShell> {
     return Scaffold(
       body: IndexedStack(
         index: _index,
-        children: const [
-          MoreScreen(),
-          CashBookScreen(),
-          DebtBookScreen(),
+        children: [
+          MoreScreen(key: ValueKey('more_$_accKey')),
+          CashBookScreen(key: ValueKey('cash_$_accKey')),
+          DebtBookScreen(key: ValueKey('debt_$_accKey')),
         ],
       ),
       bottomNavigationBar: NavigationBar(

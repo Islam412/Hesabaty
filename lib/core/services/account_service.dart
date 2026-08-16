@@ -1,6 +1,7 @@
 import 'dart:convert';
 import '../../app/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'account_session.dart';
 
 class AccountService {
   static const String _kAccounts = 'accounts_map';
@@ -70,6 +71,13 @@ class AccountService {
       await p.setString('profile_address', (acc['address'] ?? '').toString());
       await p.setString('profile_currency', (acc['currency'] ?? Cur.v).toString());
     }
+    final sp = await AccPrefs.scoped();
+    await sp.setString('profile_phone', phone);
+    await sp.setString('profile_name', (acc?['name'] ?? 'حساباتي').toString());
+    await sp.setString('profile_owner', (acc?['owner'] ?? '').toString());
+    await sp.setString('profile_address', (acc?['address'] ?? '').toString());
+    await sp.setString('profile_currency', (acc?['currency'] ?? Cur.v).toString());
+    await AccountSession.onAccountChanged(phone);
   }
 
   static Future<void> logout() async {
@@ -77,6 +85,7 @@ class AccountService {
     final p = await SharedPreferences.getInstance();
     await p.setBool(_kLoggedIn, false);
     await p.remove(_kSession);
+    await AccountSession.onAccountChanged(null);
   }
 
   static Future<String?> sessionPhone() async {
@@ -107,4 +116,9 @@ class _ScopedPrefs {
   Future<bool> setBool(String k, bool v) => _p.setBool(_pre + k, v);
   int? getInt(String k) => _p.getInt(_pre + k);
   Future<bool> setInt(String k, int v) => _p.setInt(_pre + k, v);
+  Object? get(String k) => _p.get(_pre + k);
+  Set<String> getKeys() => _p.getKeys().where((k) => k.startsWith(_pre)).map((k) => k.substring(_pre.length)).toSet();
+  Future<bool> remove(String k) => _p.remove(_pre + k);
+  double? getDouble(String k) => _p.getDouble(_pre + k);
+  Future<bool> setDouble(String k, double v) => _p.setDouble(_pre + k, v);
 }

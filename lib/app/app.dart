@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/account_service.dart';
 import 'package:debt_cash_app/l10n/app_localizations.dart';
 import 'theme.dart';
 import 'splash_screen.dart';
@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _load() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     final dark = await ThemeNotifier.isDark();
     final lang = await LocaleNotifier.getCode();
     if (mounted) {
@@ -72,7 +72,7 @@ class _AuthGateState extends State<AuthGate> {
   }
 
   Future<void> _check() async {
-    final p = await SharedPreferences.getInstance();
+    final p = await AccPrefs.scoped();
     if (!mounted) return;
     setState(() {
       _logged = p.getBool('logged_in') ?? false;
