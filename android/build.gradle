@@ -1,0 +1,17 @@
+
+// ===== إجبار كل plugins على استخدام compileSdk 37 و targetSdk 37 =====
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                compileSdk 37
+                if (project.android.hasProperty('defaultConfig')) {
+                    project.android.defaultConfig {
+                        targetSdk 37
+                        minSdk 23
+                    }
+                }
+            }
+        }
+    }
+}
